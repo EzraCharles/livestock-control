@@ -12,7 +12,7 @@
         height: 100%;
     }
     body{
-        background-image: url("../img/cattle.jpg");
+        background-image: url("../img/cattle-logos.jpg");
         background-repeat: no-repeat;
         background-attachment: fixed;
         background-size: cover;
@@ -21,7 +21,7 @@
 <body>
     <div class="container d-flex h-100 justify-content-center">
         <div class="row align-self-center w-100">
-            <div class="col-6 mx-auto">
+            <div id="responsive-phone" class="col-6 mx-auto">
                 <div class="card">
                     <div class="card-header" style="text-align: center"> <h3> <strong style="font-family:Verdana, Geneva, Tahoma, sans-serif; color: #cb6502">Sistema de Control Ganadero</strong> </h3></div>
                     <div class="card-body">
@@ -64,6 +64,7 @@
                                         <label class="form-check-label" for="remember">
                                             Recordarme
                                         </label>
+                                        <a href="{{ route('register') }}" style="color: #994e14; padding-left: 50px;">Registrarme</a>
                                     </div>
                                 </div>
                             </div>
@@ -88,4 +89,18 @@
         </div>
     </div>
 </body>
+
+<script>
+    $(window).resize(function(){
+        if($(window).width() < 768){
+            $('#responsive-phone').removeClass('col-6');
+            $('#responsive-phone').addClass('col-12');
+        }
+
+        if($(window).width() > 767){
+            $('#responsive-phone').removeClass('col-12');
+            $('#responsive-phone').addClass('col-6');
+        }
+    });
+</script>
 @endsection

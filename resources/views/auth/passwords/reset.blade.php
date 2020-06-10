@@ -1,6 +1,18 @@
 @extends('layouts.app')
 
-@section('content')
+@section('general')
+<style>
+    body,html {
+        height: 100%;
+    }
+    body{
+        background-image: url("../img/cattle-logos.jpg");
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;
+    }
+</style>
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
