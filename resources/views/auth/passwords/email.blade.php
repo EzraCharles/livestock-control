@@ -45,8 +45,11 @@
 
                             <div class="form-group row mb-0">
                                 <div class="col-md-6 offset-md-4">
-                                    <button type="submit" class="btn" style="background-color: #cb6502;">
+                                    <button type="submit" class="btn grupo-res">
                                         Enviar Enlace
+                                    </button>
+                                    <button type="button" onclick="window.location='{{ url("/") }}'" class="btn btn-danger">
+                                        Regresar
                                     </button>
                                 </div>
                             </div>

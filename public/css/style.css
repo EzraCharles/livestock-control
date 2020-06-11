@@ -14150,3 +14150,8 @@ body.loading .loadingmodal {
 body.loading .loadingmodal {
     display: block;
 }
+
+.grupo-res {
+    background-color: #cb6502;
+    color: white;
+}
