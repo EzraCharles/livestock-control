@@ -1,10 +1,20 @@
 <div class="sidebar">
-    <nav class="sidebar-nav" >
+    <nav class="sidebar-nav" style="padding-bottom: 200px;">
         <ul class="nav" >
             <li class="nav-item">
                 <a class="nav-link" href="dashboard">
                     <i class="nav-icon icon-speedometer"></i> Dashboard
                 </a>
+                @if (Auth::user()->rol === 'Administrador')
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                        <i class="nav-icon fas fa-chart-pie"></i> Análisis </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                        <i class="nav-icon fas fa-handshake"></i> Liquidación </a>
+                    </li>
+                @endif
             </li>
             <li class="nav-title">Módulos</li>
 
@@ -14,65 +24,93 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">{{-- route('captura') --}}
-                <i class="nav-icon fas fa-dollar-sign"></i> Venta </a>
+                <i class="nav-icon fas fa-dollar-sign"></i> Salida </a>
             </li>
-            @if (Auth::user()->rol === 'Administrador')
-                {{--<li class="nav-item nav-dropdown">
-                    <a class="nav-link  nav-dropdown-toggle" href="#">
-                    <i class="nav-icon icon-people"></i> Usuarios</a>
-                    <ul class="nav-dropdown-items">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                            <i class="nav-icon icon-user-follow"></i> Crear Usuario</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                            <i class="nav-icon icon-user"></i> Desplegar Usuarios</a>
-                        </li>
-                    </ul>
-                </li>--}}
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                <i class="nav-icon fas fa-truck-moving"></i> Embarques </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                <i class="nav-icon fas fa-syringe"></i> Sanidad </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                <i class="nav-icon fas fa-calendar-alt"></i> Calendarización </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                <i class="nav-icon fas fa-cookie-bite"></i> Engorda </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                <i class="nav-icon far fa-eye"></i> Criadero </a>
+            </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                    <i class="nav-icon fas fa-users"></i> Usuarios </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                    <i class="nav-icon fas fa-horse-head-solid"></i> Corrales </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                    <i class="nav-icon icon-hourglass"></i> Fórmulas </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                    <i class="nav-icon icon-briefcase"></i> Personas </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                    <i class="nav-icon icon-briefcase"></i> Precios </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                    <i class="nav-icon icon-briefcase"></i> Tipo de Alimentación </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                    <i class="nav-icon icon-briefcase"></i> Tipo de Animal </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                    <i class="nav-icon fas fa-hat-cowboy"></i> Tipo de Persona </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                    <i class="nav-icon icon-briefcase"></i> Tipo de Reproducción </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                    <i class="nav-icon icon-briefcase"></i> Tipo de Tratamiento </a>
-                </li>
-            @endif
+            <li class="nav-item nav-dropdown">
+                <a class="nav-link  nav-dropdown-toggle" href="#">
+                <i class="nav-icon icon-people"></i> Catálogos</a>
+                <ul class="nav-dropdown-items">
+
+                    @if (Auth::user()->rol === 'Administrador')
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                            <i class="nav-icon fas fa-users"></i> Usuarios </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                            <i class="nav-icon fas fa-hand-holding-usd"></i> Precios </a>
+                        </li>
+                    @endif
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                        <i class="nav-icon fas fa-paw"></i> Animales </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                        <i class="nav-icon fas fa-tractor"></i> Personas </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                        <i class="nav-icon fas fa-pencil-alt"></i> Diagnósticos </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                        <i class="nav-icon fas fa-file-medical"></i> Tratamientos </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                        <i class="nav-icon fas fa-venus-mars"></i> Tipo de Reproducción </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                        <i class="nav-icon fas fa-stethoscope"></i> Tipo de Tratamiento </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                        <i class="nav-icon fas fa-landmark"></i> Corrales </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                        <i class="nav-icon fas fa-seedling"></i> Fórmulas </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                        <i class="nav-icon fas fa-horse"></i> Tipo de Animal </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                        <i class="nav-icon fas fa-utensils"></i> Tipo de Alimentación </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                        <i class="nav-icon fas fa-user-tag"></i> Tipo de Persona </a>
+                    </li>
+
+                </ul>
+            </li>
+
         </ul>
     </nav>
   </div>
