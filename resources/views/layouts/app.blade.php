@@ -42,9 +42,10 @@
             }
         }
     </style>
+
     <!-- DataTables -->
-    <link rel="stylesheet" href="{{ asset('css/dataTables.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/datatables.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('css/dataTables.bootstrap4.min.css') }}">
 
     <!-- Icons -->
     <link href="{{ asset('css/simple-line-icons.css')}}" rel="stylesheet">

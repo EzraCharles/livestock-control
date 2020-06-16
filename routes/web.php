@@ -19,3 +19,4 @@ Auth::routes();
 
 Route::get('dashboard', 'HomeController@index')->name('dashboard');
 
+Route::resource('usuarios', 'UserController');

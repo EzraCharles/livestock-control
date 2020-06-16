@@ -1,4 +1,7 @@
-<nav class="navbar navbar-expand-md navbar-light navbar-laravel">
+<nav class="navbar navbar-expand-md navbar-light navbar-laravel" style="position: fixed;
+z-index: 999;
+opacity:1;
+width: 100%;">
 
     <a class="navbar-brand" href="{{ url('/dashboard') }}">
         <img class="navbar-brand-full" src="img/logo.jpg" alt="Grupo RES" style="
