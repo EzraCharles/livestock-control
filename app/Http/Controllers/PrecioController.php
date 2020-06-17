@@ -14,7 +14,8 @@ class PrecioController extends Controller
      */
     public function index()
     {
-        //
+        $precios = \App\Precio::all();
+        return view('precios.index', compact('precios'));
     }
 
     /**

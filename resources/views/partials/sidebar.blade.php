@@ -1,5 +1,5 @@
 <div class="sidebar" style="padding-top: 115px; z-index: 1;">
-    <nav class="sidebar-nav" style="padding-bottom: 200px;">
+    <nav class="sidebar-nav">
         <ul class="nav" >
             <li class="nav-item">
                 <a class="nav-link" href="dashboard">
@@ -58,7 +58,7 @@
                             <i class="nav-icon fas fa-users"></i> Usuarios </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" href="{{ route('precios.index') }}">
                             <i class="nav-icon fas fa-hand-holding-usd"></i> Precios </a>
                         </li>
                     @endif

@@ -70,8 +70,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="edit-form" role="form" action="#" method="post">
-                    {{ method_field('PUT') }}
+                <form role="form" action="#" method="post">
                     <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                     <div class="box-body">
                         <div class="form-group">
@@ -80,7 +79,7 @@
                         </div>
                         <div class="form-group">
                             <label for="modal-input-name">Nombre</label>
-                            <input type="text" class="form-control" id="modal-input-name" name="name" required>
+                            <input type="text" class="form-control" id="modal-input-name" name="usr" required>
                         </div>
                         <div class="form-group">
                             <label for="modal-input-email">Correo</label>
@@ -114,7 +113,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="delete-form" role="form" action="deleteuser" method="post">
+                <form role="form" action="deleteuser" method="post">
                     <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
 
                     <div class="box-body">
@@ -124,7 +123,7 @@
                         </div>
                         <div class="form-group">
                             <label for="modal-input-name-delete">Nombre</label>
-                            <input type="text" class="form-control" id="modal-input-name-delete" name="name" readonly>
+                            <input type="text" class="form-control" id="modal-input-name-delete" name="usr" readonly>
                         </div>
                         <div class="form-group">
                             <label for="modal-input-email-delete">Correo</label>
@@ -257,8 +256,6 @@
             /*$("#modal-input-workshift option").filter(function() {
                 return this.text == workshift[0]['innerHTML'];
             }).attr('selected', true);*/
-
-            $("#edit-form").attr('action', 'usuarios/' + id[0]['innerHTML']);
         });
 
         // on modal hide
@@ -278,6 +275,12 @@
             var email = row.children("#email");
             var rol = row.children("#rol");
 
+            console.log(email);
+            console.log(email[0]);
+            console.log(email[0]['innerHTML']);
+            console.log(rol);
+            console.log(rol[0]);
+            console.log(rol[0]['innerHTML']);
             // fill the data in the input fields
             $("#modal-input-id-delete").val(id[0]['innerHTML']);
             $("#modal-input-name-delete").val(name[0]['innerHTML']);
@@ -290,9 +293,7 @@
         $('#delete-modal').on('hide.bs.modal', function() {
             $('.delete-item-trigger-clicked').removeClass('delete-item-trigger-clicked')
             $("#delete-form").trigger("reset");
-        });
-
-
+        })
     });
 
 </script>
