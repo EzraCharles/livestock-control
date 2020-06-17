@@ -22,7 +22,7 @@ class CreatePreciosTable extends Migration
             $table->integer('rango_alto')->nullable();
             $table->integer('rango_bajo')->nullable();
             $table->string('comentarios')->nullable();
-            $table->boolean('borrado')->default(0);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

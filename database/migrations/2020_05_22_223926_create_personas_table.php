@@ -20,7 +20,7 @@ class CreatePersonasTable extends Migration
             $table->string('comentarios')->nullable();
             $table->float('costo_extra_operativo')->default(0); // Costo extra por kilo (compra) por costos operativos (fletes, etc)
             $table->integer('tipo_persona_id')->unsigned();
-            $table->boolean('borrado')->default(0);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

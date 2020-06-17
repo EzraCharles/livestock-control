@@ -26,7 +26,7 @@ class CreateRegistrosTable extends Migration
             $table->boolean('reproduccion')->default(0);
             $table->string('comentarios')->nullable();
             $table->integer('animal_id')->unsigned();
-            $table->boolean('borrado')->default(0);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

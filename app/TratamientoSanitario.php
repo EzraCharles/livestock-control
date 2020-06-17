@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class TratamientoSanitario extends Model
 {
+    use SoftDeletes;
+
     public $table = "tratamiento_sanitarios";
 
     protected $guarded = ['id', 'created_at', 'updated_at'];

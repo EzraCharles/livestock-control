@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Corral extends Model
 {
+    use SoftDeletes;
+
     public $table = "corrales";
 
     protected $guarded = ['id', 'created_at', 'updated_at'];

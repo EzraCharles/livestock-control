@@ -21,7 +21,7 @@ class CreateTratamientoSanitariosTable extends Migration
             $table->integer('master_sanitario_id')->unsigned();
             $table->integer('corral_id')->unsigned()->nullable();
             $table->integer('animal_id')->unsigned();
-            $table->boolean('borrado')->default(0);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

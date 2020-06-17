@@ -60,5 +60,6 @@
         $(".se-pre-con").fadeOut("slow");
     });
 </script>
+
 @yield('general')
 </html>

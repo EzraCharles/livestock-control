@@ -19,7 +19,7 @@ class CreateMasterSanitariosTable extends Migration
             $table->integer('animales_tratados_total');
             $table->string('comentarios');
             $table->integer('usuario_id')->unsigned();
-            $table->boolean('borrado')->default(0);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

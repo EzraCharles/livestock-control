@@ -16,7 +16,7 @@ class CreateTipoAnimalsTable extends Migration
         Schema::create('tipos_animal', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nombre');
-            $table->boolean('borrado')->default(0);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

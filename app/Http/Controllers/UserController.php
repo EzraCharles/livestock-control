@@ -69,7 +69,14 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        dd($request->request);
+        $request->validate([
+            'name' => 'required|max:255|min:4',
+            'email' => 'required|email|max:255|min:4',
+            'rol' => 'required|max:255|min:4',
+        ]);
+
+        $user = \App\User::whereId($request->id)->update($request->except('_token', '_method'));
+        return back();
     }
 
     /**
@@ -80,6 +87,6 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        dd($id);
     }
 }

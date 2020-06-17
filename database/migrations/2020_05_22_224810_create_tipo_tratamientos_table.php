@@ -17,7 +17,7 @@ class CreateTipoTratamientosTable extends Migration
             $table->increments('id');
             $table->string('nombre');
             $table->string('comentarios')->nullable();
-            $table->boolean('borrado')->default(0);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Compra extends Model
 {
+    use SoftDeletes;
+
     public $table = "compras";
 
     protected $guarded = ['id', 'created_at', 'updated_at'];

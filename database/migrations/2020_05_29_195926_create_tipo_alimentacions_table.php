@@ -18,7 +18,7 @@ class CreateTipoAlimentacionsTable extends Migration
             $table->string('nombre');
             $table->string('comentarios')->nullable();
             $table->integer('formula_id')->unsigned();
-            $table->boolean('borrado')->default(0);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -18,7 +18,7 @@ class CreateDiagnosticosTable extends Migration
             $table->string('nombre');
             $table->string('comentarios')->nullable();
             //$table->integer('tratamiento_sanitario_id');
-            $table->boolean('borrado')->default(0);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

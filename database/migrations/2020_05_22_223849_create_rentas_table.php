@@ -26,7 +26,7 @@ class CreateRentasTable extends Migration
             $table->float('indemnizacion')->nullable();
             $table->integer('animal_id')->unsigned();
             $table->integer('embarque_id')->unsigned();
-            $table->boolean('borrado')->default(0);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

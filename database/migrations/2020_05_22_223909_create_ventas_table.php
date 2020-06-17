@@ -31,7 +31,7 @@ class CreateVentasTable extends Migration
             $table->integer('embarque_id')->unsigned();
             $table->integer('animal_id')->unsigned();
             $table->integer('precio_id')->unsigned();
-            $table->boolean('borrado')->default(0);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

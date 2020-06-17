@@ -29,7 +29,7 @@ class CreateFinancierosTable extends Migration
             $table->string('comentarios')->nullable();
             $table->integer('embarque_id')->unsigned();
             $table->integer('formula_id')->unsigned();
-            $table->boolean('borrado')->default(0);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

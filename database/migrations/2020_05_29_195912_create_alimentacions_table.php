@@ -18,7 +18,7 @@ class CreateAlimentacionsTable extends Migration
             $table->string('comentarios')->nullable();
             $table->integer('tipo_alimentacion_id')->unsigned();
             $table->integer('registro_id')->unsigned();
-            $table->boolean('borrado')->default(0);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -20,7 +20,7 @@ class CreateReproduccionsTable extends Migration
             //$table->integer('animal_hijo_id')->unsigned()->nullable();
             $table->integer('tipo_reproduccion_id')->unsigned();
             $table->integer('registro_id')->unsigned();
-            $table->boolean('borrado')->default(0);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

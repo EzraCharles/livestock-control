@@ -27,7 +27,7 @@ class CreateProductivosTable extends Migration
             $table->float('factor_eficiencia');
             $table->string('comentarios')->nullable();
             $table->integer('embarque_id');
-            $table->boolean('borrado')->default(0);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

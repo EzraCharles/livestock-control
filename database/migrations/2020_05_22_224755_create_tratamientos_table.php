@@ -21,7 +21,7 @@ class CreateTratamientosTable extends Migration
             //$table->integer('diagnostico_id')->unsigned();
             $table->integer('precio_id')->unsigned();
             $table->integer('tipo_tratamiento_id')->unsigned();
-            $table->boolean('borrado')->default(0);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

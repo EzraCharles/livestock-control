@@ -14130,7 +14130,8 @@ body {
 
 
 .loadingmodal {
-  display:    none;
+    display:    none;
+    z-index: 9999;
     position:   fixed;
     z-index:    1000;
     top:        0;

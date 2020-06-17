@@ -58,101 +58,109 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="edit-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" align="center"><b>Editar Usuario</b></h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="edit-form" role="form" action="#" method="post">
+                        <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                        @method('PUT')
+
+                        <div class="box-body">
+                            <div class="form-group">
+                                <label for="modal-input-id">ID</label>
+                                <input type="text" class="form-control" id="modal-input-id" name="id" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="modal-input-name">Nombre</label>
+                                <input type="text" class="form-control" id="modal-input-name" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="modal-input-email">Correo</label>
+                                <input type="text" class="form-control" id="modal-input-email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="modal-input-role">Privilegio</label>
+                                <select class="form-control" id="modal-input-role" name="rol" required>
+                                    <option value="Usuario">Usuario</option>
+                                    <option value="Administrador">Administrador</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="delete-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" align="center"><b>Borrar Usuario</b></h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="delete-form" role="form" action="deleteuser" method="post">
+                        <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                        @method('DELETE')
+
+                        <div class="box-body">
+                            <div class="form-group">
+                                <label for="modal-input-id-delete">ID</label>
+                                <input type="text" class="form-control" id="modal-input-id-delete" name="id" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="modal-input-name-delete">Nombre</label>
+                                <input type="text" class="form-control" id="modal-input-name-delete" name="name" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="modal-input-email-delete">Correo</label>
+                                <input type="text" class="form-control" id="modal-input-email-delete" name="email" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="modal-input-role-delete">Privilegio</label>
+                                <select class="form-control" id="modal-input-role-delete" name="rol" readonly>
+                                    <option value="Usuario">Usuario</option>
+                                    <option value="Administrador">Administrador</option>
+                                </select>
+                            </div>
+                        </div>
+                        <label><strong>Estás seguro de que quieres borrar este elemento?</strong></label>
+                        <div class="modal-footer">
+
+                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="btn btn-danger">Borrar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </main>
 
-<div class="modal fade" id="edit-modal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" align="center"><b>Editar Usuario</b></h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="edit-form" role="form" action="#" method="post">
-                    {{ method_field('PUT') }}
-                    <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-                    <div class="box-body">
-                        <div class="form-group">
-                            <label for="modal-input-id">ID</label>
-                            <input type="text" class="form-control" id="modal-input-id" name="id" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label for="modal-input-name">Nombre</label>
-                            <input type="text" class="form-control" id="modal-input-name" name="name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="modal-input-email">Correo</label>
-                            <input type="text" class="form-control" id="modal-input-email" name="email" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="modal-input-role">Privilegio</label>
-                            <select class="form-control" id="modal-input-role" name="role" required>
-                                <option value="Usuario">Usuario</option>
-                                <option value="Administrador">Administrador</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
-                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="delete-modal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" align="center"><b>Borrar Usuario</b></h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="delete-form" role="form" action="deleteuser" method="post">
-                    <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-
-                    <div class="box-body">
-                        <div class="form-group">
-                            <label for="modal-input-id-delete">ID</label>
-                            <input type="text" class="form-control" id="modal-input-id-delete" name="id" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label for="modal-input-name-delete">Nombre</label>
-                            <input type="text" class="form-control" id="modal-input-name-delete" name="name" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label for="modal-input-email-delete">Correo</label>
-                            <input type="text" class="form-control" id="modal-input-email-delete" name="email" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label for="modal-input-role-delete">Privilegio</label>
-                            <select class="form-control" id="modal-input-role-delete" name="role" readonly>
-                                <option value="Usuario">Usuario</option>
-                                <option value="Administrador">Administrador</option>
-                            </select>
-                        </div>
-                    </div>
-                    <label><strong>Estás seguro de que quieres borrar este elemento?</strong></label>
-                    <div class="modal-footer">
-
-                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
-                        <button type="submit" class="btn btn-danger">Borrar</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+<div class="modal loadingmodal"></div>
 
 <script>
 
     $(document).ready(function() {
+        $('form').on('submit', function(){
+            $('body').addClass('loading');
+        });
         /**
         * for showing edit item popup
         */
@@ -241,7 +249,6 @@
         $('#edit-modal').on('show.bs.modal', function() {
             var el = $(".edit-item-trigger-clicked"); // See how its usefull right here?
             var row = el.closest(".data-row");
-            // console.log(row.children());
 
             // get the data
             var id = row.children('#id');
@@ -270,7 +277,6 @@
         $('#delete-modal').on('show.bs.modal', function() {
             var el = $(".delete-item-trigger-clicked"); // See how its usefull right here?
             var row = el.closest(".data-row");
-            // console.log(row.children('#uid')[0]['innerHTML']);
 
             // get the data
             var id = row.children('#id');
@@ -283,6 +289,8 @@
             $("#modal-input-name-delete").val(name[0]['innerHTML']);
             $("#modal-input-email-delete").val(email[0]['innerHTML']);
             $("#modal-input-role-delete").val(rol[0]['innerHTML']);
+
+            $("#delete-form").attr('action', 'usuarios/' + id[0]['innerHTML']);
 
         });
 

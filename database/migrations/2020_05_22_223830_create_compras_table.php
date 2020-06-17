@@ -28,7 +28,7 @@ class CreateComprasTable extends Migration
             $table->float('precio'); // tmp
             $table->integer('precio_id')->unsigned()->nullable();
             $table->integer('animal_id')->unsigned();
-            $table->boolean('borrado')->default(0);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

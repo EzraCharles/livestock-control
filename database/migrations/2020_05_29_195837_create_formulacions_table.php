@@ -20,7 +20,7 @@ class CreateFormulacionsTable extends Migration
             $table->float('importe');
             $table->integer('formula_id')->unsigned();
             $table->integer('precio_id')->unsigned();
-            $table->boolean('borrado')->default(0);
+            $table->softDeletes();
             $table->timestamps();
         });
     }
