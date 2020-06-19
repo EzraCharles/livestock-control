@@ -1,9 +1,9 @@
 <!-- Scripts -->
-<script src="{{ asset('js/app.js') }}"></script>
+{{-- <script src="{{ asset('js/app.js') }}"></script> --}}
 <script src="{{ asset('js/jquery.min.js') }}"></script>
+<script src="{{ asset('js/popper.min.js') }}"></script>
 <script src="{{ asset('js/bootstrap.min.js')}}"></script>
 <script src="{{ asset('js/sweetalert.min.js') }}"></script>
-<script src="{{ asset('js/popper.min.js')}}"></script>
 <script src="{{ asset('js/coreui.min.js')}}"></script>
 <script src="{{ asset('plugins/chosen/chosen.jquery.js') }}"></script><!-- chosen-->
 

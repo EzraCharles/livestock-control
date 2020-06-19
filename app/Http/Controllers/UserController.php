@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Alert;
 
 class UserController extends Controller
 {
@@ -35,7 +36,20 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = $request->validate([
+            'name' => 'required|max:255|min:4',
+            'email' => 'required|email|unique:users|max:255|min:4',
+            'rol' => 'required|max:255|min:4',
+        ]);
+
+        try {
+            $user = \App\User::create($request->except('_token', '_method'));
+            alert()->success('Usuario creado exitosamente!')->persistent('Cerrar');
+            return back();
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal!')->persistent('Cerrar');
+            return back()->withErrors(['msg' => $validator]);
+        }
     }
 
     /**
@@ -46,7 +60,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = \App\User::find($id);
+        return view('users.show', compact(['user']));
     }
 
     /**
@@ -69,14 +84,20 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
+        $validator = $request->validate([
             'name' => 'required|max:255|min:4',
-            'email' => 'required|email|max:255|min:4',
+            'email' => 'required|email|unique:users|max:255|min:4',
             'rol' => 'required|max:255|min:4',
         ]);
+        try {
 
-        $user = \App\User::whereId($request->id)->update($request->except('_token', '_method'));
-        return back();
+            $user = \App\User::whereId($request->id)->update($request->except('_token', '_method'));
+            alert()->success('Usuario editado exitosamente!')->persistent('Cerrar');
+            return back();
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal!')->persistent('Cerrar');
+            return back()->withErrors(['msg' => $validator]);
+        }
     }
 
     /**
@@ -87,6 +108,13 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        dd($id);
+        try {
+            $user = \App\User::whereId($id)->delete();
+            alert()->success('Usuario editado exitosamente!')->persistent('Cerrar');
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal!')->persistent('Cerrar');
+        }
+
+        return back();
     }
 }

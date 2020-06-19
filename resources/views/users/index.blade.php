@@ -8,14 +8,59 @@
             <div class="row justify-content-center" style="margin-top: 24px;">
                 <div class="col-md-12">
                     <div class="card">
-                        <div class="card-header">Usuarios</div>
+                        <div class="card-header">
+                            <h3> <strong> Usuarios </strong></h3>
+                            <div class="col-md-12" style="padding-top: 15px; ">
+                                <button class="btn grupo-res" id="add" style="text-align: left; float: right; margin-top: -50px;">Añadir Usuario</button>
+                            </div>
+                        </div>
 
+                        @if($errors->any())
+                            <br/>
+                            <div class="alert alert-danger alert-block" style="margin-left: 30px; margin-right: 30px;">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
                         <div class="card-body">
                             @if (session('status'))
                                 <div class="alert alert-success" role="alert">
                                     {{ session('status') }}
                                 </div>
                             @endif
+
+                            <div class="content">
+                                <div id="add-item" class="col-md-12" style="padding-top: 15px;">
+                                    <h5>Añadir Usuario</h5>
+                                    <form id="create" action="{{ route('usuarios.store') }}" method="POST" style="padding:5px;">
+                                        @method('POST')
+                                        @csrf
+                                        <div class="row form-group">
+                                            <div class="col-4">
+                                                <label for="name">Nombre:</label>
+                                                <input class="form-control" type="text" name="name" required>
+                                            </div>
+                                            <div class="col-4">
+                                                <label for="email">Correo:</label>
+                                                <input class="form-control" type="text" name="email" required>
+                                            </div>
+                                            <div class="col-3">
+                                                <label for="rol">Privilegio:</label>
+                                                <select class="form-control" name="rol" required>
+                                                    <option value="Usuario">Usuario</option>
+                                                    <option value="Administrador">Administrador</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-1">
+                                                <button class="btn grupo-res" style="float: right; margin-top: 30px;">Crear</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
 
                             <div class="table-responsive">
                                 <table id="myTable" class="display table table-striped table-hover table-condensed" style="text-align: center; vertical-align: middle; margin-bottom: 0px;">
@@ -39,6 +84,11 @@
                                             <td style="text-align: center; vertical-align: middle; " id="created_at">{{ $usuario->created_at }}</td>
                                             <td>
                                                 <div class="btn-group">
+                                                    <button type="button" class="btn btn-success" data-toggle="modal" id="show-item">
+                                                        <a href="{{ url('usuarios/'.$usuario->id) }}" style="color: inherit;">
+                                                            <i class="far fa-eye"></i>
+                                                        </a>
+                                                    </button>
                                                     <button type="button" class="btn btn-info" data-toggle="modal" id="edit-item">
                                                         <i class="fa fa-edit"></i>
                                                     </button>
@@ -156,8 +206,20 @@
 <div class="modal loadingmodal"></div>
 
 <script>
+    $('#add-item').hide();
 
     $(document).ready(function() {
+
+        $('#add').on('click', function () {
+            $('#add-item').toggle();
+            if ($(this).text() == 'Cancelar') {
+                $(this).text('Añadir Usuario');
+            }
+            else{
+                $(this).text('Cancelar');
+            }
+        });
+
         $('form').on('submit', function(){
             $('body').addClass('loading');
         });

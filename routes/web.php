@@ -19,5 +19,5 @@ Auth::routes();
 
 Route::get('dashboard', 'HomeController@index')->name('dashboard');
 
-Route::resource('usuarios', 'UserController');
+Route::resource('usuarios', 'UserController')->except(['create', 'edit']);
 Route::resource('precios', 'PrecioController');

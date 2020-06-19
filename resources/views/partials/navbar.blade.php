@@ -52,15 +52,12 @@ width: 100%;">
                         <a class="dropdown-item" href="{{ route('logout') }}"
                             onclick="event.preventDefault();
                             document.getElementById('logout-form').submit();">
-                            <i class="fa fa-lock"></i> {{ __('Logout') }}</a>
+                            <i class="fa fa-lock"></i> Cerrar Sesión</a>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                 @csrf
                             </form>
                         </a>
 
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                            @csrf
-                        </form>
                     </div>
                 </li>
             @endguest

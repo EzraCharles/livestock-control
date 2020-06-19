@@ -60,6 +60,8 @@
         $(".se-pre-con").fadeOut("slow");
     });
 </script>
-
-@yield('general')
+<body>
+    @include('sweet::alert')
+    @yield('general')
+</body>
 </html>

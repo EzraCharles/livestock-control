@@ -19,7 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('rol')->default("Usuario");
             $table->string('email')->unique();
             $table->rememberToken();
-            $table->string('password');
+            $table->string('password')->default(Hash::make('123456'));
             $table->softDeletes();
             $table->timestamps();
         });
