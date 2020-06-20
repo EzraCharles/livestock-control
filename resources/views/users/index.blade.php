@@ -84,11 +84,11 @@
                                             <td style="text-align: center; vertical-align: middle; " id="created_at">{{ $usuario->created_at }}</td>
                                             <td>
                                                 <div class="btn-group">
-                                                    <button type="button" class="btn btn-success" data-toggle="modal" id="show-item">
-                                                        <a href="{{ url('usuarios/'.$usuario->id) }}" style="color: inherit;">
+                                                    <a href="{{ url('usuarios/'.$usuario->id) }}" style="color: inherit;">
+                                                        <button type="button" class="btn btn-success" data-toggle="modal" id="show-item">
                                                             <i class="far fa-eye"></i>
-                                                        </a>
-                                                    </button>
+                                                        </button>
+                                                    </a>
                                                     <button type="button" class="btn btn-info" data-toggle="modal" id="edit-item">
                                                         <i class="fa fa-edit"></i>
                                                     </button>
@@ -124,7 +124,7 @@
                         @method('PUT')
 
                         <div class="box-body">
-                            <div class="form-group">
+                            <div class="form-group" hidden>
                                 <label for="modal-input-id">ID</label>
                                 <input type="text" class="form-control" id="modal-input-id" name="id" readonly>
                             </div>
@@ -169,7 +169,7 @@
                         @method('DELETE')
 
                         <div class="box-body">
-                            <div class="form-group">
+                            <div class="form-group" hidden>
                                 <label for="modal-input-id-delete">ID</label>
                                 <input type="text" class="form-control" id="modal-input-id-delete" name="id" readonly>
                             </div>
@@ -191,7 +191,6 @@
                         </div>
                         <label><strong>Estás seguro de que quieres borrar este elemento?</strong></label>
                         <div class="modal-footer">
-
                             <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
                             <button type="submit" class="btn btn-danger">Borrar</button>
                         </div>
@@ -232,7 +231,7 @@
                 extend: 'csv',
                 charset: 'UTF-8',
                 bom: true,
-                filename: 'Continental_APDs_Users',
+                filename: 'Usuarios-Grupo-RES',
                 exportOptions: {
                     columns: [ 1, 2, 3, 4 ]
                 }
@@ -241,25 +240,29 @@
                 extend: 'excel',
                 charset: 'UTF-8',
                 bom: true,
-                filename: 'Continental_APDs_Users',
+                filename: 'Usuarios-Grupo-RES',
                 exportOptions: {
                     columns: [ 1, 2, 3, 4 ]
                 }
             },
             {
                 extend: 'pdf',
+                customize: function(doc) {
+                    doc.content[1].margin = [ 100, 0, 50, 0 ] //left, top, right, bottom
+                },
                 charset: 'UTF-8',
                 bom: true,
-                filename: 'Continental_APDs_Users',
+                filename: 'Usuarios-Grupo-RES',
                 exportOptions: {
                     columns: [ 1, 2, 3, 4 ]
                 }
             },
             {
                 extend: 'print',
+                text: 'Imprimir',
                 charset: 'UTF-8',
                 bom: true,
-                filename: 'Continental_APDs_Users',
+                filename: 'Usuarios-Grupo-RES',
                 exportOptions: {
                     columns: [ 1, 2, 3, 4 ]
                 }
@@ -361,7 +364,6 @@
             $('.delete-item-trigger-clicked').removeClass('delete-item-trigger-clicked')
             $("#delete-form").trigger("reset");
         });
-
 
     });
 

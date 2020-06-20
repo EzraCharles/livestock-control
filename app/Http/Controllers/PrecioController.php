@@ -36,7 +36,25 @@ class PrecioController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //dd($request->request);
+        $validator = $request->validate([
+            'concepto' => 'required|max:255|min:4',
+            'precio' => 'required|numeric',
+            'factor' => 'required|numeric',
+            'rango' => 'nullable',
+            'rango_alto' => 'nullable|numeric',
+            'rango_bajo' => 'nullable|numeric',
+            'comentarios' => 'nullable|max:255|min:4',
+        ]);
+
+        try {
+            $precio = \App\Precio::create($request->except('_token', '_method'));
+            alert()->success('Precio creado exitosamente!')->persistent('Cerrar');
+            return back();
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal!')->persistent('Cerrar');
+            return back()->withErrors(['msg' => $validator]);
+        }
     }
 
     /**

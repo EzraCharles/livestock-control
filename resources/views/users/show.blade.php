@@ -11,7 +11,7 @@
                         <div class="card-header">
                             <h3> <strong> {{ $user->name }} </strong></h3>
                             <div class="col-md-12" style="padding-top: 15px; ">
-                                <button class="btn grupo-res" id="add" style="text-align: left; float: right; margin-top: -50px;">Añadir Usuario</button>
+                                <button class="btn grupo-res" style="text-align: left; float: right; margin-top: -50px;" onclick="window.location = 'usuarios'">Regresar</button>
                             </div>
                         </div>
 

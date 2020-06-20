@@ -61,7 +61,10 @@ class UserController extends Controller
     public function show($id)
     {
         $user = \App\User::find($id);
-        return view('users.show', compact(['user']));
+        $embarques = $user->embarques();
+        $sanitarios = $user->masterSanitarios();
+
+        return view('users.show', compact(['user', 'embarques', 'sanitarios']));
     }
 
     /**
@@ -84,13 +87,21 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $validator = $request->validate([
-            'name' => 'required|max:255|min:4',
-            'email' => 'required|email|unique:users|max:255|min:4',
-            'rol' => 'required|max:255|min:4',
-        ]);
-        try {
+        if ($request['email'] == \App\User::find($request->id)->email) {
+            $validator = $request->validate([
+                'name' => 'required|max:255|min:4',
+                'rol' => 'required|max:255|min:4',
+            ]);
+        }
+        else{
+            $validator = $request->validate([
+                'name' => 'required|max:255|min:4',
+                'email' => 'required|email|unique:users|max:255|min:4',
+                'rol' => 'required|max:255|min:4',
+            ]);
+        }
 
+        try {
             $user = \App\User::whereId($request->id)->update($request->except('_token', '_method'));
             alert()->success('Usuario editado exitosamente!')->persistent('Cerrar');
             return back();
@@ -110,7 +121,7 @@ class UserController extends Controller
     {
         try {
             $user = \App\User::whereId($id)->delete();
-            alert()->success('Usuario editado exitosamente!')->persistent('Cerrar');
+            alert()->success('Usuario eliminado exitosamente!')->persistent('Cerrar');
         } catch (\Throwable $th) {
             alert()->error('Oops, algo salió mal!')->persistent('Cerrar');
         }

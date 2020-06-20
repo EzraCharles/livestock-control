@@ -8,8 +8,23 @@
             <div class="row justify-content-center" style="margin-top: 24px;">
                 <div class="col-md-12">
                     <div class="card">
-                        <div class="card-header">Usuarios</div>
+                        <div class="card-header">
+                            <h3> <strong> Precios </strong></h3>
+                            <div class="col-md-12" style="padding-top: 15px; ">
+                                <button class="btn grupo-res" id="add" style="text-align: left; float: right; margin-top: -50px;">Añadir Precio</button>
+                            </div>
+                        </div>
 
+                        @if($errors->any())
+                            <br/>
+                            <div class="alert alert-danger alert-block" style="margin-left: 30px; margin-right: 30px;">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
                         <div class="card-body">
                             @if (session('status'))
                                 <div class="alert alert-success" role="alert">
@@ -17,28 +32,98 @@
                                 </div>
                             @endif
 
+                            <div class="content">
+                                <div id="add-item" class="row col-md-12" style="padding-top: 15px;">
+                                    <div class="col-3">
+                                        <h5>Añadir Precio</h5>
+                                    </div>
+                                    <div class="col-12">
+                                        <form id="create" action="{{ route('precios.store') }}" method="POST" style="padding:5px;">
+                                            @method('POST')
+                                            @csrf
+                                            <div class="row form-group">
+                                                <div class="col-3">
+                                                    <label for="concepto">Concepto:</label>
+                                                    <input class="form-control" type="text" name="concepto" required>
+                                                </div>
+                                                <div class="col-2">
+                                                    <label for="precio">Precio:</label>
+                                                    <input class="form-control" type="number" min="0.0" step=".01" name="precio" required>
+                                                </div>
+                                                <div class="col-2">
+                                                    <label for="factor">Factor:</label>
+                                                    <input class="form-control" type="number" min="0.0" step=".01" name="factor" required>
+                                                </div>
+                                                <div class="col-3">
+                                                    <label for="comentarios">Comentarios:</label>
+                                                    <input class="form-control" type="text" name="comentarios">
+                                                </div>
+                                                <div class="col-2" style="padding-top: 30px; ">
+                                                    <label for="rango"><input id="rango" type="checkbox" name="rango"> Rango</label>
+                                                </div>
+                                                <div class="col-10" >
+                                                    <div class="row" id="range">
+                                                        <div class="col-2"></div>
+                                                        <div class="col-4">
+                                                            <label for="rango-bajo">Rango bajo:</label>
+                                                            <input class="form-control" type="number" min="0.0" step=".01" name="rango_bajo">
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <label for="rango-alto">Rango alto:</label>
+                                                            <input class="form-control" type="number" min="0.0" step=".01" name="rango_alto">
+                                                        </div>
+                                                        <div class="col-2"></div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-2" style="float: right;">
+                                                    <button class="btn grupo-res" style="float: right; margin-top: 30px;">Crear</button>
+                                                </div>
+
+
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr id="hr-divisor">
                             <div class="table-responsive">
                                 <table id="myTable" class="display table table-striped table-hover table-condensed" style="text-align: center; vertical-align: middle; margin-bottom: 0px;">
                                     <thead>
                                         <tr>
                                             <th><strong>ID</strong></th>
-                                            <th><strong>Nombre</strong></th>
-                                            <th><strong>Privilegio</strong></th>
-                                            <th><strong>Correo</strong></th>
+                                            <th><strong>Concepto</strong></th>
+                                            <th><strong>Precio</strong></th>
+                                            <th><strong>Factor</strong></th>
+                                            <th><strong>Comentarios</strong></th>
                                             <th><strong>Creación</strong></th>
+                                            <th><strong>Rango</strong></th>
                                             <th><strong>Acciones</strong></th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($usuarios as $usuario)
+                                        @foreach ($precios as $precio)
                                         <tr class="data-row">
-                                            <td style="text-align: center; vertical-align: middle; " id="id">{{ $usuario->id }}</td>
-                                            <td style="text-align: center; vertical-align: middle; " id="name">{{ $usuario->name }}</td>
-                                            <td style="text-align: center; vertical-align: middle; " id="rol">{{ $usuario->rol }}</td>
-                                            <td style="text-align: center; vertical-align: middle; " id="email">{{ $usuario->email }}</td>
-                                            <td style="text-align: center; vertical-align: middle; " id="created_at">{{ $usuario->created_at }}</td>
+                                            <td style="text-align: center; vertical-align: middle; " id="id">{{ $precio->id }}</td>
+                                            <td style="text-align: center; vertical-align: middle; " id="concepto">{{ $precio->concepto }}</td>
+                                            <td style="text-align: center; vertical-align: middle; " id="precio">{{ $precio->precio }}</td>
+                                            <td style="text-align: center; vertical-align: middle; " id="factor">{{ $precio->factor }}</td>
+                                            <td style="text-align: center; vertical-align: middle; " id="comentarios">{{ $precio->comentarios }}</td>
+                                            <td style="text-align: center; vertical-align: middle; " id="created_at">{{ $precio->created_at }}</td>
                                             <td>
                                                 <div class="btn-group">
+                                                    <button type="button" class="btn {{ $precio->rango == 1 ? 'btn-success' : 'btn-danger' }}" data-toggle="modal" id="rangos">
+                                                        <i class="fas {{ $precio->rango == 1 ? 'fa-check' : 'fa-times' }}"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <a href="{{ url('precios/'.$precio->id) }}" style="color: inherit;">
+                                                        <button type="button" class="btn btn-success" data-toggle="modal" id="show-item">
+                                                            <i class="far fa-eye"></i>
+                                                        </button>
+                                                    </a>
                                                     <button type="button" class="btn btn-info" data-toggle="modal" id="edit-item">
                                                         <i class="fa fa-edit"></i>
                                                     </button>
@@ -58,100 +143,149 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="edit-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" align="center"><b>Editar Precio</b></h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="edit-form" role="form" action="#" method="post">
+                        <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                        @method('PUT')
+
+                        <div class="box-body">
+                            <div class="form-group" hidden>
+                                <label for="modal-input-id">ID</label>
+                                <input type="text" class="form-control" id="modal-input-id" name="id" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="modal-input-concepto">Concepto</label>
+                                <input type="text" class="form-control" id="modal-input-concepto" name="concepto" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="modal-input-precio">Precio</label>
+                                <input type="number" min="0.0" step=".01" class="form-control" id="modal-input-precio" name="precio" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="modal-input-factor">Factor</label>
+                                <input type="text" class="form-control" id="modal-input-factor" name="factor" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="modal-input-comentarios">Comentarios</label>
+                                <textarea type="text" class="form-control" id="modal-input-comentarios" name="comentarios" required></textarea>
+                            </div>
+                            <div id="modal-input-rangos">
+                                <div class="form-group">
+                                    <label for="modal-input-bajo">Rango bajo</label>
+                                    <input type="number" min="0.0" step=".01" class="form-control" id="modal-input-bajo" name="rango_bajo">
+                                </div>
+                                <div class="form-group">
+                                    <label for="modal-input-alto">Rango alto</label>
+                                    <input type="number" min="0.0" step=".01" class="form-control" id="modal-input-alto" name="rango_alto">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="delete-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" align="center"><b>Borrar Precio</b></h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="delete-form" role="form" method="post">
+                        <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                        @method('DELETE')
+
+                        <div class="box-body">
+                            <div class="form-group" hidden>
+                                <label for="modal-input-id-delete">ID</label>
+                                <input type="text" class="form-control" id="modal-input-id-delete" name="id" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="modal-input-concepto-delete">Concepto</label>
+                                <input type="text" class="form-control" id="modal-input-concepto-delete" name="concepto" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="modal-input-precio-delete">Precio</label>
+                                <input type="text" class="form-control" id="modal-input-precio-delete" name="precio" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="modal-input-factor-delete">Factor</label>
+                                <input type="text" class="form-control" id="modal-input-factor-delete" name="factor" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="modal-input-comentarios-delete">Comentarios</label>
+                                <textarea type="text" class="form-control" id="modal-input-comentarios-delete" name="comentarios" readonly></textarea>
+                            </div>
+                        </div>
+                        <label><strong>Estás seguro de que quieres borrar este elemento?</strong></label>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="btn btn-danger">Borrar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
 </main>
 
-<div class="modal fade" id="edit-modal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" align="center"><b>Editar Usuario</b></h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form role="form" action="#" method="post">
-                    <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-                    <div class="box-body">
-                        <div class="form-group">
-                            <label for="modal-input-id">ID</label>
-                            <input type="text" class="form-control" id="modal-input-id" name="id" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label for="modal-input-name">Nombre</label>
-                            <input type="text" class="form-control" id="modal-input-name" name="usr" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="modal-input-email">Correo</label>
-                            <input type="text" class="form-control" id="modal-input-email" name="email" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="modal-input-role">Privilegio</label>
-                            <select class="form-control" id="modal-input-role" name="role" required>
-                                <option value="Usuario">Usuario</option>
-                                <option value="Administrador">Administrador</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
-                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="delete-modal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" align="center"><b>Borrar Usuario</b></h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form role="form" action="deleteuser" method="post">
-                    <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-
-                    <div class="box-body">
-                        <div class="form-group">
-                            <label for="modal-input-id-delete">ID</label>
-                            <input type="text" class="form-control" id="modal-input-id-delete" name="id" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label for="modal-input-name-delete">Nombre</label>
-                            <input type="text" class="form-control" id="modal-input-name-delete" name="usr" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label for="modal-input-email-delete">Correo</label>
-                            <input type="text" class="form-control" id="modal-input-email-delete" name="email" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label for="modal-input-role-delete">Privilegio</label>
-                            <select class="form-control" id="modal-input-role-delete" name="role" readonly>
-                                <option value="Usuario">Usuario</option>
-                                <option value="Administrador">Administrador</option>
-                            </select>
-                        </div>
-                    </div>
-                    <label><strong>Estás seguro de que quieres borrar este elemento?</strong></label>
-                    <div class="modal-footer">
-
-                        <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
-                        <button type="submit" class="btn btn-danger">Borrar</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+<div class="modal loadingmodal"></div>
 
 <script>
+    $('#add-item').hide();
+    $('#range').hide();
+    $('#hr-divisor').hide();
+
+    $("#rango").change(function() {
+        if(this.checked) {
+            $(this).attr('value', '1');
+            $('#range').show();
+        }
+        else{
+            $('#range').hide();
+            $(this).attr('value', '0');
+        }
+    });
 
     $(document).ready(function() {
+
+        $('#add').on('click', function () {
+            $('#add-item').toggle();
+            if ($(this).text() == 'Cancelar') {
+                $(this).text('Añadir Precio');
+                $('#hr-divisor').hide();
+            }
+            else{
+                $(this).text('Cancelar');
+                $('#hr-divisor').show();
+            }
+        });
+
+        $('form').on('submit', function(){
+            $('body').addClass('loading');
+        });
         /**
         * for showing edit item popup
         */
@@ -161,36 +295,40 @@
                 extend: 'csv',
                 charset: 'UTF-8',
                 bom: true,
-                filename: 'Continental_APDs_Users',
+                filename: 'Precios-Grupo-RES',
                 exportOptions: {
-                    columns: [ 1, 2, 3, 4 ]
+                    columns: [ 1, 2, 3, 4, 6, 5 ]
                 }
             },
             {
                 extend: 'excel',
                 charset: 'UTF-8',
                 bom: true,
-                filename: 'Continental_APDs_Users',
+                filename: 'Precios-Grupo-RES',
                 exportOptions: {
-                    columns: [ 1, 2, 3, 4 ]
+                    columns: [ 1, 2, 3, 4, 6, 5 ]
                 }
             },
             {
                 extend: 'pdf',
+                customize: function(doc) {
+                    doc.content[1].margin = [ 50, 0, 50, 0 ] //left, top, right, bottom
+                },
                 charset: 'UTF-8',
                 bom: true,
-                filename: 'Continental_APDs_Users',
+                filename: 'Precios-Grupo-RES',
                 exportOptions: {
-                    columns: [ 1, 2, 3, 4 ]
+                    columns: [ 1, 2, 3, 4, 6, 5 ]
                 }
             },
             {
                 extend: 'print',
+                text: 'Imprimir',
                 charset: 'UTF-8',
                 bom: true,
-                filename: 'Continental_APDs_Users',
+                filename: 'Precios-Grupo-RES',
                 exportOptions: {
-                    columns: [ 1, 2, 3, 4 ]
+                    columns: [ 1, 2, 3, 4, 6, 5 ]
                 }
             },
             ],
@@ -240,22 +378,25 @@
         $('#edit-modal').on('show.bs.modal', function() {
             var el = $(".edit-item-trigger-clicked"); // See how its usefull right here?
             var row = el.closest(".data-row");
-            // console.log(row.children());
 
             // get the data
             var id = row.children('#id');
-            var name = row.children("#name");
-            var email = row.children("#email");
-            var rol = row.children("#rol");
+            var concepto = row.children("#concepto");
+            var precio = row.children("#precio");
+            var factor = row.children("#factor");
+            var comentarios = row.children("#comentarios");
 
             // fill the data in the input fields
             $("#modal-input-id").val(id[0]['innerHTML']);
-            $("#modal-input-name").val(name[0]['innerHTML']);
-            $("#modal-input-email").val(email[0]['innerHTML']);
-            $("#modal-input-role").val(rol[0]['innerHTML']);
+            $("#modal-input-concepto").val(concepto[0]['innerHTML']);
+            $("#modal-input-precio").val(precio[0]['innerHTML']);
+            $("#modal-input-factor").val(factor[0]['innerHTML']);
+            $("#modal-input-comentarios").val(comentarios[0]['innerHTML']);
             /*$("#modal-input-workshift option").filter(function() {
                 return this.text == workshift[0]['innerHTML'];
             }).attr('selected', true);*/
+
+            $("#edit-form").attr('action', 'precios/' + id[0]['innerHTML']);
         });
 
         // on modal hide
@@ -267,25 +408,22 @@
         $('#delete-modal').on('show.bs.modal', function() {
             var el = $(".delete-item-trigger-clicked"); // See how its usefull right here?
             var row = el.closest(".data-row");
-            // console.log(row.children('#uid')[0]['innerHTML']);
 
             // get the data
             var id = row.children('#id');
-            var name = row.children("#name");
-            var email = row.children("#email");
-            var rol = row.children("#rol");
+            var concepto = row.children("#concepto");
+            var precio = row.children("#precio");
+            var factor = row.children("#factor");
+            var comentarios = row.children("#comentarios");
 
-            console.log(email);
-            console.log(email[0]);
-            console.log(email[0]['innerHTML']);
-            console.log(rol);
-            console.log(rol[0]);
-            console.log(rol[0]['innerHTML']);
             // fill the data in the input fields
             $("#modal-input-id-delete").val(id[0]['innerHTML']);
-            $("#modal-input-name-delete").val(name[0]['innerHTML']);
-            $("#modal-input-email-delete").val(email[0]['innerHTML']);
-            $("#modal-input-role-delete").val(rol[0]['innerHTML']);
+            $("#modal-input-concepto-delete").val(concepto[0]['innerHTML']);
+            $("#modal-input-precio-delete").val(precio[0]['innerHTML']);
+            $("#modal-input-factor-delete").val(factor[0]['innerHTML']);
+            $("#modal-input-comentarios-delete").val(comentarios[0]['innerHTML']);
+
+            $("#delete-form").attr('action', 'precios/' + id[0]['innerHTML']);
 
         });
 
@@ -293,7 +431,8 @@
         $('#delete-modal').on('hide.bs.modal', function() {
             $('.delete-item-trigger-clicked').removeClass('delete-item-trigger-clicked')
             $("#delete-form").trigger("reset");
-        })
+        });
+
     });
 
 </script>
