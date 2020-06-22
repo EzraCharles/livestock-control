@@ -97,6 +97,9 @@
                                             <th><strong>Factor</strong></th>
                                             <th><strong>Comentarios</strong></th>
                                             <th><strong>Creación</strong></th>
+                                            <th hidden><strong>Rango</strong></th>
+                                            <th hidden><strong>Rango bajo</strong></th>
+                                            <th hidden><strong>Rango alto</strong></th>
                                             <th><strong>Rango</strong></th>
                                             <th><strong>Acciones</strong></th>
                                         </tr>
@@ -110,10 +113,13 @@
                                             <td style="text-align: center; vertical-align: middle; " id="factor">{{ $precio->factor }}</td>
                                             <td style="text-align: center; vertical-align: middle; " id="comentarios">{{ $precio->comentarios }}</td>
                                             <td style="text-align: center; vertical-align: middle; " id="created_at">{{ $precio->created_at }}</td>
+                                            <td hidden style="text-align: center; vertical-align: middle; " id="rango">{{ $precio->rango }}</td>
+                                            <td hidden style="text-align: center; vertical-align: middle; " id="rango_bajo">{{ $precio->rango_bajo }}</td>
+                                            <td hidden style="text-align: center; vertical-align: middle; " id="rango_alto">{{ $precio->rango_alto }}</td>
                                             <td>
                                                 <div class="btn-group">
                                                     <button type="button" class="btn {{ $precio->rango == 1 ? 'btn-success' : 'btn-danger' }}" data-toggle="modal" id="rangos">
-                                                        <i class="fas {{ $precio->rango == 1 ? 'fa-check' : 'fa-times' }}"></i>
+                                                        <i class="extraInfo fas {{ $precio->rango == 1 ? 'fa-check' : 'fa-times' }}" data-content="{{ $precio->rango == 1 ? $precio->rango_bajo . ' - ' . $precio->rango_alto : '' }}" rel="popover" data-placement="bottom" data-original-title="{{ $precio->rango == 0 ? 'Sin Rangos' : 'Rangos de peso' }}" data-trigger="hover"></i>
                                                     </button>
                                                 </div>
                                             </td>
@@ -167,24 +173,26 @@
                                 <label for="modal-input-concepto">Concepto</label>
                                 <input type="text" class="form-control" id="modal-input-concepto" name="concepto" required>
                             </div>
-                            <div class="form-group">
+                            <div class="row">
+                                <div class="form-group col-6">
                                 <label for="modal-input-precio">Precio</label>
-                                <input type="number" min="0.0" step=".01" class="form-control" id="modal-input-precio" name="precio" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="modal-input-factor">Factor</label>
-                                <input type="text" class="form-control" id="modal-input-factor" name="factor" required>
+                                    <input type="number" min="0.0" step=".01" class="form-control" id="modal-input-precio" name="precio" required>
+                                </div>
+                                <div class="form-group col-6">
+                                    <label for="modal-input-factor">Factor</label>
+                                    <input type="number" min="1" step="1" class="form-control" id="modal-input-factor" name="factor" required>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="modal-input-comentarios">Comentarios</label>
-                                <textarea type="text" class="form-control" id="modal-input-comentarios" name="comentarios" required></textarea>
+                                <textarea type="text" class="form-control" id="modal-input-comentarios" name="comentarios"></textarea>
                             </div>
-                            <div id="modal-input-rangos">
-                                <div class="form-group">
+                            <div id="modal-input-rangos" class="row">
+                                <div class="form-group col-6">
                                     <label for="modal-input-bajo">Rango bajo</label>
                                     <input type="number" min="0.0" step=".01" class="form-control" id="modal-input-bajo" name="rango_bajo">
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group col-6">
                                     <label for="modal-input-alto">Rango alto</label>
                                     <input type="number" min="0.0" step=".01" class="form-control" id="modal-input-alto" name="rango_alto">
                                 </div>
@@ -256,7 +264,11 @@
 <script>
     $('#add-item').hide();
     $('#range').hide();
+    $('#modal-input-rangos').hide();
     $('#hr-divisor').hide();
+
+    $('.extraInfo').popover();
+    $('#popoverOption').popover({ trigger: "hover" });
 
     $("#rango").change(function() {
         if(this.checked) {
@@ -385,6 +397,7 @@
             var precio = row.children("#precio");
             var factor = row.children("#factor");
             var comentarios = row.children("#comentarios");
+            var rango = row.children("#rango");
 
             // fill the data in the input fields
             $("#modal-input-id").val(id[0]['innerHTML']);
@@ -395,6 +408,21 @@
             /*$("#modal-input-workshift option").filter(function() {
                 return this.text == workshift[0]['innerHTML'];
             }).attr('selected', true);*/
+
+            if (rango[0]['innerHTML'] == 1) {
+                var rango_bajo = row.children("#rango_bajo");
+                var rango_alto = row.children("#rango_alto");
+
+                $('#modal-input-rangos').show();
+                $("#modal-input-bajo").val(rango_bajo[0]['innerHTML']);
+                $("#modal-input-alto").val(rango_alto[0]['innerHTML']);
+            }
+            else{
+                $('#modal-input-rangos').hide();
+                $("#modal-input-bajo").val('');
+                $("#modal-input-alto").val('');
+            }
+
 
             $("#edit-form").attr('action', 'precios/' + id[0]['innerHTML']);
         });
