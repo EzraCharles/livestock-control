@@ -36,7 +36,6 @@ class PrecioController extends Controller
      */
     public function store(Request $request)
     {
-        //dd($request->request);
         $validator = $request->validate([
             'concepto' => 'required|max:255|min:4',
             'precio' => 'required|numeric',

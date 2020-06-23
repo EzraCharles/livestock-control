@@ -64,7 +64,7 @@
                     @endif
 
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="{{ route('animales.index') }}">
                         <i class="nav-icon fas fa-paw"></i> Animales </a>
                     </li>
                     <li class="nav-item">

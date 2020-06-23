@@ -21,3 +21,4 @@ Route::get('dashboard', 'HomeController@index')->name('dashboard');
 
 Route::resource('usuarios', 'UserController')->except(['create', 'edit']);
 Route::resource('precios', 'PrecioController')->except(['create', 'edit']);
+Route::resource('animales', 'AnimalController');
