@@ -231,13 +231,15 @@
                                 <label for="modal-input-concepto-delete">Concepto</label>
                                 <input type="text" class="form-control" id="modal-input-concepto-delete" name="concepto" readonly>
                             </div>
-                            <div class="form-group">
-                                <label for="modal-input-precio-delete">Precio</label>
-                                <input type="text" class="form-control" id="modal-input-precio-delete" name="precio" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label for="modal-input-factor-delete">Factor</label>
-                                <input type="text" class="form-control" id="modal-input-factor-delete" name="factor" readonly>
+                            <div class="row">
+                                <div class="form-group col-6">
+                                    <label for="modal-input-precio-delete">Precio</label>
+                                    <input type="text" class="form-control" id="modal-input-precio-delete" name="precio" readonly>
+                                </div>
+                                <div class="form-group col-6">
+                                    <label for="modal-input-factor-delete">Factor</label>
+                                    <input type="text" class="form-control" id="modal-input-factor-delete" name="factor" readonly>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="modal-input-comentarios-delete">Comentarios</label>
@@ -295,11 +297,8 @@
             }
         });
 
-        $('form').on('submit', function(){
-            $('body').addClass('loading');
-        });
         /**
-        * for showing edit item popup
+        * for showing table, edit and delete item popup
         */
         $('#myTable').DataTable({
             buttons: [

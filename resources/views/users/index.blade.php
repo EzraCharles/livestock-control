@@ -219,11 +219,8 @@
             }
         });
 
-        $('form').on('submit', function(){
-            $('body').addClass('loading');
-        });
         /**
-        * for showing edit item popup
+        * for showing table, edit and delete item popup
         */
         $('#myTable').DataTable({
             buttons: [

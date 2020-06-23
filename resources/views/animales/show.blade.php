@@ -9,7 +9,7 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3> <strong> {{ $animal->arete != null ? substr($animal->arete, -10) : $animal->arete_10 }} - {{ $animal->tipoAnimal->nombre }}</strong></h3>
+                            <h3> <strong> {{ substr($animal->arete, -10) }} - {{ $animal->tipoAnimal->nombre }}</strong></h3>
                             <div class="col-md-12" style="padding-top: 15px; ">
                                 <button class="btn grupo-res" style="text-align: left; float: right; margin-top: -50px;" onclick="window.location = 'animales'">Regresar</button>
                             </div>

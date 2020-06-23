@@ -68,7 +68,7 @@
                         <i class="nav-icon fas fa-paw"></i> Animales </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="{{ route('personas.index') }}">
                         <i class="nav-icon fas fa-tractor"></i> Personas </a>
                     </li>
                     <li class="nav-item">

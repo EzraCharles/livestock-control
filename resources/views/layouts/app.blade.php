@@ -24,6 +24,7 @@
     <link rel="stylesheet" href="{{ asset('css/all.css') }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/chosen/chosen.css') }}"> <!--choosen-->
+    <link rel="stylesheet" href="{{ asset('css/chosen-form-control.css') }}">
     <style>
         @media screen and (min-width: 767px) {
             .navbar-brand-full {
@@ -56,8 +57,18 @@
 </head>
 <script>
     $(document).ready(function() {
+        $('form').on('submit', function(){
+            $('body').addClass('loading');
+        });
+
         // Animate loader off screen
         $(".se-pre-con").fadeOut("slow");
+
+        $('.select-objects').chosen({
+            no_results_text: 'Oops, no se encontró elemento: ',
+            search_contains: true,
+            width: '100%'
+        });
     });
 </script>
 <body>

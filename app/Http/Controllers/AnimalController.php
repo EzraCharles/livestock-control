@@ -15,7 +15,10 @@ class AnimalController extends Controller
     public function index()
     {
         $animales = \App\Animal::all();
-        return view('animales.index', compact('animales'));
+        $personas = \App\Persona::where('tipo_persona_id', 3)->get();
+        $tipos = \App\TipoAnimal::all();
+
+        return view('animales.index', compact(['animales', 'personas', 'tipos']));
     }
 
     /**
@@ -37,18 +40,16 @@ class AnimalController extends Controller
     public function store(Request $request)
     {
         $validator = $request->validate([
-            'concepto' => 'required|max:255|min:4',
-            'precio' => 'required|numeric',
-            'factor' => 'required|numeric',
-            'rango' => 'nullable',
-            'rango_alto' => 'nullable|numeric',
-            'rango_bajo' => 'nullable|numeric',
+            'arete' => 'required|max:15|min:10',
+            'arete_res' => 'nullable|size:4',
+            'tipo_id' => 'required|numeric',
+            'persona_id' => 'required|numeric',
             'comentarios' => 'nullable|max:255|min:4',
         ]);
 
         try {
-            $precio = \App\Precio::create($request->except('_token', '_method'));
-            alert()->success('Precio creado exitosamente!')->persistent('Cerrar');
+            $animal = \App\Animal::create($request->except('_token', '_method'));
+            alert()->success('Animal creado exitosamente!')->persistent('Cerrar');
             return back();
         } catch (\Throwable $th) {
             alert()->error('Oops, algo salió mal!')->persistent('Cerrar');
@@ -94,21 +95,20 @@ class AnimalController extends Controller
      * @param  \App\Animal  $animal
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Animal $animal)
+    public function update(Request $request)
     {
+        //dd($request->all());
         $validator = $request->validate([
-            'concepto' => 'required|max:255|min:4',
-            'precio' => 'required|numeric',
-            'factor' => 'required|numeric',
-            'rango' => 'nullable',
-            'rango_alto' => 'nullable|numeric',
-            'rango_bajo' => 'nullable|numeric',
+            'arete' => 'required|max:15|min:10',
+            'arete_res' => 'nullable|size:4',
+            'tipo_animal_id' => 'required|numeric',
+            'persona_id' => 'required|numeric',
             'comentarios' => 'nullable|max:255|min:4',
         ]);
 
         try {
-            $precio = \App\Precio::whereId($request->id)->update($request->except('_token', '_method'));
-            alert()->success('Precio editado exitosamente!')->persistent('Cerrar');
+            $animal = \App\Animal::whereId($request->id)->update($request->except('_token', '_method'));
+            alert()->success('Animal editado exitosamente!')->persistent('Cerrar');
             return back();
         } catch (\Throwable $th) {
             alert()->error('Oops, algo salió mal!')->persistent('Cerrar');
@@ -122,11 +122,11 @@ class AnimalController extends Controller
      * @param  \App\Animal  $animal
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Animal $animal)
+    public function destroy($id)
     {
         try {
-            $precio = \App\Precio::whereId($id)->delete();
-            alert()->success('Precio eliminado exitosamente!')->persistent('Cerrar');
+            $animal = \App\Animal::whereId($id)->delete();
+            alert()->success('Animal eliminado exitosamente!')->persistent('Cerrar');
         } catch (\Throwable $th) {
             alert()->error('Oops, algo salió mal!')->persistent('Cerrar');
         }

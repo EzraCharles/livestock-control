@@ -16,7 +16,6 @@ class CreateAnimalsTable extends Migration
         Schema::create('animales', function (Blueprint $table) {
             $table->increments('id');
             $table->string('arete')->nullable();
-            $table->string('arete_10')->nullable();
             $table->string('arete_4')->nullable();
             $table->string('arete_res')->nullable();
             $table->string('comentarios')->nullable();
