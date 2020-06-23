@@ -72,7 +72,7 @@
                         <i class="nav-icon fas fa-tractor"></i> Personas </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="{{ route('diagnosticos.index') }}">
                         <i class="nav-icon fas fa-pencil-alt"></i> Diagnósticos </a>
                     </li>
                     <li class="nav-item">

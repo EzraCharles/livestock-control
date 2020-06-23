@@ -9,9 +9,9 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3> <strong> {{ $persona->nombre }}</strong></h3>
+                            <h3> <strong> {{ $diagnostico->nombre }}</strong></h3>
                             <div class="col-md-12" style="padding-top: 15px; ">
-                                <button class="btn grupo-res" style="text-align: left; float: right; margin-top: -50px;" onclick="window.location = 'personas'">Regresar</button>
+                                <button class="btn grupo-res" style="text-align: left; float: right; margin-top: -50px;" onclick="window.location = 'diagnosticos'">Regresar</button>
                             </div>
                         </div>
 

@@ -14,7 +14,8 @@ class DiagnosticoController extends Controller
      */
     public function index()
     {
-        //
+        $diagnosticos = \App\Diagnostico::all();
+        return view('diagnosticos.index', compact('diagnosticos'));
     }
 
     /**
@@ -35,7 +36,19 @@ class DiagnosticoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = $request->validate([
+            'nombre' => 'required|max:255|min:4',
+            'comentarios' => 'nullable|max:255|min:4',
+        ]);
+
+        try {
+            $diagnostico = \App\Diagnostico::create($request->except('_token', '_method'));
+            alert()->success('Diagnóstico creado exitosamente!')->persistent('Cerrar');
+            return back();
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal!')->persistent('Cerrar');
+            return back()->withErrors(['msg' => $validator]);
+        }
     }
 
     /**
@@ -44,9 +57,10 @@ class DiagnosticoController extends Controller
      * @param  \App\Diagnostico  $diagnostico
      * @return \Illuminate\Http\Response
      */
-    public function show(Diagnostico $diagnostico)
+    public function show($id)
     {
-        //
+        $diagnostico = \App\Diagnostico::find($id);
+        return view('diagnosticos.show', compact('diagnostico'));
     }
 
     /**
@@ -67,9 +81,21 @@ class DiagnosticoController extends Controller
      * @param  \App\Diagnostico  $diagnostico
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Diagnostico $diagnostico)
+    public function update(Request $request)
     {
-        //
+        $validator = $request->validate([
+            'nombre' => 'required|max:255|min:4',
+            'comentarios' => 'nullable|max:255|min:4',
+        ]);
+
+        try {
+            $diagnostico = \App\Diagnostico::whereId($request->id)->update($request->except('_token', '_method'));
+            alert()->success('Diagnóstico editado exitosamente!')->persistent('Cerrar');
+            return back();
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal!')->persistent('Cerrar');
+            return back()->withErrors(['msg' => $validator]);
+        }
     }
 
     /**
@@ -78,8 +104,15 @@ class DiagnosticoController extends Controller
      * @param  \App\Diagnostico  $diagnostico
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Diagnostico $diagnostico)
+    public function destroy($id)
     {
-        //
+        try {
+            $diagnostico = \App\Diagnostico::whereId($id)->delete();
+            alert()->success('Diagnóstico eliminado exitosamente!')->persistent('Cerrar');
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal!')->persistent('Cerrar');
+        }
+
+        return back();
     }
 }
