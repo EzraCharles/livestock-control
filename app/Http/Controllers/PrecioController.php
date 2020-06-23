@@ -65,10 +65,7 @@ class PrecioController extends Controller
     public function show($id)
     {
         $precio = \App\Precio::find($id);
-        $compras = $precio->compras();
-        $ventas = $precio->ventas();
-
-        return view('precios.show', compact(['precio', 'compras', 'ventas']));
+        return view('precios.show', compact('precio'));
     }
 
     /**

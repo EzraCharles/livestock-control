@@ -61,10 +61,7 @@ class UserController extends Controller
     public function show($id)
     {
         $user = \App\User::find($id);
-        $embarques = $user->embarques();
-        $sanitarios = $user->masterSanitarios();
-
-        return view('users.show', compact(['user', 'embarques', 'sanitarios']));
+        return view('users.show', compact('user'));
     }
 
     /**

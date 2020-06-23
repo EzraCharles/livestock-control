@@ -45,7 +45,7 @@
                                             </div>
                                             <div class="col-4">
                                                 <label for="email">Correo:</label>
-                                                <input class="form-control" type="text" name="email" required>
+                                                <input class="form-control" type="email" name="email" required>
                                             </div>
                                             <div class="col-3">
                                                 <label for="rol">Privilegio:</label>

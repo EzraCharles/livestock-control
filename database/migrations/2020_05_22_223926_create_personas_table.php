@@ -18,7 +18,6 @@ class CreatePersonasTable extends Migration
             $table->string('nombre');
             $table->string('email')->unique()->nullable();
             $table->string('comentarios')->nullable();
-            $table->float('costo_extra_operativo')->default(0); // Costo extra por kilo (compra) por costos operativos (fletes, etc)
             $table->integer('tipo_persona_id')->unsigned();
             $table->softDeletes();
             $table->timestamps();

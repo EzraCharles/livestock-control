@@ -1,7 +1,6 @@
 @extends('partials.master')
 
 @section('content')
-
 <main class="main">
     <!-- Breadcrumb-->
     <div class="container-fluid" style="padding-top: 100px;">
@@ -10,11 +9,9 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3> <strong> Animales </strong></h3>
+                            <h3> <strong> Personas </strong></h3>
                             <div class="col-md-12" style="padding-top: 15px; ">
-                                <a href="{{ route('animales.create') }}" style="color: inherit;">
-                                    <button class="btn grupo-res" id="add" style="text-align: left; float: right; margin-top: -50px;">Añadir Animal/Animales</button>
-                                </a>
+                                <button class="btn grupo-res" id="add" style="text-align: left; float: right; margin-top: -50px;">Añadir Persona</button>
                             </div>
                         </div>
 
@@ -35,47 +32,79 @@
                                 </div>
                             @endif
 
+                            <div class="content">
+                                <div id="add-item" class="row col-md-12" style="padding-top: 15px;">
+                                    <div class="col-3">
+                                        <h5>Añadir Persona</h5>
+                                    </div>
+                                    <div class="col-12">
+                                        <form id="create" action="{{ route('personas.store') }}" method="POST" style="padding:5px;">
+                                            @method('POST')
+                                            @csrf
+                                            <div class="row form-group">
+                                                <div class="col-4">
+                                                    <label for="nombre">Nombre:</label>
+                                                    <input class="form-control" type="text" name="nombre" required>
+                                                </div>
+                                                <div class="col-4">
+                                                    <label for="correo">Correo:</label>
+                                                    <input class="form-control" type="email" name="email">
+                                                </div>
+                                                <div class="form-group col-4">
+                                                    <label for="tipo">Tipo</label>
+                                                    <select class="form-control select-objects" name="tipo_persona_id" required>
+                                                      @foreach ($tipos as $tipo)
+                                                        <option value="{{$tipo->id}}"> {{$tipo->nombre}}</option>
+                                                      @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="col-10">
+                                                    <label for="comentarios">Comentarios:</label>
+                                                    <input class="form-control" type="text" name="comentarios">
+                                                </div>
+                                                <div class="col-2" style="float: right;">
+                                                    <button class="btn grupo-res" style="float: right; margin-top: 30px;">Crear</button>
+                                                </div>
+
+
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr id="hr-divisor">
                             <div class="table-responsive">
                                 <table id="myTable" class="display table table-striped table-hover table-condensed" style="text-align: center; vertical-align: middle; margin-bottom: 0px;">
                                     <thead>
                                         <tr>
                                             <th><strong>ID</strong></th>
-                                            <th><strong>Arete 10</strong></th>
-                                            <th><strong>Arete 4</strong></th>
-                                            <th><strong>RES</strong></th>
-                                            <th><strong>Tipo </strong></th>
-                                            <th><strong>Productor</strong></th>
+                                            <th><strong>Nombre</strong></th>
+                                            <th><strong>Tipo</strong></th>
+                                            <th><strong>Correo</strong></th>
                                             <th><strong>Comentarios</strong></th>
                                             <th><strong>Creación</strong></th>
                                             <th><strong>Acciones</strong></th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($animales as $animal)
-                                        <tr class="data-row" style="background-color: {{ $animal->defuncion == 1 ? '#ffa5a5' : '' }}">
-                                            <td style="text-align: center; vertical-align: middle; " id="id">{{ $animal->id }}</td>
-                                            <td style="text-align: center; vertical-align: middle; " id="arete_10">{{ substr($animal->arete, -10) }}</td>
-                                            <td style="text-align: center; vertical-align: middle; " id="arete_4">{{ substr($animal->arete, -4) }}</td>
-                                            <td style="text-align: center; vertical-align: middle; " id="arete_res">{{ $animal->arete_res }}</td>
-                                            <td style="text-align: center; vertical-align: middle; " id="tipo">{{ $animal->tipoAnimal->nombre }}</td>
-                                            <td style="text-align: center; vertical-align: middle; " id="productor">{{ $animal->persona->nombre }}</td>
-                                            <td style="text-align: center; vertical-align: middle; " id="comentarios">{{ $animal->comentarios }}</td>
-                                            <td style="text-align: center; vertical-align: middle; " id="created_at">{{ $animal->created_at }}</td>
+                                        @foreach ($personas as $persona)
+                                        <tr class="data-row">
+                                            <td style="text-align: center; vertical-align: middle; " id="id">{{ $persona->id }}</td>
+                                            <td style="text-align: center; vertical-align: middle; " id="nombre">{{ $persona->nombre }}</td>
+                                            <td style="text-align: center; vertical-align: middle; " id="tipo">{{ $persona->tipoPersona->nombre }}</td>
+                                            <td style="text-align: center; vertical-align: middle; " id="email">{{ $persona->email }}</td>
+                                            <td style="text-align: center; vertical-align: middle; " id="comentarios">{{ $persona->comentarios }}</td>
+                                            <td style="text-align: center; vertical-align: middle; " id="created_at">{{ $persona->created_at }}</td>
                                             <td>
                                                 <div class="btn-group">
-                                                    <a href="{{ url('animales/'.$animal->id) }}" style="color: inherit;">
+                                                    <a href="{{ url('personas/'.$persona->id) }}" style="color: inherit;">
                                                         <button type="button" class="btn btn-success" data-toggle="modal" id="show-item">
                                                             <i class="far fa-eye"></i>
                                                         </button>
                                                     </a>
                                                     <button type="button" class="btn btn-info" data-toggle="modal" id="edit-item">
-                                                        <i class="fa fa-bolt"></i>
+                                                        <i class="fa fa-edit"></i>
                                                     </button>
-                                                    <a href="{{ url('animales/'.$animal->id.'/edit') }}" style="color: inherit;">
-                                                        <button type="button" class="btn btn-info" data-toggle="modal" id="edit-complete">
-                                                            <i class="fa fa-edit"></i>
-                                                        </button>
-                                                    </a>
                                                     <button type="button" class="btn btn-danger" data-toggle="modal" id="delete-item">
                                                         <i class="fa fa-trash"></i>
                                                     </button>
@@ -97,7 +126,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" align="center"><b>Editar Animal</b></h4>
+                    <h4 class="modal-title" align="center"><b>Editar Persona</b></h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -113,31 +142,21 @@
                                 <input type="text" class="form-control" id="modal-input-id" name="id" readonly>
                             </div>
                             <div class="row">
-                                <div class="form-group col-9">
-                                    <label for="modal-input-arete">Arete</label>
-                                    <input type="text" class="form-control" id="modal-input-arete" name="arete" required>
+                                <div class="form-group col-4">
+                                    <label for="modal-input-nombre">Nombre</label>
+                                    <input type="text" class="form-control" id="modal-input-nombre" name="nombre" required>
                                 </div>
-                                <div class="form-group col-3">
-                                    <label for="modal-input-tipo">Tipo</label>
-                                    <select class="form-control select-objects" id="modal-input-tipo" name="tipo_animal_id" required>
+                                <div class="form-group col-4">
+                                    <label for="tipo">Tipo</label>
+                                    <select class="form-control select-objects" id="modal-input-tipo" name="tipo_persona_id" required>
                                       @foreach ($tipos as $tipo)
                                         <option value="{{$tipo->id}}"> {{$tipo->nombre}}</option>
                                       @endforeach
                                     </select>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group col-6">
-                                <label for="modal-input-res">Arete RES</label>
-                                    <input type="text" class="form-control" id="modal-input-res" name="arete_res">
-                                </div>
-                                <div class="form-group col-6">
-                                    <label for="modal-input-persona">Productor</label>
-                                    <select class="form-control select-objects" id="modal-input-persona" name="persona_id" required>
-                                      @foreach ($personas as $persona)
-                                        <option value="{{$persona->id}}"> {{$persona->nombre}}</option>
-                                      @endforeach
-                                    </select>
+                                <div class="form-group col-4">
+                                <label for="modal-input-email">Correo</label>
+                                    <input type="email" class="form-control" id="modal-input-email" name="email">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -159,7 +178,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" align="center"><b>Borrar Animal</b></h4>
+                    <h4 class="modal-title" align="center"><b>Borrar Persona</b></h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -174,15 +193,9 @@
                                 <label for="modal-input-id-delete">ID</label>
                                 <input type="text" class="form-control" id="modal-input-id-delete" name="id" readonly>
                             </div>
-                            <div class="row">
-                                <div class="form-group col-6">
-                                    <label for="modal-input-arete-delete">Arete</label>
-                                    <input type="text" class="form-control" id="modal-input-arete-delete" name="arete" readonly>
-                                </div>
-                                <div class="form-group col-6">
-                                    <label for="modal-input-res-delete">Arete RES</label>
-                                    <input type="text" class="form-control" id="modal-input-res-delete" name="arete_res" readonly>
-                                </div>
+                            <div class="form-group">
+                                <label for="modal-input-nombre-delete">Nombre</label>
+                                <input type="text" class="form-control" id="modal-input-nombre-delete" name="nombre" readonly>
                             </div>
                             <div class="form-group">
                                 <label for="modal-input-comentarios-delete">Comentarios</label>
@@ -207,8 +220,23 @@
 <div class="modal loadingmodal"></div>
 
 <script>
+    $('#add-item').hide();
+    $('#hr-divisor').hide();
 
     $(document).ready(function() {
+
+        $('#add').on('click', function () {
+            $('#add-item').toggle();
+            if ($(this).text() == 'Cancelar') {
+                $(this).text('Añadir Persona');
+                $('#hr-divisor').hide();
+            }
+            else{
+                $(this).text('Cancelar');
+                $('#hr-divisor').show();
+            }
+        });
+
         /**
         * for showing table, edit and delete item popup
         */
@@ -218,18 +246,18 @@
                 extend: 'csv',
                 charset: 'UTF-8',
                 bom: true,
-                filename: 'Animales-Grupo-RES',
+                filename: 'Personas-Grupo-RES',
                 exportOptions: {
-                    columns: [ 1, 2, 3, 4, 5, 6, 7 ]
+                    columns: [ 1, 2, 3, 4, 5 ]
                 }
             },
             {
                 extend: 'excel',
                 charset: 'UTF-8',
                 bom: true,
-                filename: 'Animales-Grupo-RES',
+                filename: 'Personas-Grupo-RES',
                 exportOptions: {
-                    columns: [ 1, 2, 3, 4, 5, 6, 7 ]
+                    columns: [ 1, 2, 3, 4, 5 ]
                 }
             },
             {
@@ -239,9 +267,9 @@
                 },
                 charset: 'UTF-8',
                 bom: true,
-                filename: 'Animales-Grupo-RES',
+                filename: 'Personas-Grupo-RES',
                 exportOptions: {
-                    columns: [ 1, 2, 3, 4, 5, 6, 7 ]
+                    columns: [ 1, 2, 3, 4, 5 ]
                 }
             },
             {
@@ -249,9 +277,9 @@
                 text: 'Imprimir',
                 charset: 'UTF-8',
                 bom: true,
-                filename: 'Animales-Grupo-RES',
+                filename: 'Personas-Grupo-RES',
                 exportOptions: {
-                    columns: [ 1, 2, 3, 4, 5, 6, 7 ]
+                    columns: [ 1, 2, 3, 4, 5 ]
                 }
             },
             ],
@@ -304,41 +332,30 @@
 
             // get the data
             var id = row.children('#id');
-            var arete = row.children("#arete_10");
-            var res = row.children("#arete_res");
+            var nombre = row.children("#nombre");
             var tipo = row.children("#tipo");
-            var productor = row.children("#productor");
+            var email = row.children("#email");
             var comentarios = row.children("#comentarios");
 
             // fill the data in the input fields
             $("#modal-input-id").val(id[0]['innerHTML']);
-            $("#modal-input-arete").val(arete[0]['innerHTML']);
-            $("#modal-input-res").val(res[0]['innerHTML']);
+            $("#modal-input-nombre").val(nombre[0]['innerHTML']);
+            $("#modal-input-email").val(email[0]['innerHTML']);
             $("#modal-input-comentarios").val(comentarios[0]['innerHTML']);
 
             $("option:selected").removeAttr("selected");
             var tiposOp =  $('#modal-input-tipo').html();
-            var personasOp =  $('#modal-input-persona').html();
 
             $('#modal-input-tipo').empty(); //remove all child nodes
             $('#modal-input-tipo').append(tiposOp);
             $('#modal-input-tipo').trigger("chosen:updated");
 
-            $('#modal-input-persona').empty(); //remove all child nodes
-            $('#modal-input-persona').append(personasOp);
-            $('#modal-input-persona').trigger("chosen:updated");
-
             $("#modal-input-tipo option").filter(function() {
                 return this.text == tipo[0]['innerHTML'];
             }).attr('selected', true);
-            $('#modal-input-tipo').trigger("chosen:updated");
+            $("#modal-input-tipo").trigger('chosen:updated');
 
-            $("#modal-input-persona option").filter(function() {
-                return this.text == productor[0]['innerHTML'];
-            }).attr('selected', true);
-            $('#modal-input-persona').trigger("chosen:updated");
-
-            $("#edit-form").attr('action', 'animales/' + id[0]['innerHTML']);
+            $("#edit-form").attr('action', 'personas/' + id[0]['innerHTML']);
         });
 
         // on modal hide
@@ -353,17 +370,15 @@
 
             // get the data
             var id = row.children('#id');
-            var arete = row.children("#arete_10");
-            var res = row.children("#arete_res");
+            var nombre = row.children("#nombre");
             var comentarios = row.children("#comentarios");
 
             // fill the data in the input fields
             $("#modal-input-id-delete").val(id[0]['innerHTML']);
-            $("#modal-input-arete-delete").val(arete[0]['innerHTML']);
-            $("#modal-input-res-delete").val(res[0]['innerHTML']);
+            $("#modal-input-nombre-delete").val(nombre[0]['innerHTML']);
             $("#modal-input-comentarios-delete").val(comentarios[0]['innerHTML']);
 
-            $("#delete-form").attr('action', 'animales/' + id[0]['innerHTML']);
+            $("#delete-form").attr('action', 'personas/' + id[0]['innerHTML']);
 
         });
 

@@ -66,14 +66,7 @@ class AnimalController extends Controller
     public function show($id)
     {
         $animal = \App\Animal::find($id);
-        $productor = $animal->persona();
-        $tipo = $animal->tipoAnimal();
-        $registros = $animal->registros();
-        $compra = $animal->compra();
-        $venta = $animal->venta();
-        $tratamientos = $animal->tratamientosSanitarios();
-
-        return view('animales.show', compact(['animal', 'productor', 'tipo', 'registros', 'compra', 'venta', 'tratamientos']));
+        return view('animales.show', compact('animal'));
     }
 
     /**

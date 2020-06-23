@@ -14,7 +14,10 @@ class PersonaController extends Controller
      */
     public function index()
     {
-        //
+        $personas = \App\Persona::all();
+        $tipos = \App\TipoPersona::all();
+
+        return view('personas.index', compact(['personas', 'tipos']));
     }
 
     /**
@@ -35,7 +38,21 @@ class PersonaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = $request->validate([
+            'nombre' => 'required|max:255|min:4',
+            'email' => 'nullable|email|unique:personas|max:255|min:4',
+            'tipo_persona_id' => 'required|numeric',
+            'comentarios' => 'nullable|max:255|min:4',
+        ]);
+
+        try {
+            $persona = \App\Persona::create($request->except('_token', '_method'));
+            alert()->success('Persona creada exitosamente!')->persistent('Cerrar');
+            return back();
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal!')->persistent('Cerrar');
+            return back()->withErrors(['msg' => $validator]);
+        }
     }
 
     /**
@@ -44,9 +61,10 @@ class PersonaController extends Controller
      * @param  \App\Persona  $persona
      * @return \Illuminate\Http\Response
      */
-    public function show(Persona $persona)
+    public function show($id)
     {
-        //
+        $persona = \App\Persona::find($id);
+        return view('personas.show', compact('persona'));
     }
 
     /**
@@ -69,7 +87,31 @@ class PersonaController extends Controller
      */
     public function update(Request $request, Persona $persona)
     {
-        //
+
+        if ($request['email'] == \App\Persona::find($request->id)->email) {
+            $validator = $request->validate([
+                'nombre' => 'required|max:255|min:4',
+                'tipo_persona_id' => 'required|numeric',
+                'comentarios' => 'nullable|max:255|min:4',
+            ]);
+        }
+        else{
+            $validator = $request->validate([
+                'nombre' => 'required|max:255|min:4',
+                'email' => 'nullable|email|unique:personas|max:255|min:4',
+                'tipo_persona_id' => 'required|numeric',
+                'comentarios' => 'nullable|max:255|min:4',
+            ]);
+        }
+
+        try {
+            $persona = \App\Persona::whereId($request->id)->update($request->except('_token', '_method'));
+            alert()->success('Persona editada exitosamente!')->persistent('Cerrar');
+            return back();
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal!')->persistent('Cerrar');
+            return back()->withErrors(['msg' => $validator]);
+        }
     }
 
     /**
@@ -78,8 +120,15 @@ class PersonaController extends Controller
      * @param  \App\Persona  $persona
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Persona $persona)
+    public function destroy($id)
     {
-        //
+        try {
+            $persona = \App\Persona::whereId($id)->delete();
+            alert()->success('Persona eliminada exitosamente!')->persistent('Cerrar');
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal!')->persistent('Cerrar');
+        }
+
+        return back();
     }
 }
