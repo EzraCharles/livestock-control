@@ -71,7 +71,7 @@
                                                     <button type="button" class="btn btn-info" data-toggle="modal" id="edit-item">
                                                         <i class="fa fa-bolt"></i>
                                                     </button>
-                                                    <a href="{{ url('animales/'.$animal->id.'/edit') }}" style="color: inherit;">
+                                                    <a href="{{ url('animales/'.$animal->id.'/editar') }}" style="color: inherit;">
                                                         <button type="button" class="btn btn-info" data-toggle="modal" id="edit-complete">
                                                             <i class="fa fa-edit"></i>
                                                         </button>

@@ -76,7 +76,7 @@
                         <i class="nav-icon fas fa-pencil-alt"></i> Diagnósticos </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="{{ route('tratamientos.index') }}">
                         <i class="nav-icon fas fa-file-medical"></i> Tratamientos </a>
                     </li>
                     <li class="nav-item">
