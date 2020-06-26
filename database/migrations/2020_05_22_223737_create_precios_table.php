@@ -18,7 +18,7 @@ class CreatePreciosTable extends Migration
             $table->string('concepto');
             $table->float('precio');
             $table->integer('factor')->default(1); // unidad (precio se divide entre factor para cada aplicacion o uso)
-            $table->boolean('rango')->default(0);
+            $table->boolean('rango')->default(false);
             $table->integer('rango_alto')->nullable();
             $table->integer('rango_bajo')->nullable();
             $table->string('comentarios')->nullable();

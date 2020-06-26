@@ -21,7 +21,7 @@ class CreateAnimalsTable extends Migration
             $table->string('comentarios')->nullable();
             $table->integer('persona_id')->unsigned();
             $table->integer('tipo_animal_id')->unsigned();
-            $table->boolean('defuncion')->default(0);
+            $table->boolean('defuncion')->default(false);
             $table->softDeletes();
             $table->timestamps();
         });

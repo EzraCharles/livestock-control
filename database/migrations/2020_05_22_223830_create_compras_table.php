@@ -25,7 +25,7 @@ class CreateComprasTable extends Migration
             $table->string('comentarios')->nullable();
             $table->boolean('acopio')->nullable();
             $table->integer('embarque_id')->unsigned();
-            $table->float('precio'); // tmp
+            $table->float('precio_registro'); // tmp
             $table->integer('precio_id')->unsigned()->nullable();
             $table->integer('animal_id')->unsigned();
             $table->softDeletes();

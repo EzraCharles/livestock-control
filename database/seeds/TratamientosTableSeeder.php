@@ -15,7 +15,7 @@ class TratamientosTableSeeder extends Seeder
         DB::table('tratamientos')->insert([
             [
                 'nombre' => 'Basetyl',
-                'precio' => 0.0,
+                'precio_registro' => 0.0,
                 'precio_id' => 1,
                 'tipo_tratamiento_id' => 1,
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
@@ -23,7 +23,7 @@ class TratamientosTableSeeder extends Seeder
             ],
             [
                 'nombre' => 'Flumixin',
-                'precio' => 0.0,
+                'precio_registro' => 0.0,
                 'precio_id' => 2,
                 'tipo_tratamiento_id' => 1,
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
@@ -31,7 +31,7 @@ class TratamientosTableSeeder extends Seeder
             ],
             [
                 'nombre' => 'Penicilina',
-                'precio' => 0.0,
+                'precio_registro' => 0.0,
                 'precio_id' => 3,
                 'tipo_tratamiento_id' => 1,
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
@@ -39,7 +39,7 @@ class TratamientosTableSeeder extends Seeder
             ],
             [
                 'nombre' => 'Oxitetraciclina',
-                'precio' => 0.0,
+                'precio_registro' => 0.0,
                 'precio_id' => 4,
                 'tipo_tratamiento_id' => 1,
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
@@ -47,7 +47,7 @@ class TratamientosTableSeeder extends Seeder
             ],
             [
                 'nombre' => 'Fluvet',
-                'precio' => 0.0,
+                'precio_registro' => 0.0,
                 'precio_id' => 5,
                 'tipo_tratamiento_id' =>1,
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
@@ -55,7 +55,7 @@ class TratamientosTableSeeder extends Seeder
             ],
             [
                 'nombre' => 'Gorbazoo',
-                'precio' => 0.0,
+                'precio_registro' => 0.0,
                 'precio_id' => 6,
                 'tipo_tratamiento_id' =>1,
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
@@ -63,7 +63,7 @@ class TratamientosTableSeeder extends Seeder
             ],
             [
                 'nombre' => 'Emidocar',
-                'precio' => 0.0,
+                'precio_registro' => 0.0,
                 'precio_id' => 7,
                 'tipo_tratamiento_id' =>1,
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
@@ -71,7 +71,7 @@ class TratamientosTableSeeder extends Seeder
             ],
             [
                 'nombre' => 'Cicatrizante',
-                'precio' => 0.0,
+                'precio_registro' => 0.0,
                 'precio_id' => 8,
                 'tipo_tratamiento_id' =>1,
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
@@ -79,7 +79,7 @@ class TratamientosTableSeeder extends Seeder
             ],
             [
                 'nombre' => 'Olivitasan',
-                'precio' => 0.0,
+                'precio_registro' => 0.0,
                 'precio_id' => 9,
                 'tipo_tratamiento_id' => 2,
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
@@ -87,7 +87,7 @@ class TratamientosTableSeeder extends Seeder
             ],
             [
                 'nombre' => 'Energizante',
-                'precio' => 0.0,
+                'precio_registro' => 0.0,
                 'precio_id' => 10,
                 'tipo_tratamiento_id' => 2,
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
@@ -95,7 +95,7 @@ class TratamientosTableSeeder extends Seeder
             ],
             [
                 'nombre' => 'Complejo B',
-                'precio' => 0.0,
+                'precio_registro' => 0.0,
                 'precio_id' => 11,
                 'tipo_tratamiento_id' => 2,
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
@@ -103,7 +103,7 @@ class TratamientosTableSeeder extends Seeder
             ],
             [
                 'nombre' => 'Ganabol',
-                'precio' => 0.0,
+                'precio_registro' => 0.0,
                 'precio_id' => 12,
                 'tipo_tratamiento_id' => 2,
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
@@ -111,7 +111,7 @@ class TratamientosTableSeeder extends Seeder
             ],
             [
                 'nombre' => 'Suero Vitaminado',
-                'precio' => 0.0,
+                'precio_registro' => 0.0,
                 'precio_id' => 13,
                 'tipo_tratamiento_id' => 2,
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
@@ -119,7 +119,7 @@ class TratamientosTableSeeder extends Seeder
             ],
             [
                 'nombre' => 'Cidectin',
-                'precio' => 0.0,
+                'precio_registro' => 0.0,
                 'precio_id' => 14,
                 'tipo_tratamiento_id' => 3,
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
@@ -127,7 +127,7 @@ class TratamientosTableSeeder extends Seeder
             ],
             [
                 'nombre' => 'Trodax',
-                'precio' => 0.0,
+                'precio_registro' => 0.0,
                 'precio_id' => 15,
                 'tipo_tratamiento_id' => 3,
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
@@ -135,7 +135,7 @@ class TratamientosTableSeeder extends Seeder
             ],
             [
                 'nombre' => 'Lebamisol',
-                'precio' => 0.0,
+                'precio_registro' => 0.0,
                 'precio_id' => 16,
                 'tipo_tratamiento_id' => 3,
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
@@ -143,7 +143,7 @@ class TratamientosTableSeeder extends Seeder
             ],
             [
                 'nombre' => 'Bolos',
-                'precio' => 0.0,
+                'precio_registro' => 0.0,
                 'precio_id' => 17,
                 'tipo_tratamiento_id' => 4,
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
@@ -151,7 +151,7 @@ class TratamientosTableSeeder extends Seeder
             ],
             [
                 'nombre' => 'Timpacaps',
-                'precio' => 0.0,
+                'precio_registro' => 0.0,
                 'precio_id' => 18,
                 'tipo_tratamiento_id' => 4,
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
@@ -159,7 +159,7 @@ class TratamientosTableSeeder extends Seeder
             ],
             [
                 'nombre' => 'Rumenade',
-                'precio' => 0.0,
+                'precio_registro' => 0.0,
                 'precio_id' => 19,
                 'tipo_tratamiento_id' => 4,
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
@@ -167,7 +167,7 @@ class TratamientosTableSeeder extends Seeder
             ],
             [
                 'nombre' => 'Pirofort',
-                'precio' => 0.0,
+                'precio_registro' => 0.0,
                 'precio_id' => 20,
                 'tipo_tratamiento_id' => 4,
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),

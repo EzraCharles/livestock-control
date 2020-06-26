@@ -27,7 +27,7 @@ class CreateVentasTable extends Migration
             $table->float('ut_precio');
             $table->float('ut_peso');
             $table->float('rendimiento_inversion');
-            $table->float('precio'); // temp
+            $table->float('precio_registro'); // temp
             $table->integer('embarque_id')->unsigned();
             $table->integer('animal_id')->unsigned();
             $table->integer('precio_id')->unsigned();

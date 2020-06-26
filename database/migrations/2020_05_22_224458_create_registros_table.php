@@ -21,9 +21,9 @@ class CreateRegistrosTable extends Migration
             $table->float('gpd')->nullable();
             $table->float('merma')->nullable();
             $table->float('factor_eficiencia')->nullable();
-            $table->boolean('alimentacion')->default(0);
+            $table->boolean('alimentacion')->default(false);
             //$table->string('etapa_alimentacion')->nullable(); //default
-            $table->boolean('reproduccion')->default(0);
+            $table->boolean('reproduccion')->default(false);
             $table->string('comentarios')->nullable();
             $table->integer('animal_id')->unsigned();
             $table->softDeletes();

@@ -28,4 +28,13 @@ class Precio extends Model
     {
         return $this->hasMany('App\Venta');
     }
+
+    /**
+     * Get the 'tratamientos' of the "precio" stablished.
+     */
+    public function tratamientos()
+    {
+        return $this->hasMany('App\Tratamiento');
+    }
+
 }

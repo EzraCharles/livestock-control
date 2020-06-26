@@ -20,4 +20,12 @@ class Tratamiento extends Model
     {
         return $this->belongsTo('App\TipoTratamiento');
     }
+
+    /**
+     * Get the "precio"/price of the "Tratamiento".
+     */
+    public function precio()
+    {
+        return $this->belongsTo('App\Precio');
+    }
 }
