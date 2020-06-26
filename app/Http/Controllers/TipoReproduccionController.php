@@ -14,7 +14,8 @@ class TipoReproduccionController extends Controller
      */
     public function index()
     {
-        //
+        $tipo_reproducciones = \App\TipoReproduccion::all();
+        return view('tipo-reproducciones.index', compact(['tipo_reproducciones']));
     }
 
     /**

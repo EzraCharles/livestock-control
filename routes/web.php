@@ -24,4 +24,5 @@ Route::resource('precios', 'PrecioController')->except(['create', 'edit']);
 Route::resource('personas', 'PersonaController')->except(['create', 'edit']);
 Route::resource('diagnosticos', 'DiagnosticoController')->except(['create', 'edit']);
 Route::resource('tratamientos', 'TratamientoController')->except(['create', 'edit']);
+Route::resource('tipo-reproducciones', 'TipoReproduccionController')->except(['create', 'edit']);
 Route::resource('animales', 'AnimalController');
