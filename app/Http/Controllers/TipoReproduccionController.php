@@ -36,7 +36,19 @@ class TipoReproduccionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = $request->validate([
+            'nombre' => 'required|max:255|min:4',
+            'comentarios' => 'nullable|max:255|min:4',
+        ]);
+
+        try {
+            $tipo = \App\TipoReproduccion::create($request->except('_token', '_method'));
+            alert()->success('Tipo de Reproducción creado exitosamente!')->persistent('Cerrar');
+            return back();
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal!')->persistent('Cerrar');
+            return back()->withErrors(['msg' => $validator]);
+        }
     }
 
     /**
@@ -45,9 +57,10 @@ class TipoReproduccionController extends Controller
      * @param  \App\TipoReproduccion  $tipoReproduccion
      * @return \Illuminate\Http\Response
      */
-    public function show(TipoReproduccion $tipoReproduccion)
+    public function show($id)
     {
-        //
+        $tipo = \App\TipoReproduccion::find($id);
+        return view('tipo-reproducciones.show', compact('tipo'));
     }
 
     /**
@@ -68,9 +81,21 @@ class TipoReproduccionController extends Controller
      * @param  \App\TipoReproduccion  $tipoReproduccion
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, TipoReproduccion $tipoReproduccion)
+    public function update(Request $request)
     {
-        //
+        $validator = $request->validate([
+            'nombre' => 'required|max:255|min:4',
+            'comentarios' => 'nullable|max:255|min:4',
+        ]);
+
+        try {
+            $tipo = \App\TipoReproduccion::whereId($request->id)->update($request->except('_token', '_method'));
+            alert()->success('Tipo de Reproducción editado exitosamente!')->persistent('Cerrar');
+            return back();
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal!')->persistent('Cerrar');
+            return back()->withErrors(['msg' => $validator]);
+        }
     }
 
     /**
@@ -79,8 +104,15 @@ class TipoReproduccionController extends Controller
      * @param  \App\TipoReproduccion  $tipoReproduccion
      * @return \Illuminate\Http\Response
      */
-    public function destroy(TipoReproduccion $tipoReproduccion)
+    public function destroy($id)
     {
-        //
+        try {
+            $tipo = \App\TipoReproduccion::whereId($id)->delete();
+            alert()->success('Tipo de Reproducción eliminado exitosamente!')->persistent('Cerrar');
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal!')->persistent('Cerrar');
+        }
+
+        return back();
     }
 }
