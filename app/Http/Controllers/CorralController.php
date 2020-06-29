@@ -14,7 +14,8 @@ class CorralController extends Controller
      */
     public function index()
     {
-        //
+        $corrales = \App\Corral::all();
+        return view('corrales.index', compact(['corrales']));
     }
 
     /**
@@ -35,7 +36,19 @@ class CorralController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = $request->validate([
+            'nombre' => 'required|max:255|min:4',
+            'comentarios' => 'nullable|max:255|min:4',
+        ]);
+
+        try {
+            $corral = \App\Corral::create($request->except('_token', '_method'));
+            alert()->success('Corral creado exitosamente!')->persistent('Cerrar');
+            return back();
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal!')->persistent('Cerrar');
+            return back()->withErrors(['msg' => $validator]);
+        }
     }
 
     /**
@@ -44,9 +57,10 @@ class CorralController extends Controller
      * @param  \App\Corral  $corral
      * @return \Illuminate\Http\Response
      */
-    public function show(Corral $corral)
+    public function show($id)
     {
-        //
+        $corral = \App\Corral::find($id);
+        return view('corrales.show', compact('corral'));
     }
 
     /**
@@ -67,9 +81,21 @@ class CorralController extends Controller
      * @param  \App\Corral  $corral
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Corral $corral)
+    public function update(Request $request)
     {
-        //
+        $validator = $request->validate([
+            'nombre' => 'required|max:255|min:4',
+            'comentarios' => 'nullable|max:255|min:4',
+        ]);
+
+        try {
+            $corral = \App\Corral::whereId($request->id)->update($request->except('_token', '_method'));
+            alert()->success('Corral editado exitosamente!')->persistent('Cerrar');
+            return back();
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal!')->persistent('Cerrar');
+            return back()->withErrors(['msg' => $validator]);
+        }
     }
 
     /**
@@ -78,8 +104,15 @@ class CorralController extends Controller
      * @param  \App\Corral  $corral
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Corral $corral)
+    public function destroy($id)
     {
-        //
+        try {
+            $corral = \App\Corral::whereId($id)->delete();
+            alert()->success('Corral eliminado exitosamente!')->persistent('Cerrar');
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal!')->persistent('Cerrar');
+        }
+
+        return back();
     }
 }

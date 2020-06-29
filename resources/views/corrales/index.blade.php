@@ -9,9 +9,9 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3> <strong> Tipos de Tratamiento </strong></h3>
+                            <h3> <strong> Corrales </strong></h3>
                             <div class="col-md-12" style="padding-top: 15px; ">
-                                <button class="btn grupo-res" id="add" style="text-align: left; float: right; margin-top: -50px;">Añadir Tipo de Tratamiento</button>
+                                <button class="btn grupo-res" id="add" style="text-align: left; float: right; margin-top: -50px;">Añadir Corral</button>
                             </div>
                         </div>
 
@@ -35,10 +35,10 @@
                             <div class="content">
                                 <div id="add-item" class="row col-md-12" style="padding-top: 15px;">
                                     <div class="col-6">
-                                        <h5>Añadir Tipo de Tratamiento</h5>
+                                        <h5>Añadir Corral</h5>
                                     </div>
                                     <div class="col-12">
-                                        <form id="create" action="{{ route('tipo-tratamientos.store') }}" method="POST" style="padding:5px;">
+                                        <form id="create" action="{{ route('corrales.store') }}" method="POST" style="padding:5px;">
                                             @method('POST')
                                             @csrf
                                             <div class="row form-group">
@@ -71,15 +71,15 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($tipo_tratamientos as $tipo_tratamiento)
+                                        @foreach ($corrales as $corral)
                                         <tr class="data-row">
-                                            <td style="text-align: center; vertical-align: middle; " id="id">{{ $tipo_tratamiento->id }}</td>
-                                            <td style="text-align: center; vertical-align: middle; " id="nombre">{{ $tipo_tratamiento->nombre }}</td>
-                                            <td style="text-align: center; vertical-align: middle; " id="comentarios">{{ $tipo_tratamiento->comentarios }}</td>
-                                            <td style="text-align: center; vertical-align: middle; " id="created_at">{{ $tipo_tratamiento->created_at }}</td>
+                                            <td style="text-align: center; vertical-align: middle; " id="id">{{ $corral->id }}</td>
+                                            <td style="text-align: center; vertical-align: middle; " id="nombre">{{ $corral->nombre }}</td>
+                                            <td style="text-align: center; vertical-align: middle; " id="comentarios">{{ $corral->comentarios }}</td>
+                                            <td style="text-align: center; vertical-align: middle; " id="created_at">{{ $corral->created_at }}</td>
                                             <td>
                                                 <div class="btn-group">
-                                                    <a href="{{ url('tipo-tratamientos/'.$tipo_tratamiento->id) }}" style="color: inherit;">
+                                                    <a href="{{ url('corrales/'.$corral->id) }}" style="color: inherit;">
                                                         <button type="button" class="btn btn-success" data-toggle="modal" id="show-item">
                                                             <i class="far fa-eye"></i>
                                                         </button>
@@ -108,7 +108,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" align="center"><b>Editar Tipo de Tratamiento</b></h4>
+                    <h4 class="modal-title" align="center"><b>Editar Corral</b></h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -148,7 +148,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" align="center"><b>Borrar Tipo Tratamiento</b></h4>
+                    <h4 class="modal-title" align="center"><b>Borrar Corral</b></h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -198,7 +198,7 @@
         $('#add').on('click', function () {
             $('#add-item').toggle();
             if ($(this).text() == 'Cancelar') {
-                $(this).text('Añadir Tipo de Tratamiento');
+                $(this).text('Añadir Corral');
                 $('#hr-divisor').hide();
             }
             else{
@@ -216,7 +216,7 @@
                 extend: 'csv',
                 charset: 'UTF-8',
                 bom: true,
-                filename: 'Tipos-de-Tratamientos-Grupo-RES',
+                filename: 'Corrales-Grupo-RES',
                 exportOptions: {
                     columns: [ 1, 2, 3 ]
                 }
@@ -225,7 +225,7 @@
                 extend: 'excel',
                 charset: 'UTF-8',
                 bom: true,
-                filename: 'Tipos-de-Tratamientos-Grupo-RES',
+                filename: 'Corrales-Grupo-RES',
                 exportOptions: {
                     columns: [ 1, 2, 3 ]
                 }
@@ -237,7 +237,7 @@
                 },
                 charset: 'UTF-8',
                 bom: true,
-                filename: 'Tipos-de-Tratamientos-Grupo-RES',
+                filename: 'Corrales-Grupo-RES',
                 exportOptions: {
                     columns: [ 1, 2, 3 ]
                 }
@@ -247,7 +247,7 @@
                 text: 'Imprimir',
                 charset: 'UTF-8',
                 bom: true,
-                filename: 'Tipos-de-Tratamientos-Grupo-RES',
+                filename: 'Corrales-Grupo-RES',
                 exportOptions: {
                     columns: [ 1, 2, 3 ]
                 }
@@ -310,7 +310,7 @@
             $("#modal-input-nombre").val(nombre[0]['innerHTML']);
             $("#modal-input-comentarios").val(comentarios[0]['innerHTML']);
 
-            $("#edit-form").attr('action', 'tipo-tratamientos/' + id[0]['innerHTML']);
+            $("#edit-form").attr('action', 'corrales/' + id[0]['innerHTML']);
         });
 
         // on modal hide
@@ -333,7 +333,7 @@
             $("#modal-input-nombre-delete").val(nombre[0]['innerHTML']);
             $("#modal-input-comentarios-delete").val(comentarios[0]['innerHTML']);
 
-            $("#delete-form").attr('action', 'tipo-tratamientos/' + id[0]['innerHTML']);
+            $("#delete-form").attr('action', 'corrales/' + id[0]['innerHTML']);
 
         });
 

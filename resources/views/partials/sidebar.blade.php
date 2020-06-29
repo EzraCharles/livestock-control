@@ -88,7 +88,7 @@
                         <i class="nav-icon fas fa-stethoscope"></i> Tipo de Tratamiento </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="{{ route('corrales.index') }}">
                         <i class="nav-icon fas fa-landmark"></i> Corrales </a>
                     </li>
                     <li class="nav-item">
