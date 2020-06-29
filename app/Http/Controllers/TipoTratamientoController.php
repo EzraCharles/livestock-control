@@ -14,7 +14,8 @@ class TipoTratamientoController extends Controller
      */
     public function index()
     {
-        //
+        $tipo_tratamientos = \App\TipoTratamiento::all();
+        return view('tipo-tratamientos.index', compact(['tipo_tratamientos']));
     }
 
     /**
@@ -35,7 +36,19 @@ class TipoTratamientoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = $request->validate([
+            'nombre' => 'required|max:255|min:4',
+            'comentarios' => 'nullable|max:255|min:4',
+        ]);
+
+        try {
+            $tipo = \App\TipoTratamiento::create($request->except('_token', '_method'));
+            alert()->success('Tipo de Tratamiento creado exitosamente!')->persistent('Cerrar');
+            return back();
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal!')->persistent('Cerrar');
+            return back()->withErrors(['msg' => $validator]);
+        }
     }
 
     /**
@@ -44,9 +57,10 @@ class TipoTratamientoController extends Controller
      * @param  \App\TipoTratamiento  $tipoTratamiento
      * @return \Illuminate\Http\Response
      */
-    public function show(TipoTratamiento $tipoTratamiento)
+    public function show($id)
     {
-        //
+        $tipo = \App\TipoTratamiento::find($id);
+        return view('tipo-tratamientos.show', compact('tipo'));
     }
 
     /**
@@ -67,9 +81,21 @@ class TipoTratamientoController extends Controller
      * @param  \App\TipoTratamiento  $tipoTratamiento
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, TipoTratamiento $tipoTratamiento)
+    public function update(Request $request)
     {
-        //
+        $validator = $request->validate([
+            'nombre' => 'required|max:255|min:4',
+            'comentarios' => 'nullable|max:255|min:4',
+        ]);
+
+        try {
+            $tipo = \App\TipoTratamiento::whereId($request->id)->update($request->except('_token', '_method'));
+            alert()->success('Tipo de Tratamiento editado exitosamente!')->persistent('Cerrar');
+            return back();
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal!')->persistent('Cerrar');
+            return back()->withErrors(['msg' => $validator]);
+        }
     }
 
     /**
@@ -78,8 +104,15 @@ class TipoTratamientoController extends Controller
      * @param  \App\TipoTratamiento  $tipoTratamiento
      * @return \Illuminate\Http\Response
      */
-    public function destroy(TipoTratamiento $tipoTratamiento)
+    public function destroy($id)
     {
-        //
+        try {
+            $tipo = \App\TipoTratamiento::whereId($id)->delete();
+            alert()->success('Tipo de Tratamiento eliminado exitosamente!')->persistent('Cerrar');
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal!')->persistent('Cerrar');
+        }
+
+        return back();
     }
 }

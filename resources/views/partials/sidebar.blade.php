@@ -84,7 +84,7 @@
                         <i class="nav-icon fas fa-venus-mars"></i> Tipo de Reproducción </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="{{ route('tipo-tratamientos.index') }}">
                         <i class="nav-icon fas fa-stethoscope"></i> Tipo de Tratamiento </a>
                     </li>
                     <li class="nav-item">
