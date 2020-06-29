@@ -14,7 +14,8 @@ class TipoAnimalController extends Controller
      */
     public function index()
     {
-        //
+        $tipo_animales = \App\TipoAnimal::all();
+        return view('tipo-animales.index', compact(['tipo_animales']));
     }
 
     /**

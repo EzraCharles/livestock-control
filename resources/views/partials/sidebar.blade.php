@@ -96,7 +96,7 @@
                         <i class="nav-icon fas fa-seedling"></i> Fórmulas </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="{{ route('tipo-animales.index') }}">
                         <i class="nav-icon fas fa-horse"></i> Tipo de Animal </a>
                     </li>
                     <li class="nav-item">
