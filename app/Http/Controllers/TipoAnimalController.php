@@ -36,7 +36,19 @@ class TipoAnimalController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = $request->validate([
+            'nombre' => 'required|max:255|min:4',
+            'comentarios' => 'nullable|max:255|min:4',
+        ]);
+
+        try {
+            $tipo = \App\TipoAnimal::create($request->except('_token', '_method'));
+            alert()->success('Tipo de Animal creado exitosamente!')->persistent('Cerrar');
+            return back();
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal!')->persistent('Cerrar');
+            return back()->withErrors(['msg' => $validator]);
+        }
     }
 
     /**
@@ -45,9 +57,10 @@ class TipoAnimalController extends Controller
      * @param  \App\TipoAnimal  $tipoAnimal
      * @return \Illuminate\Http\Response
      */
-    public function show(TipoAnimal $tipoAnimal)
+    public function show($id)
     {
-        //
+        $tipo = \App\TipoAnimal::find($id);
+        return view('tipo-animales.show', compact('tipo'));
     }
 
     /**
@@ -68,9 +81,21 @@ class TipoAnimalController extends Controller
      * @param  \App\TipoAnimal  $tipoAnimal
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, TipoAnimal $tipoAnimal)
+    public function update(Request $request)
     {
-        //
+        $validator = $request->validate([
+            'nombre' => 'required|max:255|min:4',
+            'comentarios' => 'nullable|max:255|min:4',
+        ]);
+
+        try {
+            $tipo = \App\TipoAnimal::whereId($request->id)->update($request->except('_token', '_method'));
+            alert()->success('Tipo de Animal editado exitosamente!')->persistent('Cerrar');
+            return back();
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal!')->persistent('Cerrar');
+            return back()->withErrors(['msg' => $validator]);
+        }
     }
 
     /**
@@ -79,8 +104,15 @@ class TipoAnimalController extends Controller
      * @param  \App\TipoAnimal  $tipoAnimal
      * @return \Illuminate\Http\Response
      */
-    public function destroy(TipoAnimal $tipoAnimal)
+    public function destroy($id)
     {
-        //
+        try {
+            $tipo = \App\TipoAnimal::whereId($id)->delete();
+            alert()->success('Tipo de Animal eliminado exitosamente!')->persistent('Cerrar');
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal!')->persistent('Cerrar');
+        }
+
+        return back();
     }
 }
