@@ -14,7 +14,8 @@ class TipoPersonaController extends Controller
      */
     public function index()
     {
-        //
+        $tipo_personas = \App\TipoPersona::all();
+        return view('tipo-personas.index', compact(['tipo_personas']));
     }
 
     /**
@@ -35,7 +36,19 @@ class TipoPersonaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = $request->validate([
+            'nombre' => 'required|max:255|min:4',
+            'comentarios' => 'nullable|max:255|min:4',
+        ]);
+
+        try {
+            $tipo = \App\TipoPersona::create($request->except('_token', '_method'));
+            alert()->success('Tipo de Persona creado exitosamente!')->persistent('Cerrar');
+            return back();
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal!')->persistent('Cerrar');
+            return back();
+        }
     }
 
     /**
@@ -44,9 +57,10 @@ class TipoPersonaController extends Controller
      * @param  \App\TipoPersona  $tipoPersona
      * @return \Illuminate\Http\Response
      */
-    public function show(TipoPersona $tipoPersona)
+    public function show($id)
     {
-        //
+        $tipo = \App\TipoPersona::find($id);
+        return view('tipo-personas.show', compact('tipo'));
     }
 
     /**
@@ -67,9 +81,21 @@ class TipoPersonaController extends Controller
      * @param  \App\TipoPersona  $tipoPersona
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, TipoPersona $tipoPersona)
+    public function update(Request $request)
     {
-        //
+        $validator = $request->validate([
+            'nombre' => 'required|max:255|min:4',
+            'comentarios' => 'nullable|max:255|min:4',
+        ]);
+
+        try {
+            $tipo = \App\TipoPersona::whereId($request->id)->update($request->except('_token', '_method'));
+            alert()->success('Tipo de Persona editado exitosamente!')->persistent('Cerrar');
+            return back();
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal!')->persistent('Cerrar');
+            return back()->withErrors(['msg' => $validator]);
+        }
     }
 
     /**
@@ -78,8 +104,15 @@ class TipoPersonaController extends Controller
      * @param  \App\TipoPersona  $tipoPersona
      * @return \Illuminate\Http\Response
      */
-    public function destroy(TipoPersona $tipoPersona)
+    public function destroy($id)
     {
-        //
+        try {
+            $tipo = \App\TipoPersona::whereId($id)->delete();
+            alert()->success('Tipo de Persona eliminado exitosamente!')->persistent('Cerrar');
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal!')->persistent('Cerrar');
+        }
+
+        return back();
     }
 }

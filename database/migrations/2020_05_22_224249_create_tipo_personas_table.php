@@ -16,6 +16,7 @@ class CreateTipoPersonasTable extends Migration
         Schema::create('tipos_persona', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nombre');
+            $table->string('comentarios')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

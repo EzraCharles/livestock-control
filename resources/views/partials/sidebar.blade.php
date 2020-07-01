@@ -104,7 +104,7 @@
                         <i class="nav-icon fas fa-utensils"></i> Tipo de Alimentación </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="{{ route('tipo-personas.index') }}">
                         <i class="nav-icon fas fa-user-tag"></i> Tipo de Persona </a>
                     </li>
 

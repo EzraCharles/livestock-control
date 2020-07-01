@@ -21,13 +21,13 @@ class TipoAlimentacionTableSeeder extends Seeder
             ],
             [
                 'nombre' => 'Engorda',
-                'formula_id' => 2,
+                'formula_id' => 1,
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
             ],
             [
                 'nombre' => 'Zilmax',
-                'formula_id' => 3,
+                'formula_id' => 1,
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
             ]

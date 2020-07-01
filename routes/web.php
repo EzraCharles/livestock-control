@@ -30,5 +30,6 @@ Route::resource('tipo-reproducciones', 'TipoReproduccionController')->except(['c
 Route::resource('tipo-tratamientos', 'TipoTratamientoController')->except(['create', 'edit']);
 Route::resource('tipo-animales', 'TipoAnimalController')->except(['create', 'edit']);
 Route::resource('tipo-alimentaciones', 'TipoAlimentacionController')->except(['create', 'edit']);
+Route::resource('tipo-personas', 'TipoPersonaController')->except(['create', 'edit']);
 
 Route::resource('animales', 'AnimalController');
