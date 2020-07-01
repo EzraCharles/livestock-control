@@ -14,14 +14,6 @@ class Alimentacion extends Model
     protected $guarded = ['id', 'created_at', 'updated_at'];
 
     /**
-     * Get the 'formula' of the 'alimentacion'.
-     */
-    public function formula()
-    {
-        return $this->hasMany('App\Formula');
-    }
-
-    /**
      * Get the 'tipo_alimentacion' of the 'alimentacion'.
      */
     public function tipoAlimentacion()

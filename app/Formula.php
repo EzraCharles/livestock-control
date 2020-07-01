@@ -24,9 +24,9 @@ class Formula extends Model
     /**
      * Get the 'alimentaciones' using the 'formula'.
      */
-    public function alimentaciones()
+    public function tipoAlimentaciones()
     {
-        return $this->hasMany('App\Alimentacion');
+        return $this->hasOne('App\TipoAlimentacion');
     }
 
 }

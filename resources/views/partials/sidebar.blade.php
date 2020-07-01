@@ -100,7 +100,7 @@
                         <i class="nav-icon fas fa-horse"></i> Tipo de Animal </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="{{ route('tipo-alimentaciones.index') }}">
                         <i class="nav-icon fas fa-utensils"></i> Tipo de Alimentación </a>
                     </li>
                     <li class="nav-item">

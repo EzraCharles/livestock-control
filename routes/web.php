@@ -29,5 +29,6 @@ Route::resource('corrales', 'CorralController')->except(['create', 'edit']);
 Route::resource('tipo-reproducciones', 'TipoReproduccionController')->except(['create', 'edit']);
 Route::resource('tipo-tratamientos', 'TipoTratamientoController')->except(['create', 'edit']);
 Route::resource('tipo-animales', 'TipoAnimalController')->except(['create', 'edit']);
+Route::resource('tipo-alimentaciones', 'TipoAlimentacionController')->except(['create', 'edit']);
 
 Route::resource('animales', 'AnimalController');

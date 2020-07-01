@@ -14,7 +14,9 @@ class TipoAlimentacionController extends Controller
      */
     public function index()
     {
-        //
+        $tipo_alimentaciones = \App\TipoAlimentacion::all();
+        $formulas = \App\Formula::all();
+        return view('tipo-alimentaciones.index', compact(['tipo_alimentaciones', 'formulas']));
     }
 
     /**
@@ -35,7 +37,20 @@ class TipoAlimentacionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = $request->validate([
+            'nombre' => 'required|max:255|min:4',
+            'formula_id' => 'required|numeric',
+            'comentarios' => 'nullable|max:255|min:4',
+        ]);
+
+        try {
+            $tipo = \App\TipoAlimentacion::create($request->except('_token', '_method'));
+            alert()->success('Tipo de Alimentación creado exitosamente!')->persistent('Cerrar');
+            return back();
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal!')->persistent('Cerrar');
+            return back();
+        }
     }
 
     /**
@@ -44,9 +59,10 @@ class TipoAlimentacionController extends Controller
      * @param  \App\TipoAlimentacion  $tipoAlimentacion
      * @return \Illuminate\Http\Response
      */
-    public function show(TipoAlimentacion $tipoAlimentacion)
+    public function show($id)
     {
-        //
+        $tipo = \App\TipoAlimentacion::find($id);
+        return view('tipo-alimentaciones.show', compact('tipo'));
     }
 
     /**
@@ -67,9 +83,22 @@ class TipoAlimentacionController extends Controller
      * @param  \App\TipoAlimentacion  $tipoAlimentacion
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, TipoAlimentacion $tipoAlimentacion)
+    public function update(Request $request)
     {
-        //
+        $validator = $request->validate([
+            'nombre' => 'required|max:255|min:4',
+            'formula_id' => 'required|numeric',
+            'comentarios' => 'nullable|max:255|min:4',
+        ]);
+
+        try {
+            $tipo = \App\TipoAlimentacion::whereId($request->id)->update($request->except('_token', '_method'));
+            alert()->success('Tipo de Alimentación editado exitosamente!')->persistent('Cerrar');
+            return back();
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal!')->persistent('Cerrar');
+            return back()->withErrors(['msg' => $validator]);
+        }
     }
 
     /**
@@ -78,8 +107,15 @@ class TipoAlimentacionController extends Controller
      * @param  \App\TipoAlimentacion  $tipoAlimentacion
      * @return \Illuminate\Http\Response
      */
-    public function destroy(TipoAlimentacion $tipoAlimentacion)
+    public function destroy($id)
     {
-        //
+        try {
+            $tipo = \App\TipoAlimentacion::whereId($id)->delete();
+            alert()->success('Tipo de Alimentación eliminado exitosamente!')->persistent('Cerrar');
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal!')->persistent('Cerrar');
+        }
+
+        return back();
     }
 }

@@ -9,7 +9,7 @@ class TipoAlimentacion extends Model
 {
     use SoftDeletes;
 
-    public $table = "tipo_alimentaciones";
+    public $table = "tipos_alimentacion";
 
     protected $guarded = ['id', 'created_at', 'updated_at'];
 
@@ -19,5 +19,13 @@ class TipoAlimentacion extends Model
     public function alimentaciones()
     {
         return $this->hasMany('App\Alimentacion');
+    }
+
+    /**
+     * Get the 'formula' of the 'tipo_alimentacion'.
+     */
+    public function formula()
+    {
+        return $this->belongsTo('App\Formula');
     }
 }
