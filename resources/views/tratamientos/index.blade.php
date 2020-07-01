@@ -381,12 +381,12 @@
             $('#modal-input-precio').trigger("chosen:updated");
 
             $("#modal-input-tipo option").filter(function() {
-                return this.text == tipo[0]['innerHTML'];
+                return this.text.replace(/\s+/g,' ').trim() == tipo[0]['innerHTML'].replace(/\s+/g,' ').trim();
             }).attr('selected', true);
             $('#modal-input-tipo').trigger("chosen:updated");
 
             $("#modal-input-precio option").filter(function() {
-                return this.text == precio[0]['innerHTML'];
+                return this.text.replace(/\s+/g,' ').trim() == precio[0]['innerHTML'].replace(/\s+/g,' ').trim();
             }).attr('selected', true);
             $('#modal-input-precio').trigger("chosen:updated");
 

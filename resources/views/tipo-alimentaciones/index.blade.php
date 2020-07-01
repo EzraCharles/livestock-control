@@ -145,15 +145,15 @@
                                     <label for="modal-input-nombre">Nombre</label>
                                     <input type="text" class="form-control" id="modal-input-nombre" name="nombre" required>
                                 </div>
-                            </div>
-                            <div class="form-group col-6">
-                                <label for="formula_id">Fórmula</label>
-                                <select class="form-control select-objects" modal-input id="formula_id" name="formula_id" required>
-                                    <option value="" disabled selected>Eligir una opción...</option>
-                                    @foreach ($formulas as $formula)
-                                        <option value="{{$formula->id}}"> {{$formula->nombre}}</option>
-                                    @endforeach
-                                </select>
+                                <div class="form-group col-6">
+                                    <label for="modal-input-formula">Fórmula</label>
+                                    <select class="form-control select-objects" id="modal-input-formula" name="formula_id" required>
+                                        <option value="" disabled selected>Eligir una opción...</option>
+                                        @foreach ($formulas as $formula)
+                                            <option value="{{$formula->id}}"> {{$formula->nombre}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="modal-input-comentarios">Comentarios</label>
@@ -330,11 +330,24 @@
             var id = row.children('#id');
             var nombre = row.children("#nombre");
             var comentarios = row.children("#comentarios");
+            var formula = row.children("#formula");
 
             // fill the data in the input fields
             $("#modal-input-id").val(id[0]['innerHTML']);
             $("#modal-input-nombre").val(nombre[0]['innerHTML']);
             $("#modal-input-comentarios").val(comentarios[0]['innerHTML']);
+
+            $("option:selected").removeAttr("selected");
+            var formulasOp =  $('#modal-input-formula').html();
+
+            $('#modal-input-formula').empty(); //remove all child nodes
+            $('#modal-input-formula').append(formulasOp);
+            $('#modal-input-formula').trigger("chosen:updated");
+
+            $("#modal-input-formula option").filter(function() {
+                return this.text.replace(/\s+/g,' ').trim() == formula[0]['innerHTML'].replace(/\s+/g,' ').trim();
+            }).attr('selected', true);
+            $('#modal-input-formula').trigger("chosen:updated");
 
             $("#edit-form").attr('action', 'tipo-alimentaciones/' + id[0]['innerHTML']);
         });
