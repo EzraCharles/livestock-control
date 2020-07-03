@@ -21,6 +21,7 @@ class CreateFormulasTable extends Migration
             $table->float('importe');
             //$table->float('precio_kilo');
             $table->integer('kilogramos');
+            $table->string('comentarios')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

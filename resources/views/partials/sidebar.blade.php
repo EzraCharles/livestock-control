@@ -92,7 +92,7 @@
                         <i class="nav-icon fas fa-landmark"></i> Corrales </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="{{ route('formulas.index') }}">
                         <i class="nav-icon fas fa-seedling"></i> Fórmulas </a>
                     </li>
                     <li class="nav-item">

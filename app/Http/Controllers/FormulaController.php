@@ -14,7 +14,8 @@ class FormulaController extends Controller
      */
     public function index()
     {
-        //
+        $formulas = \App\Formula::all();
+        return view('formulas.index', compact(['formulas']));
     }
 
     /**
@@ -24,7 +25,7 @@ class FormulaController extends Controller
      */
     public function create()
     {
-        //
+        return view('formulas.create');
     }
 
     /**
@@ -44,9 +45,10 @@ class FormulaController extends Controller
      * @param  \App\Formula  $formula
      * @return \Illuminate\Http\Response
      */
-    public function show(Formula $formula)
+    public function show($id)
     {
-        //
+        $formula = \App\Formula::find($id);
+        return view('formulas.show', compact('formula'));
     }
 
     /**
@@ -67,9 +69,24 @@ class FormulaController extends Controller
      * @param  \App\Formula  $formula
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Formula $formula)
+    public function update(Request $request)
     {
-        //
+        $validator = $request->validate([
+            'nombre' => 'required|max:255|min:4',
+            'proteina' => 'required|numeric',
+            'grasa' => 'required|numeric',
+            'kilogramos' => 'required|numeric',
+            'comentarios' => 'nullable|max:255|min:4',
+        ]);
+
+        try {
+            $formula = \App\Formula::whereId($request->id)->update($request->except('_token', '_method'));
+            alert()->success('Fórmula editada exitosamente!')->persistent('Cerrar');
+            return back();
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal!')->persistent('Cerrar');
+            return back();
+        }
     }
 
     /**
@@ -78,8 +95,15 @@ class FormulaController extends Controller
      * @param  \App\Formula  $formula
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Formula $formula)
+    public function destroy($id)
     {
-        //
+        try {
+            $formula = \App\Formula::whereId($id)->delete();
+            alert()->success('Fórmula eliminada exitosamente!')->persistent('Cerrar');
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal!')->persistent('Cerrar');
+        }
+
+        return back();
     }
 }
