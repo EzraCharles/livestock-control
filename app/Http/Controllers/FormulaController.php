@@ -25,7 +25,8 @@ class FormulaController extends Controller
      */
     public function create()
     {
-        return view('formulas.create');
+        $precios = \App\Precio::all();
+        return view('formulas.create', compact(['precios']));
     }
 
     /**
@@ -106,4 +107,11 @@ class FormulaController extends Controller
 
         return back();
     }
+
+    public function componentes(Request $request)
+    {
+        $componentes = \App\Formulacion::where('formula_id', $request['input'])->with('precio')->get();
+        echo json_encode($componentes);
+    }
+
 }

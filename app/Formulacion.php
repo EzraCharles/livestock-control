@@ -20,4 +20,12 @@ class Formulacion extends Model
     {
         return $this->belongsTo('App\Formula');
     }
+
+    /**
+     * Get the "precio"/price of the "Formulacion".
+     */
+    public function precio()
+    {
+        return $this->belongsTo('App\Precio');
+    }
 }

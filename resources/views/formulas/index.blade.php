@@ -203,13 +203,45 @@
         </div>
     </div>
 
-
+    <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" id="componentes-modal">
+        <div class="modal-dialog modal-lg" >
+            <div class="modal-content" >
+                <div class="modal-header">
+                    <h4 class="modal-title" align="center"><b>Componentes de Fórmula</b></h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" >
+                    <form id="frm-categories" role="form">
+                        <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                    {{-- {{dd($project->users)}} --}}
+                        <table id="myTableComponentes" class="table table-striped table-hover table-condensed" style="text-align: center; vertical-align: middle; margin-bottom: 0px";>
+                            <thead>
+                                <tr>
+                                <th><strong>ID</strong></th>
+                                <th><strong>Concepto</strong></th>
+                                <th><strong>Kilogramos</strong></th>
+                                <th><strong>Porcentaje</strong></th>
+                                <th><strong>Importe</strong></th>
+                                <th><strong>Borrar</strong></th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <br/>
+                    </form>
+                    <button  style="float: right;" type="button" class="btn btn-warning" id="link-category">Añadir Componente</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </main>
 
 <div class="modal loadingmodal"></div>
 
 <script>
+    var f_id = null;
 
     $(document).ready(function() {
         /**
@@ -361,6 +393,127 @@
         $('#delete-modal').on('hide.bs.modal', function() {
             $('.delete-item-trigger-clicked').removeClass('delete-item-trigger-clicked')
             $("#delete-form").trigger("reset");
+        });
+
+
+        // COMPONENTES
+        $(document).on('click', "#componentes-item", function() {
+            $(this).addClass('componente-item-trigger-clicked'); //useful for identifying which trigger was clicked and consequently grab data from the correct row and not the wrong one.
+            $('#componentes-modal').modal()
+        });
+
+        $('#componentes-modal').on('show.bs.modal', function() {
+
+            var el = $(".componente-item-trigger-clicked"); // See how its usefull right here?
+            var row = el.closest(".data-row");
+
+            // get the data
+            f_id = row.children('#id')[0]['innerHTML'];
+
+            $("#myTableComponentes").DataTable().destroy();
+            //$("#modal-input-search").focus();
+
+            $("#myTableComponentes").DataTable({
+                "initComplete": function (settings, json) {
+                    $("#myTableComponentes").wrap("<div style='overflow:auto; width:100%;position:relative;'></div>");
+                },
+                "ajax": {
+                    "url": "componentes",
+                    "dataType": "json",
+                    "type": "GET",
+                    "data":{ input: f_id },
+                    "dataSrc" : ""
+                },
+                "columns": [
+                    {"data": "id"},
+                    {"data": "precio.concepto"},
+                    {"data": "kilogramos"},
+                    {"data": "porcentaje"},
+                    {"data": "importe"},
+                    {
+                        "data": null,
+                        "render": function() {
+                            return `
+                            <button type="button" class="btn btn-danger"  id="delete-item-comp">
+                            <i class="fa fa-trash"></i>
+                            </button>
+                            `
+                        }
+                    }
+                ],
+                "deferRender": true,
+                "language": {
+                    "sProcessing":    "Procesando...",
+                    "sLengthMenu":    "Mostrar _MENU_ registros",
+                    "sZeroRecords":   "No se encontraron resultados",
+                    "sEmptyTable":    "Ningún dato disponible en esta tabla",
+                    "sInfo":          "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    "sInfoEmpty":     "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered":  "(filtrado de un total de _MAX_ registros)",
+                    "sInfoPostFix":   "",
+                    "sSearch":        "Buscar:",
+                    "sUrl":           "",
+                    "sInfoThousands":  ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst":    "Primero",
+                        "sLast":    "Último",
+                        "sNext":    "Siguiente",
+                        "sPrevious": "Anterior"
+                    },
+                    "oAria": {
+                        "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                    }
+                },
+                //dom: 'Bfrtip',
+                /* buttons: [
+                'copy', 'excel', 'csv', 'print'
+                ] */
+
+            });
+
+        });
+
+        $(document).on('click',"[id='delete-item-comp']", function () {
+            var data = table.row($(this).parents('tr')).data();
+            var id = data['id'];
+
+            $.ajax({
+                type: 'POST',
+                url: 'remover_componente',
+                dataType: 'json',
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    input: id,
+                    fid: f_id
+                },
+                success: function(data) {
+                    $("#componentes-modal").modal('hide');
+                    //console.log(data);
+
+                    if(data.includes("Success")){
+                        swal({
+                            title: "",
+                            text: "Componente removido de la Fórmula exitosamente!",
+                            icon: "success",
+                            type: "success"
+                        }).then(() => {
+                            //$("#show-categories-button").click();
+                        });
+                    }
+                    else{
+                        swal({
+                            tite: "",
+                            text: "Componente no removido de la Fórmula porque debe de existir al menos uno!",
+                            icon: "error",
+                            type: "error"
+                        }).then(() => {
+                            //$("#show-categories-button").click();
+                        });
+                    }
+                }
+            });
         });
 
     });

@@ -16,6 +16,7 @@ class CreatePreciosTable extends Migration
         Schema::create('precios', function (Blueprint $table) {
             $table->increments('id');
             $table->string('concepto');
+            $table->string('tipo');
             $table->float('precio');
             $table->integer('factor')->default(1); // unidad (precio se divide entre factor para cada aplicacion o uso)
             $table->boolean('rango')->default(false);
