@@ -33,5 +33,6 @@ Route::resource('tipo-personas', 'TipoPersonaController')->except(['create', 'ed
 
 Route::resource('formulas', 'FormulaController')->except(['edit']);
 Route::get('componentes', 'FormulaController@componentes');
+Route::post('remover_componente', 'FormulaController@removerComponente');
 
 Route::resource('animales', 'AnimalController');

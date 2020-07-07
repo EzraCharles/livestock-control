@@ -114,4 +114,16 @@ class FormulaController extends Controller
         echo json_encode($componentes);
     }
 
+    public function removerComponente(Request $request)
+    {
+        $formulacion = \App\Formulacion::find($request['input']);
+
+        if ($request['fid'] == $formulacion->formula->id) {
+            $formulacion->forceDelete();
+            echo json_encode('success');
+        }
+        else {
+            echo json_encode('error');
+        }
+    }
 }

@@ -224,7 +224,7 @@
                                 <th><strong>Kilogramos</strong></th>
                                 <th><strong>Porcentaje</strong></th>
                                 <th><strong>Importe</strong></th>
-                                <th><strong>Borrar</strong></th>
+                                <th><strong>Acciones</strong></th>
                                 </tr>
                             </thead>
                         </table>
@@ -236,12 +236,67 @@
         </div>
     </div>
 
+    <div class="modal fade" id="edit-comp-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" align="center"><b>Editar Componente</b></h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="edit-comp-form" role="form" action="#" method="post">
+                        <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                        @method('PUT')
+
+                        <div class="box-body">
+                            <div class="form-group" hidden>
+                                <label for="modal-input-id">ID</label>
+                                <input type="text" class="form-control" id="modal-input-id" name="id" readonly>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-12">
+                                    <label for="modal-input-nombre">Nombre</label>
+                                    <input type="text" class="form-control" id="modal-input-nombre" name="nombre" required>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-4">
+                                    <label for="modal-input-proteina">Proteína</label>
+                                    <input type="number" min="0" step="0.01" class="form-control" id="modal-input-proteina" name="proteina">
+                                </div>
+                                <div class="form-group col-4">
+                                    <label for="modal-input-grasa">Grasa</label>
+                                    <input type="number" min="0" step="0.01" class="form-control" id="modal-input-grasa" name="grasa">
+                                </div>
+                                <div class="form-group col-4">
+                                    <label for="modal-input-kilogramos">Kilogramos</label>
+                                    <input type="number" min="1" step="1" class="form-control" id="modal-input-kilogramos" name="kilogramos">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="modal-input-comentarios">Comentarios</label>
+                                <textarea type="text" class="form-control" id="modal-input-comentarios" name="comentarios"></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </main>
 
 <div class="modal loadingmodal"></div>
 
 <script>
     var f_id = null;
+    var table = "";
 
     $(document).ready(function() {
         /**
@@ -413,7 +468,7 @@
             $("#myTableComponentes").DataTable().destroy();
             //$("#modal-input-search").focus();
 
-            $("#myTableComponentes").DataTable({
+            table = $("#myTableComponentes").DataTable({
                 "initComplete": function (settings, json) {
                     $("#myTableComponentes").wrap("<div style='overflow:auto; width:100%;position:relative;'></div>");
                 },
@@ -434,9 +489,14 @@
                         "data": null,
                         "render": function() {
                             return `
-                            <button type="button" class="btn btn-danger"  id="delete-item-comp">
-                            <i class="fa fa-trash"></i>
-                            </button>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-info"  id="edit-item-comp">
+                                    <i class="fa fa-edit"></i>
+                                </button>
+                                <button type="button" class="btn btn-danger"  id="delete-item-comp">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </div>
                             `
                         }
                     }
@@ -478,42 +538,85 @@
         $(document).on('click',"[id='delete-item-comp']", function () {
             var data = table.row($(this).parents('tr')).data();
             var id = data['id'];
+            swal({
+                title: "¿Está seguro de eliminar este elemento?",
+                text: "Este elemento se eliminará para siempre.",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            }).then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        type: 'POST',
+                        url: 'remover_componente',
+                        dataType: 'json',
+                        data: {
+                            "_token": "{{ csrf_token() }}",
+                            input: id,
+                            fid: f_id
+                        },
+                        success: function(data) {
+                            $("#componentes-modal").modal('hide');
 
-            $.ajax({
-                type: 'POST',
-                url: 'remover_componente',
-                dataType: 'json',
-                data: {
-                    "_token": "{{ csrf_token() }}",
-                    input: id,
-                    fid: f_id
-                },
-                success: function(data) {
-                    $("#componentes-modal").modal('hide');
-                    //console.log(data);
-
-                    if(data.includes("Success")){
-                        swal({
-                            title: "",
-                            text: "Componente removido de la Fórmula exitosamente!",
-                            icon: "success",
-                            type: "success"
-                        }).then(() => {
-                            //$("#show-categories-button").click();
-                        });
-                    }
-                    else{
-                        swal({
-                            tite: "",
-                            text: "Componente no removido de la Fórmula porque debe de existir al menos uno!",
-                            icon: "error",
-                            type: "error"
-                        }).then(() => {
-                            //$("#show-categories-button").click();
-                        });
-                    }
+                            if(data.includes("success")){
+                                swal({
+                                    title: "",
+                                    text: "Componente removido de la Fórmula exitosamente!",
+                                    icon: "success",
+                                    type: "success"
+                                }).then(() => {
+                                    $("#componentes-modal").modal('show');
+                                });
+                            }
+                            else{
+                                swal({
+                                    tite: "",
+                                    text: "Componente no removido de la Fórmula porque debe de existir al menos uno!",
+                                    icon: "error",
+                                    type: "error"
+                                }).then(() => {
+                                    $("#componentes-modal").modal('show');
+                                });
+                            }
+                        }
+                    });
                 }
             });
+        });
+
+        // EDDIT COMPONENT OF FORMULA
+        $(document).on('click',"[id='edit-item-comp']", function () {
+            $('#edit-comp-modal').modal()
+        });
+
+        // on modal show
+        $('#edit-comp-modal').on('show.bs.modal', function() {
+            var data = table.row($(this).parents('tr')).data();
+            var id = data['id'];
+
+            // get the data
+            var id = row.children('#id');
+            var nombre = row.children("#nombre");
+            var proteina = row.children("#proteina");
+            var grasa = row.children("#grasa");
+            var importe = row.children("#importe");
+            var kilogramos = row.children("#kilogramos");
+            var comentarios = row.children("#comentarios");
+
+            $("#modal-input-id").val(id[0]['innerHTML']);
+            $("#modal-input-nombre").val(nombre[0]['innerHTML']);
+            $("#modal-input-proteina").val(proteina[0]['innerHTML']);
+            $("#modal-input-grasa").val(grasa[0]['innerHTML']);
+            $("#modal-input-importe").val(importe[0]['innerHTML']);
+            $("#modal-input-kilogramos").val(kilogramos[0]['innerHTML']);
+            $("#modal-input-comentarios").val(comentarios[0]['innerHTML']);
+
+            $("#edit-comp-form").attr('action', 'formulacion/' + id[0]['innerHTML']);
+        });
+
+        // on modal hide
+        $('#edit-comp-modal').on('hide.bs.modal', function() {
+            $("#edit-comp-form").trigger("reset");
         });
 
     });
