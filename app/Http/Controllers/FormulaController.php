@@ -15,7 +15,8 @@ class FormulaController extends Controller
     public function index()
     {
         $formulas = \App\Formula::all();
-        return view('formulas.index', compact(['formulas']));
+        $precios = \App\Precio::where('tipo', 'Formulación')->get();
+        return view('formulas.index', compact(['formulas', 'precios']));
     }
 
     /**
@@ -76,7 +77,6 @@ class FormulaController extends Controller
             'nombre' => 'required|max:255|min:4',
             'proteina' => 'required|numeric',
             'grasa' => 'required|numeric',
-            'kilogramos' => 'required|numeric',
             'comentarios' => 'nullable|max:255|min:4',
         ]);
 

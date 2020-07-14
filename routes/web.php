@@ -32,6 +32,8 @@ Route::resource('tipo-alimentaciones', 'TipoAlimentacionController')->except(['c
 Route::resource('tipo-personas', 'TipoPersonaController')->except(['create', 'edit']);
 
 Route::resource('formulas', 'FormulaController')->except(['edit']);
+Route::resource('formulaciones', 'FormulacionController')->only(['update', 'destroy', 'store']);
+
 Route::get('componentes', 'FormulaController@componentes');
 Route::post('remover_componente', 'FormulaController@removerComponente');
 

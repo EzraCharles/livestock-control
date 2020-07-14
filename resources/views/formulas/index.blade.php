@@ -17,7 +17,14 @@
                                 </a>
                             </div>
                         </div>
-
+                        {{-- @if (\Session::has('formula'))
+                            <input type="text" value="{{ \Session::get('formula') }}">
+                            <script>
+                                    $(document).ready(function() {
+                                        $("#edit-form").trigger("reset");
+                                    });
+                            </script>
+                        @endif --}}
                         @if($errors->any())
                             <br/>
                             <div class="alert alert-danger alert-block" style="margin-left: 30px; margin-right: 30px;">
@@ -53,38 +60,38 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($formulas as $formula)
-                                        <tr class="data-row">
-                                            <td style="text-align: center; vertical-align: middle; " id="id">{{ $formula->id }}</td>
-                                            <td style="text-align: center; vertical-align: middle; " id="nombre">{{ $formula->nombre }}</td>
-                                            <td style="text-align: center; vertical-align: middle; " id="proteina">{{ $formula->proteina }}</td>
-                                            <td style="text-align: center; vertical-align: middle; " id="grasa">{{ $formula->grasa }}</td>
-                                            <td style="text-align: center; vertical-align: middle; " id="importe">{{ $formula->importe }}</td>
-                                            <td style="text-align: center; vertical-align: middle; " id="kilogramos">{{ $formula->kilogramos }}</td>
-                                            <td style="text-align: center; vertical-align: middle; " id="comentarios">{{ $formula->comentarios }}</td>
-                                            <td style="text-align: center; vertical-align: middle; " id="created_at">{{ $formula->created_at }}</td>
-                                            <td>
-                                                <div class="btn-group">
-                                                    <button type="button" class="btn btn-info" data-toggle="modal" id="componentes-item">
-                                                        <i class="fa fa-list-ul"></i>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="btn-group">
-                                                    <a href="{{ url('formulas/'.$formula->id) }}" style="color: inherit;">
-                                                        <button type="button" class="btn btn-success" data-toggle="modal" id="show-item">
-                                                            <i class="far fa-eye"></i>
+                                            <tr class="data-row" id="{{ $formula->id }}">
+                                                <td style="text-align: center; vertical-align: middle; " id="id">{{ $formula->id }}</td>
+                                                <td style="text-align: center; vertical-align: middle; " id="nombre">{{ $formula->nombre }}</td>
+                                                <td style="text-align: center; vertical-align: middle; " id="proteina">{{ $formula->proteina }}</td>
+                                                <td style="text-align: center; vertical-align: middle; " id="grasa">{{ $formula->grasa }}</td>
+                                                <td style="text-align: center; vertical-align: middle; " id="importe">{{ $formula->importe }}</td>
+                                                <td style="text-align: center; vertical-align: middle; " id="kilogramos">{{ $formula->kilogramos }}</td>
+                                                <td style="text-align: center; vertical-align: middle; " id="comentarios">{{ $formula->comentarios }}</td>
+                                                <td style="text-align: center; vertical-align: middle; " id="created_at">{{ $formula->created_at }}</td>
+                                                <td>
+                                                    <div class="btn-group">
+                                                        <button type="button" class="btn btn-info" data-toggle="modal" id="componentes-item">
+                                                            <i class="fa fa-list-ul"></i>
                                                         </button>
-                                                    </a>
-                                                    <button type="button" class="btn btn-info" data-toggle="modal" id="edit-item">
-                                                        <i class="fa fa-edit"></i>
-                                                    </button>
-                                                    <button type="button" class="btn btn-danger" data-toggle="modal" id="delete-item">
-                                                        <i class="fa fa-trash"></i>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="btn-group">
+                                                        <a href="{{ url('formulas/'.$formula->id) }}" style="color: inherit;">
+                                                            <button type="button" class="btn btn-success" data-toggle="modal" id="show-item">
+                                                                <i class="far fa-eye"></i>
+                                                            </button>
+                                                        </a>
+                                                        <button type="button" class="btn btn-info" data-toggle="modal" id="edit-item">
+                                                            <i class="fa fa-edit"></i>
+                                                        </button>
+                                                        <button type="button" class="btn btn-danger" data-toggle="modal" id="delete-item">
+                                                            <i class="fa fa-trash"></i>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
@@ -122,17 +129,13 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="form-group col-4">
+                                <div class="form-group col-6">
                                     <label for="modal-input-proteina">Proteína</label>
                                     <input type="number" min="0" step="0.01" class="form-control" id="modal-input-proteina" name="proteina">
                                 </div>
-                                <div class="form-group col-4">
+                                <div class="form-group col-6">
                                     <label for="modal-input-grasa">Grasa</label>
                                     <input type="number" min="0" step="0.01" class="form-control" id="modal-input-grasa" name="grasa">
-                                </div>
-                                <div class="form-group col-4">
-                                    <label for="modal-input-kilogramos">Kilogramos</label>
-                                    <input type="number" min="1" step="1" class="form-control" id="modal-input-kilogramos" name="kilogramos">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -213,30 +216,26 @@
                     </button>
                 </div>
                 <div class="modal-body" >
-                    <form id="frm-categories" role="form">
-                        <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-                    {{-- {{dd($project->users)}} --}}
-                        <table id="myTableComponentes" class="table table-striped table-hover table-condensed" style="text-align: center; vertical-align: middle; margin-bottom: 0px";>
-                            <thead>
-                                <tr>
-                                <th><strong>ID</strong></th>
-                                <th><strong>Concepto</strong></th>
-                                <th><strong>Kilogramos</strong></th>
-                                <th><strong>Porcentaje</strong></th>
-                                <th><strong>Importe</strong></th>
-                                <th><strong>Acciones</strong></th>
-                                </tr>
-                            </thead>
-                        </table>
-                        <br/>
-                    </form>
+                    <table id="myTableComponentes" class="table table-striped table-hover table-condensed" style="text-align: center; vertical-align: middle; margin-bottom: 0px";>
+                        <thead>
+                            <tr>
+                            <th><strong>ID</strong></th>
+                            <th><strong>Concepto</strong></th>
+                            <th><strong>Kilogramos</strong></th>
+                            <th><strong>Porcentaje</strong></th>
+                            <th><strong>Importe</strong></th>
+                            <th><strong>Acciones</strong></th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <br/>
                     <button  style="float: right;" type="button" class="btn btn-warning" id="link-category">Añadir Componente</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="edit-comp-modal">
+    <div class="modal fade center" id="edit-comp-modal">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -252,32 +251,28 @@
 
                         <div class="box-body">
                             <div class="form-group" hidden>
-                                <label for="modal-input-id">ID</label>
-                                <input type="text" class="form-control" id="modal-input-id" name="id" readonly>
+                                <label for="modal-input-comp-id">ID</label>
+                                <input type="text" class="form-control" id="modal-input-comp-id" name="id" readonly>
                             </div>
                             <div class="row">
                                 <div class="form-group col-12">
-                                    <label for="modal-input-nombre">Nombre</label>
-                                    <input type="text" class="form-control" id="modal-input-nombre" name="nombre" required>
+                                    <label for="modal-input-comp-precio">Concepto</label>
+                                    <select class="form-control select-objects" id="modal-input-comp-precio" name="precio_id" required>
+                                        @foreach ($precios as $precio)
+                                            <option value="{{$precio->id}}"> {{$precio->concepto}}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="form-group col-4">
-                                    <label for="modal-input-proteina">Proteína</label>
-                                    <input type="number" min="0" step="0.01" class="form-control" id="modal-input-proteina" name="proteina">
+                                <div class="form-group col-6">
+                                    <label for="modal-input-comp-porcentaje">Porcentaje</label>
+                                    <input type="number" min="0" step="0.01" class="form-control" id="modal-input-comp-porcentaje" name="porcentaje">
                                 </div>
-                                <div class="form-group col-4">
-                                    <label for="modal-input-grasa">Grasa</label>
-                                    <input type="number" min="0" step="0.01" class="form-control" id="modal-input-grasa" name="grasa">
+                                <div class="form-group col-6">
+                                    <label for="modal-input-comp-kilogramos">Kilogramos</label>
+                                    <input type="number" min="1" step="1" class="form-control" id="modal-input-comp-kilogramos" name="kilogramos">
                                 </div>
-                                <div class="form-group col-4">
-                                    <label for="modal-input-kilogramos">Kilogramos</label>
-                                    <input type="number" min="1" step="1" class="form-control" id="modal-input-kilogramos" name="kilogramos">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="modal-input-comentarios">Comentarios</label>
-                                <textarea type="text" class="form-control" id="modal-input-comentarios" name="comentarios"></textarea>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -453,8 +448,10 @@
 
         // COMPONENTES
         $(document).on('click', "#componentes-item", function() {
+            $('.componente-item-trigger-clicked').removeClass('componente-item-trigger-clicked');
+
             $(this).addClass('componente-item-trigger-clicked'); //useful for identifying which trigger was clicked and consequently grab data from the correct row and not the wrong one.
-            $('#componentes-modal').modal()
+            $('#componentes-modal').modal();
         });
 
         $('#componentes-modal').on('show.bs.modal', function() {
@@ -480,11 +477,37 @@
                     "dataSrc" : ""
                 },
                 "columns": [
-                    {"data": "id"},
-                    {"data": "precio.concepto"},
-                    {"data": "kilogramos"},
-                    {"data": "porcentaje"},
-                    {"data": "importe"},
+                    {
+                        "data": "id",
+                        "createdCell":  function (td, cellData, rowData, row, col) {
+                            $(td).attr('id', 'id');
+                            //$(td).attr('hidden', 'true');
+                        }
+                    },
+                    {
+                        "data": "precio.concepto",
+                        "createdCell":  function (td, cellData, rowData, row, col) {
+                            $(td).attr('id', 'precio');
+                        }
+                    },
+                    {
+                        "data": "kilogramos",
+                        "createdCell":  function (td, cellData, rowData, row, col) {
+                            $(td).attr('id', 'kilogramos');
+                        }
+                    },
+                    {
+                        "data": "porcentaje",
+                        "createdCell":  function (td, cellData, rowData, row, col) {
+                            $(td).attr('id', 'porcentaje');
+                        }
+                    },
+                    {
+                        "data": "importe",
+                        "createdCell":  function (td, cellData, rowData, row, col) {
+                            $(td).attr('id', 'importe');
+                        }
+                    },
                     {
                         "data": null,
                         "render": function() {
@@ -501,6 +524,9 @@
                         }
                     }
                 ],
+                'createdRow': function( row, data, dataIndex ) {
+                    $(row).addClass('data-row');
+                },
                 "deferRender": true,
                 "language": {
                     "sProcessing":    "Procesando...",
@@ -526,13 +552,62 @@
                         "sSortDescending": ": Activar para ordenar la columna de manera descendente"
                     }
                 },
-                //dom: 'Bfrtip',
-                /* buttons: [
-                'copy', 'excel', 'csv', 'print'
-                ] */
+                dom: 'Blfrtip',
+                buttons: [
+                    {
+                        extend: 'csv',
+                        charset: 'UTF-8',
+                        bom: true,
+                        filename: 'Formulacion-Grupo-RES',
+                        exportOptions: {
+                            columns: [ 1, 2, 3, 4, 5, 6, 7 ]
+                        }
+                    },
+                    {
+                        extend: 'excel',
+                        charset: 'UTF-8',
+                        bom: true,
+                        filename: 'Formulacion-Grupo-RES',
+                        exportOptions: {
+                            columns: [ 1, 2, 3, 4, 5, 6, 7 ]
+                        }
+                    },
+                    {
+                        extend: 'pdf',
+                        customize: function(doc) {
+                            doc.content[1].margin = [ 50, 0, 50, 0 ] //left, top, right, bottom
+                        },
+                        charset: 'UTF-8',
+                        bom: true,
+                        filename: 'Formulacion-Grupo-RES',
+                        exportOptions: {
+                            columns: [ 1, 2, 3, 4, 5, 6, 7 ]
+                        }
+                    },
+                    {
+                        extend: 'print',
+                        text: 'Imprimir',
+                        charset: 'UTF-8',
+                        bom: true,
+                        filename: 'Formulacion-Grupo-RES',
+                        exportOptions: {
+                            columns: [ 1, 2, 3, 4, 5, 6, 7 ]
+                        }
+                    },
+                ],
+                initComplete: function () {
+                    var btns = $('.dt-button');
+                    btns.addClass('btn grupo-res');
+                    btns.removeClass('dt-button');
+                }
 
             });
 
+        });
+
+        // on modal hide
+        $('#componentes-modal').on('hide.bs.modal', function() {
+            //$('.componente-item-trigger-clicked').removeClass('componente-item-trigger-clicked');
         });
 
         $(document).on('click',"[id='delete-item-comp']", function () {
@@ -586,37 +661,92 @@
 
         // EDDIT COMPONENT OF FORMULA
         $(document).on('click',"[id='edit-item-comp']", function () {
-            $('#edit-comp-modal').modal()
+            $(this).addClass('edit-comp-item-trigger-clicked'); //useful for identifying which trigger was clicked and consequently grab data from the correct row and not the wrong one.
+            $("#componentes-modal").modal('hide');
+            $('#edit-comp-modal').modal();
         });
 
         // on modal show
         $('#edit-comp-modal').on('show.bs.modal', function() {
-            var data = table.row($(this).parents('tr')).data();
-            var id = data['id'];
+
+            var el = $(".edit-comp-item-trigger-clicked"); // See how its usefull right here?
+            var row = el.closest(".data-row");
 
             // get the data
             var id = row.children('#id');
-            var nombre = row.children("#nombre");
-            var proteina = row.children("#proteina");
-            var grasa = row.children("#grasa");
-            var importe = row.children("#importe");
+            var precio = row.children("#precio");
+            var porcentaje = row.children("#porcentaje");
             var kilogramos = row.children("#kilogramos");
-            var comentarios = row.children("#comentarios");
 
-            $("#modal-input-id").val(id[0]['innerHTML']);
-            $("#modal-input-nombre").val(nombre[0]['innerHTML']);
-            $("#modal-input-proteina").val(proteina[0]['innerHTML']);
-            $("#modal-input-grasa").val(grasa[0]['innerHTML']);
-            $("#modal-input-importe").val(importe[0]['innerHTML']);
-            $("#modal-input-kilogramos").val(kilogramos[0]['innerHTML']);
-            $("#modal-input-comentarios").val(comentarios[0]['innerHTML']);
+            $("#modal-input-comp-id").val(id[0]['innerHTML']);
+            $("#modal-input-comp-porcentaje").val(porcentaje[0]['innerHTML']);
+            $("#modal-input-comp-kilogramos").val(kilogramos[0]['innerHTML']);
 
-            $("#edit-comp-form").attr('action', 'formulacion/' + id[0]['innerHTML']);
+            $("option:selected").removeAttr("selected");
+            var preciosOp =  $('#modal-input-comp-precio').html();
+
+            $('#modal-input-comp-precio').empty(); //remove all child nodes
+            $('#modal-input-comp-precio').append(preciosOp);
+            $('#modal-input-comp-precio').trigger("chosen:updated");
+
+            $("#modal-input-comp-precio option").filter(function() {
+                return this.text.replace(/\s+/g,' ').trim() == precio[0]['innerHTML'].replace(/\s+/g,' ').trim();
+            }).attr('selected', true);
+            $('#modal-input-comp-precio').trigger("chosen:updated");
+
+            $("#edit-comp-form").attr('action', 'formulaciones/' + id[0]['innerHTML']);
         });
 
         // on modal hide
         $('#edit-comp-modal').on('hide.bs.modal', function() {
+            $('.edit-comp-item-trigger-clicked').removeClass('edit-comp-item-trigger-clicked')
             $("#edit-comp-form").trigger("reset");
+
+            setTimeout(function(){
+                $("#componentes-modal").modal('show');
+            }, 500);
+        });
+
+        $('#edit-comp-form').submit(function(e) {
+            e.preventDefault(); // avoid to execute the actual submit of the form.
+
+            var form = $(this);
+            var url = form.attr('action');
+
+            $.ajax({
+                type: "PUT",
+                url: url,
+                data: form.serialize(), // serializes the form's elements.
+                dataType: 'json',
+                success: function(data){
+                    console.log(data);
+                    $('body').removeClass('loading');
+
+                    swal({
+                        title: "",
+                        text: "Componente editado exitosamente!",
+                        icon: "success",
+                        type: "success"
+                    }).then(() => {
+                        $("#edit-comp-modal").modal('hide');
+
+                        $('#' + data.id).find('#importe').text(data.importe);
+                        $('#' + data.id).find('#kilogramos').text(data.kilogramos);
+                    });
+                },
+                error: function(data){
+                    $('body').removeClass('loading');
+
+                    swal({
+                        tite: "",
+                        text: "Ocurrió un error, intenta nuevamente más tarde!",
+                        icon: "error",
+                        type: "error"
+                    }).then(() => {
+                        $("#edit-comp-modal").modal('hide');
+                    });
+                }
+            });
         });
 
     });

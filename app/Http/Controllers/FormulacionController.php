@@ -67,9 +67,34 @@ class FormulacionController extends Controller
      * @param  \App\Formulacion  $formulacion
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Formulacion $formulacion)
+    public function update(Request $request)
     {
-        //
+        $validator = $request->validate([
+            'id' => 'required|numeric',
+            'precio_id' => 'required|numeric',
+            'porcentaje' => 'required|numeric',
+            'kilogramos' => 'required|numeric',
+        ]);
+
+        try {
+            $f = \App\Formulacion::whereId($request->id)->update($request->except('_token', '_method'));
+
+            $formulacion = \App\Formulacion::find($request->id);
+
+            $formulacion->importe = $formulacion->precio->precio / $formulacion->precio->factor * $formulacion->kilogramos;
+            $formulacion->save();
+
+            $formulacion->formula->importe = $formulacion->formula->formulaciones()->sum('importe');
+            $formulacion->formula->save();
+
+            $formulacion->formula->kilogramos = $formulacion->formula->formulaciones()->sum('kilogramos');
+            $formulacion->formula->save();
+
+            alert()->success('Componente de fórmula editado exitosamente!')->persistent('Cerrar');
+            echo json_encode($formulacion->formula);
+        } catch (\Throwable $th) {
+            echo json_encode('error');
+        }
     }
 
     /**
