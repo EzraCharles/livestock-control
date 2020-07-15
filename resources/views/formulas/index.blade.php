@@ -266,6 +266,7 @@
                             </thead>
                         </table>
                         <br/>
+                        <h5 id="proportional-relationship"></h5>
                         <button  style="float: right;" type="button" class="btn btn-warning" id="link-componente">Añadir Componente</button>
                     </div>
                 </div>
@@ -330,10 +331,21 @@
 <script>
     var f_id = null;
     var table = "";
+
     var porcentajeFinal = 0;
+    var kilogramosFinal = 0;
+
+    var tmpKg = 0;
+    var tmpPrc = 0;
+    var tmpTot = 0;
+    var tmpConc = 0;
+
+    var badKg = [];
 
     $(document).ready(function() {
         $('#create-componente').hide();
+        $('#proportional-relationship').hide();
+
         /**
         * for showing table, edit and delete item popup
         */
@@ -505,6 +517,10 @@
             $("#myTableComponentes").DataTable().destroy();
             //$("#modal-input-search").focus();
             porcentajeFinal = 0;
+            kilogramosFinal = 0;
+            badKg = [];
+            $('#proportional-relationship').hide();
+
             table = $("#myTableComponentes").DataTable({
                 "initComplete": function (settings, json) {
                     $("#myTableComponentes").wrap("<div style='overflow:auto; width:100%;position:relative;'></div>");
@@ -528,18 +544,22 @@
                         "data": "precio.concepto",
                         "createdCell":  function (td, cellData, rowData, row, col) {
                             $(td).attr('id', 'precio');
+                            tmpConc = cellData;
                         }
                     },
                     {
                         "data": "kilogramos",
                         "createdCell":  function (td, cellData, rowData, row, col) {
                             $(td).attr('id', 'kilogramos');
+                            tmpKg = cellData;
+                            kilogramosFinal += cellData;
                         }
                     },
                     {
                         "data": "porcentaje",
                         "createdCell":  function (td, cellData, rowData, row, col) {
                             $(td).attr('id', 'porcentaje');
+                            tmpPrc = cellData;
                             porcentajeFinal += cellData;
                         }
                     },
@@ -567,6 +587,9 @@
                 ],
                 'createdRow': function( row, data, dataIndex ) {
                     $(row).addClass('data-row');
+
+                    tmpTot = tmpKg * 100 / tmpPrc;
+                    badKg.push({concepto:tmpConc, total:tmpTot });
                 },
                 "deferRender": true,
                 "language": {
@@ -641,12 +664,37 @@
                     btns.addClass('btn grupo-res');
                     btns.removeClass('dt-button');
                     $('#porcentaje-total').text(" Sumatoria de los porcentajes: " + porcentajeFinal);
+
                     if (porcentajeFinal != 100) {
                         $('#porcentaje-total').css('color', 'red');
                     }
                     else{
                         $('#porcentaje-total').css('color', '#00f400');
+
+                        var repeated = [];
+                        var different = [];
+                        var conceptos = [];
+
+                        for (var i in badKg) {
+                            if (different.includes(badKg[i]["total"])) {
+                                repeated.push(badKg[i]["total"]);
+                            }
+                            else{
+                                different.push(badKg[i]["total"]);
+                                conceptos.push(badKg[i]["concepto"]);
+                            }
+                        }
+
+                        if(conceptos.length != 1){
+                            $('#proportional-relationship').text('Error de proporcionalidad: << ' + conceptos.join(" || ") + " >>");
+                            $('#proportional-relationship').css('color', 'red');
+                            $('#proportional-relationship').show();
+                        }
+                        else{
+                            $('#proportional-relationship').text('');
+                        }
                     }
+
                 }
 
             });
@@ -679,8 +727,8 @@
             }).then((willDelete) => {
                 if (willDelete) {
                     $.ajax({
-                        type: 'POST',
-                        url: 'remover_componente',
+                        type: 'DELETE',
+                        url: 'formulaciones/' + id,
                         dataType: 'json',
                         data: {
                             "_token": "{{ csrf_token() }}",
@@ -690,13 +738,16 @@
                         success: function(data) {
                             $("#componentes-modal").modal('hide');
 
-                            if(data.includes("success")){
+                            if(data != "error"){
                                 swal({
                                     title: "",
                                     text: "Componente removido de la Fórmula exitosamente!",
                                     icon: "success",
                                     type: "success"
                                 }).then(() => {
+                                    $('#' + data.id).find('#importe').text(data.importe);
+                                    $('#' + data.id).find('#kilogramos').text(data.kilogramos);
+
                                     $("#componentes-modal").modal('show');
                                 });
                             }
@@ -710,13 +761,25 @@
                                     $("#componentes-modal").modal('show');
                                 });
                             }
+                        },
+                        error: function(data) {
+                            $("#componentes-modal").modal('hide');
+
+                            swal({
+                                tite: "",
+                                text: "Oops, ocurrió un error, intente más tarde!",
+                                icon: "error",
+                                type: "error"
+                            }).then(() => {
+                                $("#componentes-modal").modal('show');
+                            });
                         }
                     });
                 }
             });
         });
 
-        // EDDIT COMPONENT OF FORMULA
+        // EDIT COMPONENT OF FORMULA
         $(document).on('click',"[id='edit-item-comp']", function () {
             $(this).addClass('edit-comp-item-trigger-clicked'); //useful for identifying which trigger was clicked and consequently grab data from the correct row and not the wrong one.
             $("#componentes-modal").modal('hide');

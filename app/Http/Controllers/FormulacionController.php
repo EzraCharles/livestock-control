@@ -112,24 +112,25 @@ class FormulacionController extends Controller
             'kilogramos' => 'required|numeric',
         ]);
 
-        //try {
-        $f = \App\Formulacion::whereId($request->id)->update($request->except('_token', '_method'));
+        try {
+            $f = \App\Formulacion::whereId($request->id)->update($request->except('_token', '_method'));
 
-        $formulacion = \App\Formulacion::find($request->id);
+            $formulacion = \App\Formulacion::find($request->id);
 
-        $formulacion->importe = $formulacion->precio->precio / $formulacion->precio->factor * $formulacion->kilogramos;
-        $formulacion->save();
+            $formulacion->importe = $formulacion->precio->precio / $formulacion->precio->factor * $formulacion->kilogramos;
+            $formulacion->save();
 
-        $formulacion->formula->importe = $formulacion->formula->formulaciones()->sum('importe');
-        $formulacion->formula->save();
+            $formulacion->formula->importe = $formulacion->formula->formulaciones()->sum('importe');
+            $formulacion->formula->save();
 
-        $formulacion->formula->kilogramos = $formulacion->formula->formulaciones()->sum('kilogramos');
-        $formulacion->formula->save();
+            $formulacion->formula->kilogramos = $formulacion->formula->formulaciones()->sum('kilogramos');
+            $formulacion->formula->save();
 
-        echo json_encode($formulacion->formula);
-        /* } catch (\Throwable $th) {
-            echo json_encode('error');
-        } */
+            echo json_encode($formulacion->formula);
+        } catch (\Throwable $th) {
+            //echo json_encode('error');
+            return response()->json(['error' => "Error"], 500);
+        }
     }
 
     /**
@@ -138,8 +139,31 @@ class FormulacionController extends Controller
      * @param  \App\Formulacion  $formulacion
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Formulacion $formulacion)
+    public function destroy(Request $request)
     {
-        //
+        $formulacion = \App\Formulacion::find($request['input']);
+
+        if ($request['fid'] == $formulacion->formula->id) {
+            if ($formulacion->formula->formulaciones()->count() == 1) {
+                echo json_encode("error");
+            }
+            else {
+                $formulacion->forceDelete();
+
+                $formula = \App\Formula::find($request['fid']);
+
+                $formula->importe = $formulacion->formula->formulaciones()->sum('importe');
+                $formula->save();
+
+                $formula->kilogramos = $formulacion->formula->formulaciones()->sum('kilogramos');
+                $formula->save();
+
+                echo json_encode($formula);
+            }
+        }
+        else {
+            //echo json_encode('error');
+            return response()->json(['error' => "Error"], 500);
+        }
     }
 }
