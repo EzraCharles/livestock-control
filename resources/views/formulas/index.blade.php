@@ -210,26 +210,64 @@
         <div class="modal-dialog modal-lg" >
             <div class="modal-content" >
                 <div class="modal-header">
-                    <h4 class="modal-title" align="center"><b>Componentes de Fórmula</b></h4>
+                    <h4 class="modal-title" align="center"><b>Componentes de Fórmula </b></h4>  <h5 style="padding-left: 70px" id="porcentaje-total"></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body" >
-                    <table id="myTableComponentes" class="table table-striped table-hover table-condensed" style="text-align: center; vertical-align: middle; margin-bottom: 0px";>
-                        <thead>
-                            <tr>
-                            <th><strong>ID</strong></th>
-                            <th><strong>Concepto</strong></th>
-                            <th><strong>Kilogramos</strong></th>
-                            <th><strong>Porcentaje</strong></th>
-                            <th><strong>Importe</strong></th>
-                            <th><strong>Acciones</strong></th>
-                            </tr>
-                        </thead>
-                    </table>
-                    <br/>
-                    <button  style="float: right;" type="button" class="btn btn-warning" id="link-category">Añadir Componente</button>
+                    <div id="create-componente">
+                        <form id="add-comp-form" role="form" action="{{ route('formulaciones.store') }}" method="post">
+                            <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                            @method('POST')
+
+                            <div class="box-body">
+                                <div class="form-group" hidden>
+                                    <label for="comp-formula-id">ID</label>
+                                    <input type="text" class="form-control" id="comp-formula-id" name="formula_id" readonly>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-4">
+                                        <label for="comp-precio">Concepto</label>
+                                        <select class="form-control select-objects" id="comp-precio" name="precio_id" required>
+                                            <option id="default-option" value="" disabled selected="selected">Eligir una opción...</option>
+                                            @foreach ($precios as $precio)
+                                                <option value="{{$precio->id}}"> {{$precio->concepto}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-4">
+                                        <label for="comp-porcentaje">Porcentaje</label>
+                                        <input type="number" min="0" step="0.01" class="form-control" id="comp-porcentaje" name="porcentaje">
+                                    </div>
+                                    <div class="form-group col-4">
+                                        <label for="comp-kilogramos">Kilogramos</label>
+                                        <input type="number" min="1" step="1" class="form-control" id="comp-kilogramos" name="kilogramos">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default pull-left" onclick="$('#create-componente').hide(); $('#components-table').show();">Cerrar</button>
+                                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div id="components-table">
+                        <table id="myTableComponentes" class="table table-striped table-hover table-condensed" style="text-align: center; vertical-align: middle; margin-bottom: 0px";>
+                            <thead>
+                                <tr>
+                                <th><strong>ID</strong></th>
+                                <th><strong>Concepto</strong></th>
+                                <th><strong>Kilogramos</strong></th>
+                                <th><strong>Porcentaje</strong></th>
+                                <th><strong>Importe</strong></th>
+                                <th><strong>Acciones</strong></th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <br/>
+                        <button  style="float: right;" type="button" class="btn btn-warning" id="link-componente">Añadir Componente</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -292,8 +330,10 @@
 <script>
     var f_id = null;
     var table = "";
+    var porcentajeFinal = 0;
 
     $(document).ready(function() {
+        $('#create-componente').hide();
         /**
         * for showing table, edit and delete item popup
         */
@@ -464,7 +504,7 @@
 
             $("#myTableComponentes").DataTable().destroy();
             //$("#modal-input-search").focus();
-
+            porcentajeFinal = 0;
             table = $("#myTableComponentes").DataTable({
                 "initComplete": function (settings, json) {
                     $("#myTableComponentes").wrap("<div style='overflow:auto; width:100%;position:relative;'></div>");
@@ -500,6 +540,7 @@
                         "data": "porcentaje",
                         "createdCell":  function (td, cellData, rowData, row, col) {
                             $(td).attr('id', 'porcentaje');
+                            porcentajeFinal += cellData;
                         }
                     },
                     {
@@ -599,6 +640,13 @@
                     var btns = $('.dt-button');
                     btns.addClass('btn grupo-res');
                     btns.removeClass('dt-button');
+                    $('#porcentaje-total').text(" Sumatoria de los porcentajes: " + porcentajeFinal);
+                    if (porcentajeFinal != 100) {
+                        $('#porcentaje-total').css('color', 'red');
+                    }
+                    else{
+                        $('#porcentaje-total').css('color', '#00f400');
+                    }
                 }
 
             });
@@ -607,6 +655,15 @@
 
         // on modal hide
         $('#componentes-modal').on('hide.bs.modal', function() {
+            $("#add-comp-form").trigger("reset");
+
+            $("#comp-precio option[id='default-option']").attr("selected", "selected");
+            $('#comp-precio').trigger("chosen:updated");
+
+            setTimeout(function(){
+                $("#create-componente").hide();
+                $('#components-table').show();
+            }, 500);
             //$('.componente-item-trigger-clicked').removeClass('componente-item-trigger-clicked');
         });
 
@@ -719,7 +776,6 @@
                 data: form.serialize(), // serializes the form's elements.
                 dataType: 'json',
                 success: function(data){
-                    console.log(data);
                     $('body').removeClass('loading');
 
                     swal({
@@ -744,6 +800,64 @@
                         type: "error"
                     }).then(() => {
                         $("#edit-comp-modal").modal('hide');
+                    });
+                }
+            });
+        });
+
+        $('#link-componente').on('click', function(){
+            $('#comp-formula-id').val(f_id);
+            $('#create-componente').show();
+            $('#components-table').hide();
+        });
+
+        $('#add-comp-form').submit(function(e) {
+            e.preventDefault(); // avoid to execute the actual submit of the form.
+
+            var form = $(this);
+            var url = form.attr('action');
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: form.serialize(), // serializes the form's elements.
+                dataType: 'json',
+                success: function(data){
+                    $('body').removeClass('loading');
+                    $("#create-componente").hide();
+                    $('#components-table').show();
+                    $('#componentes-modal').modal('hide');
+
+                    swal({
+                        title: "",
+                        text: "Componente de fórmula creado exitosamente!",
+                        icon: "success",
+                        type: "success"
+                    }).then(() => {
+                        setTimeout(function(){
+                            $('#componentes-modal').modal('show');
+                        }, 500);
+
+                        $('#' + data.id).find('#importe').text(data.importe);
+                        $('#' + data.id).find('#kilogramos').text(data.kilogramos);
+                    });
+                },
+                error: function(data){
+                    console.log(data.responseJSON.error);
+                    $('body').removeClass('loading');
+                    $("#create-componente").hide();
+                    $('#components-table').show();
+                    $('#componentes-modal').modal('hide');
+
+                    swal({
+                        tite: "",
+                        text: data.responseJSON.error,
+                        icon: "error",
+                        type: "error"
+                    }).then(() => {
+                        setTimeout(function(){
+                            $('#componentes-modal').modal('show');
+                        }, 500);
                     });
                 }
             });
