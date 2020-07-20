@@ -35,5 +35,6 @@ Route::resource('formulas', 'FormulaController')->except(['edit']);
 Route::resource('formulaciones', 'FormulacionController')->only(['update', 'destroy', 'store']);
 
 Route::get('componentes', 'FormulaController@componentes');
+Route::get('getPrecios', 'FormulaController@getPrecios');
 
 Route::resource('animales', 'AnimalController');

@@ -72,6 +72,7 @@
         $(".se-pre-con").fadeOut("slow");
 
         $('.select-objects').chosen({
+            placeholder_text_single: "Eligir una opción...",
             no_results_text: 'Oops, no se encontró elemento: ',
             search_contains: true,
             width: '100%'

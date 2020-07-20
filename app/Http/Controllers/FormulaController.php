@@ -26,7 +26,7 @@ class FormulaController extends Controller
      */
     public function create()
     {
-        $precios = \App\Precio::all();
+        $precios = \App\Precio::where('tipo', 'Formulación')->get();
         return view('formulas.create', compact(['precios']));
     }
 
@@ -38,7 +38,31 @@ class FormulaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($request->all());
+        $formula = new \App\Formula([
+            'nombre'  => request('nombre'),
+            'proteina'  => request('proteina'),
+            'grasa'  => request('grasa'),
+            'comentarios' => request('comentarios'),
+            'importe' => 0,
+            'kilogramos' => 0,
+        ]);
+        $formula->save();
+
+        for ($i=0; $i < sizeof(request('porcentaje')); $i++) {
+            //dd(request('porcentaje')[$i]);
+            $formulacion = new \App\Formulacion([
+                'kilogramos'  => request('kilogramos')[$i],
+                'porcentaje'  => request('porcentaje')[$i],
+                'formula_id'  => ,
+                'precio_id' => ,
+                //'importe' => ,
+            ]);
+        }
+
+        //formula->importe
+        //formula->kilogramos
+
     }
 
     /**
@@ -112,6 +136,12 @@ class FormulaController extends Controller
     {
         $componentes = \App\Formulacion::where('formula_id', $request['input'])->with('precio')->get();
         echo json_encode($componentes);
+    }
+
+    public function getPrecios()
+    {
+        $precios = \App\Precio::where('tipo', 'Formulación')->get();
+        echo json_encode($precios);
     }
 
 }
