@@ -38,7 +38,7 @@ class FormulaController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
+        //dd($request->all());
         $formula = new \App\Formula([
             'nombre'  => request('nombre'),
             'proteina'  => request('proteina'),
@@ -50,19 +50,26 @@ class FormulaController extends Controller
         $formula->save();
 
         for ($i=0; $i < sizeof(request('porcentaje')); $i++) {
-            //dd(request('porcentaje')[$i]);
+            $precio = \App\Precio::find(request('precio_id')[$i]);
+
             $formulacion = new \App\Formulacion([
-                'kilogramos'  => request('kilogramos')[$i],
-                'porcentaje'  => request('porcentaje')[$i],
-                'formula_id'  => ,
-                'precio_id' => ,
-                //'importe' => ,
+                'kilogramos' => request('kilogramos')[$i],
+                'porcentaje' => request('porcentaje')[$i],
+                'formula_id' => $formula->id,
+                'precio_id' => request('precio_id')[$i],
+                'importe' => $precio->precio / $precio->factor * request('kilogramos')[$i],
             ]);
+            $formulacion->save();
         }
 
-        //formula->importe
-        //formula->kilogramos
+        $formula->importe = $formula->formulaciones()->sum('importe');
+        $formula->save();
 
+        $formula->kilogramos = $formula->formulaciones()->sum('kilogramos');
+        $formula->save();
+
+        alert()->success('Fórmula creada exitosamente!')->persistent('Cerrar');
+        return back();
     }
 
     /**

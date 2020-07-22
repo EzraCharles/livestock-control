@@ -49,14 +49,13 @@ class FormulacionController extends Controller
         }
 
         $precio = \App\Precio::find(request('precio_id'));
-        $importe = $precio->precio / $precio->factor * request('kilogramos');
 
         $formulacion = new \App\Formulacion([
             "formula_id" => request("formula_id"),
             "precio_id" => request("precio_id"),
             "kilogramos" => request("kilogramos"),
             "porcentaje" => request("porcentaje"),
-            "importe" => $importe,
+            "importe" => $precio->precio / $precio->factor * request('kilogramos'),
         ]);
         $formulacion->save();
 

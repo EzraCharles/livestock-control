@@ -30,7 +30,7 @@
                             <div class="row">
                                 <div class="form-group col-4">
                                     <label for="precio_id">Concepto:</label>
-                                    <select class="form-control" id="precio_id" name="precio_id[]" required>
+                                    <select class="form-control precio" id="precio_id" name="precio_id[]">
                                         {{-- <option disabled selected="selected">Eligir una opción...</option>
                                         @foreach ($precios as $precio)
                                             <option value="{{ $precio->id }}"> {{ $precio->concepto }}</option>
@@ -39,11 +39,11 @@
                                 </div>
                                 <div class="form-group col-4">
                                     <label for="porcentaje">Porcentaje</label>
-                                    <input type="number" min="0" step="0.01" class="form-control" id="porcentaje" name="porcentaje[]">
+                                    <input type="number" min="0" step="0.01" class="form-control porcentaje" id="porcentaje" name="porcentaje[]" required disabled>
                                 </div>
                                 <div class="form-group col-4">
                                     <label for="kilogramos">Kilogramos</label>
-                                    <input type="number" min="1" step="1" class="form-control" id="kilogramos" name="kilogramos[]">
+                                    <input type="number" min="1" step="1" class="form-control kilogramos" id="kilogramos" name="kilogramos[]" required disabled>
                                 </div>
                             </div>
                             <button id="add_request" type="button" class="btn btn-info" style="float:right; margin: 5px;"><i class="fa fa-plus" aria-hidden="true"></i></button>
@@ -178,6 +178,26 @@
         $(document).on("click", "#remove", function(){
             $(this).parent().remove();
         });
+
+        $('.precio').on('change', function() {
+            $(this).parent().parent().find('#porcentaje').prop("disabled", false);
+            $(this).parent().parent().find('#kilogramos').prop("disabled", false);
+        });
+
+        $('#form_project').submit(function(e) {
+            e.preventDefault(); //this will prevent the default submit
+
+            precio
+            porcentaje
+            kilogramos
+
+            var data = $(this).serializeArray();
+
+            console.log(data);
+
+            //$(this).unbind('submit').submit(); // continue the submit unbind preventDefault
+        })
+
     });
 
 </script>
