@@ -38,11 +38,11 @@
                                     </select>
                                 </div>
                                 <div class="form-group col-4">
-                                    <label for="porcentaje">Porcentaje</label>
+                                    <label for="porcentaje">Porcentaje:</label>
                                     <input type="number" min="0" step="0.01" class="form-control porcentaje" id="porcentaje" name="porcentaje[]" required disabled>
                                 </div>
                                 <div class="form-group col-4">
-                                    <label for="kilogramos">Kilogramos</label>
+                                    <label for="kilogramos">Kilogramos:</label>
                                     <input type="number" min="1" step="1" class="form-control kilogramos" id="kilogramos" name="kilogramos[]" required disabled>
                                 </div>
                             </div>
@@ -138,7 +138,7 @@
 
                         optionString = "<option value=''>Selecciona una opción...</option>";
                         $.each(response, function(k,v){
-                            optionString += "<option value='" + v.id + "'>" + v.concepto + "</option>";
+                            optionString += "<option id='" + v.id + "' value='" + v.id + "'>" + v.concepto + "</option>";
                         });
 
                         precio.html(optionString);
@@ -167,8 +167,7 @@
                     title: "",
                     text: "Se debe llenar la información previa antes de continuar!",
                     icon: "error",
-                    type: "error",
-                    buttons: false,
+                    button: 'Ok',
                 }).then(() => {
                     //
                 });
@@ -187,16 +186,69 @@
         $('#form_project').submit(function(e) {
             e.preventDefault(); //this will prevent the default submit
 
-            precio
-            porcentaje
-            kilogramos
+            var precio_id = [];
+            $('[id=precio_id]').each(function () {
+                precio_id.push($(this).val());
+            });
 
-            var data = $(this).serializeArray();
+            precio_id = precio_id.filter(function (el) {
+                return el != null && el != "";
+            });
 
-            console.log(data);
+            if (precio_id.length == 0) {
+                $('body').removeClass('loading');
+                swal({
+                    title: "",
+                    text: "No se ha añadido ningún concepto a la Fórmula!",
+                    icon: "error",
+                    buttons: 'Ok',
+                });
+                return false;
+            }
 
-            //$(this).unbind('submit').submit(); // continue the submit unbind preventDefault
-        })
+            let findDuplicates = precio_id => precio_id.filter((item, index) => precio_id.indexOf(item) != index);
+            var duplicates = findDuplicates(precio_id); // All duplicates
+
+
+            if (duplicates.length != 0) {
+                $('body').removeClass('loading');
+
+                var elements = [...new Set(findDuplicates(precio_id))]; // Unique duplicates
+                $.each(elements, function(k,v){
+                    elements[k] = $('#' + v).text();
+                });
+
+                swal({
+                    title: "",
+                    text: "Los siguientes elementos están repetidos: <<" + elements.join(" || ") + ">>",
+                    icon: "error",
+                    buttons: 'Ok',
+                });
+            }
+            else{
+                var porcentaje = [];
+                $('[id=porcentaje]').each(function () {
+                    porcentaje.push($(this).val());
+                });
+
+                porcentaje = porcentaje.filter(function (el) {
+                    return el != null && el != "";
+                });
+
+
+                var kilogramos = [];
+                $('[id=kilogramos]').each(function () {
+                    kilogramos.push($(this).val());
+                });
+
+                kilogramos = kilogramos.filter(function (el) {
+                    return el != null && el != "";
+                });
+
+                $(this).unbind('submit').submit(); // continue the submit unbind preventDefault
+            }
+
+        });
 
     });
 
