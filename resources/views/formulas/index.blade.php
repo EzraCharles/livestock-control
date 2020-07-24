@@ -274,7 +274,7 @@
         </div>
     </div>
 
-    <div class="modal fade center" id="edit-comp-modal">
+    <div class="modal fade {{-- center --}}" id="edit-comp-modal">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
