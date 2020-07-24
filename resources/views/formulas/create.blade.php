@@ -209,7 +209,6 @@
             let findDuplicates = precio_id => precio_id.filter((item, index) => precio_id.indexOf(item) != index);
             var duplicates = findDuplicates(precio_id); // All duplicates
 
-
             if (duplicates.length != 0) {
                 $('body').removeClass('loading');
 
@@ -235,17 +234,106 @@
                     return el != null && el != "";
                 });
 
+                var total = porcentaje.reduce((a, b) => parseInt(a) + parseInt(b), 0);
+                if(total != 100){
+                    $('body').removeClass('loading');
 
-                var kilogramos = [];
-                $('[id=kilogramos]').each(function () {
-                    kilogramos.push($(this).val());
-                });
+                    swal({
+                        title: "",
+                        text: "La relación de porcentaje está incorrecta! Suma: " + total,
+                        icon: "error",
+                        buttons: 'Ok',
+                    });
+                    return false;
+                }
+                else{
+                    var kilogramos = [];
+                    $('[id=kilogramos]').each(function () {
+                        kilogramos.push($(this).val());
+                    });
 
-                kilogramos = kilogramos.filter(function (el) {
-                    return el != null && el != "";
-                });
+                    kilogramos = kilogramos.filter(function (el) {
+                        return el != null && el != "";
+                    });
 
-                $(this).unbind('submit').submit(); // continue the submit unbind preventDefault
+                    var tmpTot = [];
+                    var tmpTot2 = [];
+                    var tmpTot3 = [];
+                    for (let index = 0; index < kilogramos.length; index++) {
+                        tmpTot.push({id: precio_id[index], total: kilogramos[index] * 100 / porcentaje[index]});
+                        tmpTot2[index] = kilogramos[index] * 100 / porcentaje[index];
+                    }
+                    console.log('test');
+                    console.log(tmpTot);
+                    console.log(tmpTot2);
+
+                    var repeated = [];
+                    var different = [];
+
+                    for (var i in tmpTot) {
+                        if (different.includes(tmpTot[i]['total'])) {
+                            repeated.push(tmpTot[i]['total']);
+                        }
+                        else{
+                            different.push(tmpTot[i]['total']);
+                        }
+                    }
+
+                    if(different.length != 1){
+                        /* console.log('precio_id');
+                        console.log(precio_id);
+                        console.log('id');
+                        console.log(id); */
+
+                        function mode(arr){
+                            return arr.sort((a,b) =>
+                                arr.filter(v => v===a).length
+                                - arr.filter(v => v===b).length
+                            ).pop();
+                        }
+
+                        function getAllIndexes(arr, val) {
+                            var indexes = [], i;
+                            for(i = 0; i < arr.length; i++)
+                                if (arr[i] === val)
+                                    indexes.push(i);
+                            return indexes;
+                        }
+
+                        var tmp = new Array;
+                        tmp = tmpTot2.slice(0);
+
+                        var result = mode(tmp);
+                        var result2 = getAllIndexes(tmpTot2, result);
+
+                        console.log(tmpTot2);
+                        console.log(result);
+                        console.log(result2);
+
+                        for (var i = result2.length -1; i >= 0; i--)
+                            tmpTot.splice(result2[i],1);
+
+                        console.log(tmpTot);
+
+                        var id = [];
+
+                        $.each(tmpTot, function(k,v){
+                            id[k] = $('#' + v.id).text();
+                        });
+
+                        $('body').removeClass('loading');
+                        swal({
+                            title: "",
+                            text: "Error de proporcionalidad en: <<" + id.join(" || ") + ">>",
+                            icon: "error",
+                            buttons: 'Ok',
+                        });
+                    }
+                    else{
+                        //$(this).unbind('submit').submit(); // continue the submit unbind preventDefault
+                    }
+                }
+
             }
 
         });
