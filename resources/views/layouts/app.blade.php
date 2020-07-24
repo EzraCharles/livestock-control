@@ -49,6 +49,10 @@
             top: 50%;
             transform: translate(-50%, -50%);
         }
+
+        .validation-error {
+            background: #ffbcbc; /* #ff9696 */
+        }
     </style>
 
     <!-- DataTables -->

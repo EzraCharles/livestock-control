@@ -27,7 +27,7 @@
                         @endif
 
                         <div class="content" id="new_req" style="display: none">
-                            <div class="row">
+                            <div class="row" style="border-radius: 10px;">
                                 <div class="form-group col-4">
                                     <label for="precio_id">Concepto:</label>
                                     <select class="form-control precio" id="precio_id" name="precio_id[]">
@@ -116,11 +116,6 @@
     $(document).ready(function() {
 
         $(document).on("click", "#add_request", function(){
-            /* console.log($('#nombre').val().length != 0 && $('#proteina').val().length != 0 && $('#grasa').val().length != 0);
-            console.log($('#nombre').val().length);
-            console.log($('#nombre').val());
-            console.log($('#proteina').val());
-            console.log($('#grasa').val()); */
 
             if ($('#nombre').val().length != 0 && $('#proteina').val().length != 0 && $('#grasa').val().length != 0) {
                 var newobject = $("#new_req").clone(true).appendTo($("#multiple-req-adds"));
@@ -184,6 +179,8 @@
         });
 
         $('#form_project').submit(function(e) {
+            $('.validation-error').removeClass('validation-error');
+
             e.preventDefault(); //this will prevent the default submit
 
             var precio_id = [];
@@ -263,9 +260,6 @@
                         tmpTot.push({id: precio_id[index], total: kilogramos[index] * 100 / porcentaje[index]});
                         tmpTot2[index] = kilogramos[index] * 100 / porcentaje[index];
                     }
-                    console.log('test');
-                    console.log(tmpTot);
-                    console.log(tmpTot2);
 
                     var repeated = [];
                     var different = [];
@@ -280,10 +274,6 @@
                     }
 
                     if(different.length != 1){
-                        /* console.log('precio_id');
-                        console.log(precio_id);
-                        console.log('id');
-                        console.log(id); */
 
                         function mode(arr){
                             return arr.sort((a,b) =>
@@ -306,19 +296,18 @@
                         var result = mode(tmp);
                         var result2 = getAllIndexes(tmpTot2, result);
 
-                        console.log(tmpTot2);
-                        console.log(result);
-                        console.log(result2);
-
                         for (var i = result2.length -1; i >= 0; i--)
                             tmpTot.splice(result2[i],1);
-
-                        console.log(tmpTot);
 
                         var id = [];
 
                         $.each(tmpTot, function(k,v){
                             id[k] = $('#' + v.id).text();
+                            $('[id=' + v.id + ']').each(function () {
+                                if($(this).is(':selected')){
+                                    $(this).parent().parent().parent().addClass('validation-error');
+                                }
+                            });
                         });
 
                         $('body').removeClass('loading');
@@ -330,7 +319,7 @@
                         });
                     }
                     else{
-                        //$(this).unbind('submit').submit(); // continue the submit unbind preventDefault
+                        $(this).unbind('submit').submit(); // continue the submit unbind preventDefault
                     }
                 }
 

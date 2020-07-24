@@ -38,7 +38,7 @@ class FormulaController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
+        //dd($request->all());
         $formula = new \App\Formula([
             'nombre'  => request('nombre'),
             'proteina'  => request('proteina'),
