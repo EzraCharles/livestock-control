@@ -42,7 +42,7 @@ class TratamientoController extends Controller
             'nombre' => 'required|max:255|min:4',
             'precio_id' => 'required|numeric',
             'tipo_tratamiento_id' => 'required|numeric',
-            'comentarios' => 'nullable|max:255|min:4',
+            'comentarios' => 'nullable|max:255|min:2',
         ]);
 
         try {
@@ -90,14 +90,15 @@ class TratamientoController extends Controller
     {
         $validator = $request->validate([
             'nombre' => 'required|max:255|min:4',
-            'precio_registro' => 'required|numeric',
+            /* 'precio_registro' => 'required|numeric', */
             'precio_id' => 'required|numeric',
             'tipo_tratamiento_id' => 'required|numeric',
-            'comentarios' => 'nullable|max:255|min:4',
+            'comentarios' => 'nullable|max:255|min:2',
         ]);
 
         try {
-            $tratamiento = \App\Tratamiento::whereId($request->id)->update($request->except('_token', '_method'));
+            $precio = \App\Precio::find($request['precio_id']);
+            $tratamiento = \App\Tratamiento::whereId($request->id)->update(array_merge($request->except('_token', '_method'), ['precio_registro' => $precio->precio]));
             alert()->success('Tratamiento editado exitosamente!')->persistent('Cerrar');
             return back();
         } catch (\Throwable $th) {

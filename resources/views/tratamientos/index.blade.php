@@ -96,7 +96,7 @@
                                         <tr class="data-row">
                                             <td style="text-align: center; vertical-align: middle; " id="id">{{ $tratamiento->id }}</td>
                                             <td style="text-align: center; vertical-align: middle; " id="nombre">{{ $tratamiento->nombre }}</td>
-                                            <td style="text-align: center; vertical-align: middle; " id="precio_registro">{{ $tratamiento->precio_registro }}</td>
+                                            <td style="text-align: center; vertical-align: middle; " id="precio_registro">${{ number_format($tratamiento->precio_registro) }}</td>
                                             <td style="text-align: center; vertical-align: middle; " id="precio">{{ $tratamiento->precio->concepto }}</td>
                                             <td style="text-align: center; vertical-align: middle; " id="tipo">{{ $tratamiento->tipoTratamiento->nombre }}</td>
                                             <td style="text-align: center; vertical-align: middle; " id="comentarios">{{ $tratamiento->comentarios }}</td>
@@ -154,12 +154,13 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="form-group col-4">
-                                    <label for="modal-input-precioreg">Concepto de Precio</label>
-                                    <input type="text" class="form-control" id="modal-input-precioreg" name="precio_registro" required>
-                                </div>
-                                <div class="form-group col-4">
-                                    <label for="modal-input-precio">Precio</label>
+                                {{-- modify by admin --}}
+                                {{-- <div class="form-group col-4">
+                                    <label for="modal-input-precioreg">Precio de registro</label>
+                                    <input type="text" class="form-control" id="modal-input-precioreg" name="precio_registro" disabled>
+                                </div> --}}
+                                <div class="form-group col-6">
+                                    <label for="modal-input-precio">Concepto</label>
                                     <select class="form-control select-objects" id="modal-input-precio" name="precio_id" required>
                                         <option value="" disabled selected>Eligir una opción...</option>
                                         @foreach ($precios as $precio)
@@ -167,7 +168,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="form-group col-4">
+                                <div class="form-group col-6">
                                     <label for="modal-input-tipo">Tipo</label>
                                     <select class="form-control select-objects" id="modal-input-tipo" name="tipo_tratamiento_id" required>
                                         <option value="" disabled selected>Eligir una opción...</option>

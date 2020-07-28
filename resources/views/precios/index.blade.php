@@ -42,19 +42,28 @@
                                             @method('POST')
                                             @csrf
                                             <div class="row form-group">
-                                                <div class="col-3">
+                                                <div class="col-5">
                                                     <label for="concepto">Concepto:</label>
                                                     <input class="form-control" type="text" name="concepto" required>
                                                 </div>
-                                                <div class="col-2">
+                                                <div class="col-4">
+                                                    <label for="tipo">Tipo:</label>
+                                                    <select class="form-control select-objects" id="tipo" name="tipo">
+                                                        <option id="default-option" value="" disabled selected="selected">Eligir una opción...</option>
+                                                        <option value="Animales"> Animales</option>
+                                                        <option value="Tratamiento"> Tratamiento</option>
+                                                        <option value="Formulación"> Formulación</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-3">
                                                     <label for="precio">Precio:</label>
                                                     <input class="form-control" type="number" min="0.0" step=".01" name="precio" required>
                                                 </div>
-                                                <div class="col-2">
+                                                <div class="col-3">
                                                     <label for="factor">Factor:</label>
                                                     <input class="form-control" type="number" min="0.0" step=".01" name="factor" required>
                                                 </div>
-                                                <div class="col-3">
+                                                <div class="col-7">
                                                     <label for="comentarios">Comentarios:</label>
                                                     <input class="form-control" type="text" name="comentarios">
                                                 </div>
@@ -66,11 +75,11 @@
                                                         <div class="col-2"></div>
                                                         <div class="col-4">
                                                             <label for="rango-bajo">Rango bajo:</label>
-                                                            <input class="form-control" type="number" min="0.0" step=".01" name="rango_bajo">
+                                                            <input class="form-control" type="number" min="0.0" step=".01" id="rango_bajo" name="rango_bajo">
                                                         </div>
                                                         <div class="col-4">
                                                             <label for="rango-alto">Rango alto:</label>
-                                                            <input class="form-control" type="number" min="0.0" step=".01" name="rango_alto">
+                                                            <input class="form-control" type="number" min="0.0" step=".01" id="rango_alto" name="rango_alto">
                                                         </div>
                                                         <div class="col-2"></div>
                                                     </div>
@@ -93,6 +102,7 @@
                                         <tr>
                                             <th><strong>ID</strong></th>
                                             <th><strong>Concepto</strong></th>
+                                            <th><strong>Tipo</strong></th>
                                             <th><strong>Precio</strong></th>
                                             <th><strong>Factor</strong></th>
                                             <th><strong>Comentarios</strong></th>
@@ -109,7 +119,8 @@
                                         <tr class="data-row">
                                             <td style="text-align: center; vertical-align: middle; " id="id">{{ $precio->id }}</td>
                                             <td style="text-align: center; vertical-align: middle; " id="concepto">{{ $precio->concepto }}</td>
-                                            <td style="text-align: center; vertical-align: middle; " id="precio">{{ $precio->precio }}</td>
+                                            <td style="text-align: center; vertical-align: middle; " id="tipo">{{ $precio->tipo }}</td>
+                                            <td style="text-align: center; vertical-align: middle; " id="precio">${{ number_format($precio->precio, 2) }}</td>
                                             <td style="text-align: center; vertical-align: middle; " id="factor">{{ $precio->factor }}</td>
                                             <td style="text-align: center; vertical-align: middle; " id="comentarios">{{ $precio->comentarios }}</td>
                                             <td style="text-align: center; vertical-align: middle; " id="created_at">{{ $precio->created_at }}</td>
@@ -175,17 +186,25 @@
                             </div>
                             <div class="row">
                                 <div class="form-group col-6">
-                                <label for="modal-input-precio">Precio</label>
+                                    <label for="modal-input-tipo">Tipo:</label>
+                                    <select class="form-control select-objects" id="modal-input-tipo" name="tipo" required>
+                                        <option value="Animales"> Animales</option>
+                                        <option value="Tratamiento"> Tratamiento</option>
+                                        <option value="Formulación"> Formulación</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-6">
+                                    <label for="modal-input-precio">Precio</label>
                                     <input type="number" min="0.0" step=".01" class="form-control" id="modal-input-precio" name="precio" required>
                                 </div>
                                 <div class="form-group col-6">
                                     <label for="modal-input-factor">Factor</label>
                                     <input type="number" min="1" step="1" class="form-control" id="modal-input-factor" name="factor" required>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="modal-input-comentarios">Comentarios</label>
-                                <textarea type="text" class="form-control" id="modal-input-comentarios" name="comentarios"></textarea>
+                                <div class="form-group col-6">
+                                    <label for="modal-input-comentarios">Comentarios</label>
+                                    <textarea type="text" class="form-control" id="modal-input-comentarios" name="comentarios"></textarea>
+                                </div>
                             </div>
                             <div id="modal-input-rangos" class="row">
                                 <div class="form-group col-6">
@@ -233,6 +252,14 @@
                             </div>
                             <div class="row">
                                 <div class="form-group col-6">
+                                    <label for="modal-input-tipo-delete">Tipo:</label>
+                                    <select class="form-control" id="modal-input-tipo-delete" name="tipo" disabled readonly>
+                                        <option value="Animales"> Animales</option>
+                                        <option value="Tratamiento"> Tratamiento</option>
+                                        <option value="Formulación"> Formulación</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-6">
                                     <label for="modal-input-precio-delete">Precio</label>
                                     <input type="text" class="form-control" id="modal-input-precio-delete" name="precio" readonly>
                                 </div>
@@ -240,10 +267,10 @@
                                     <label for="modal-input-factor-delete">Factor</label>
                                     <input type="text" class="form-control" id="modal-input-factor-delete" name="factor" readonly>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="modal-input-comentarios-delete">Comentarios</label>
-                                <textarea type="text" class="form-control" id="modal-input-comentarios-delete" name="comentarios" readonly></textarea>
+                                <div class="form-group col-6">
+                                    <label for="modal-input-comentarios-delete">Comentarios</label>
+                                    <textarea type="text" class="form-control" id="modal-input-comentarios-delete" name="comentarios" readonly></textarea>
+                                </div>
                             </div>
                         </div>
                         <label><strong>Estás seguro de que quieres borrar este elemento?</strong></label>
@@ -308,7 +335,7 @@
                 bom: true,
                 filename: 'Precios-Grupo-RES',
                 exportOptions: {
-                    columns: [ 1, 2, 3, 4, 6, 5 ]
+                    columns: [ 1, 2, 3, 4, 5, 7, 6 ]
                 }
             },
             {
@@ -317,7 +344,7 @@
                 bom: true,
                 filename: 'Precios-Grupo-RES',
                 exportOptions: {
-                    columns: [ 1, 2, 3, 4, 6, 5 ]
+                    columns: [ 1, 2, 3, 4, 5, 7, 6 ]
                 }
             },
             {
@@ -329,7 +356,7 @@
                 bom: true,
                 filename: 'Precios-Grupo-RES',
                 exportOptions: {
-                    columns: [ 1, 2, 3, 4, 6, 5 ]
+                    columns: [ 1, 2, 3, 4, 5, 7, 6 ]
                 }
             },
             {
@@ -339,7 +366,7 @@
                 bom: true,
                 filename: 'Precios-Grupo-RES',
                 exportOptions: {
-                    columns: [ 1, 2, 3, 4, 6, 5 ]
+                    columns: [ 1, 2, 3, 4, 5, 7, 6 ]
                 }
             },
             ],
@@ -377,7 +404,7 @@
 
         $(document).on('click', "#edit-item", function() {
             $(this).addClass('edit-item-trigger-clicked'); //useful for identifying which trigger was clicked and consequently grab data from the correct row and not the wrong one.
-            $('#edit-modal').modal()
+            $('#edit-modal').modal();
         });
 
         $(document).on('click', "#delete-item", function() {
@@ -393,6 +420,7 @@
             // get the data
             var id = row.children('#id');
             var concepto = row.children("#concepto");
+            var tipo = row.children("#tipo");
             var precio = row.children("#precio");
             var factor = row.children("#factor");
             var comentarios = row.children("#comentarios");
@@ -401,12 +429,14 @@
             // fill the data in the input fields
             $("#modal-input-id").val(id[0]['innerHTML']);
             $("#modal-input-concepto").val(concepto[0]['innerHTML']);
-            $("#modal-input-precio").val(precio[0]['innerHTML']);
+            $("#modal-input-tipo").val(tipo[0]['innerHTML']);
+            $("#modal-input-precio").val(precio[0]['innerHTML'].replace(/[$,]/g, ''));
             $("#modal-input-factor").val(factor[0]['innerHTML']);
             $("#modal-input-comentarios").val(comentarios[0]['innerHTML']);
             /*$("#modal-input-workshift option").filter(function() {
                 return this.text == workshift[0]['innerHTML'];
             }).attr('selected', true);*/
+            $('#modal-input-tipo').trigger("chosen:updated");
 
             if (rango[0]['innerHTML'] == 1) {
                 var rango_bajo = row.children("#rango_bajo");
@@ -439,6 +469,7 @@
             // get the data
             var id = row.children('#id');
             var concepto = row.children("#concepto");
+            var tipo = row.children("#tipo");
             var precio = row.children("#precio");
             var factor = row.children("#factor");
             var comentarios = row.children("#comentarios");
@@ -446,6 +477,7 @@
             // fill the data in the input fields
             $("#modal-input-id-delete").val(id[0]['innerHTML']);
             $("#modal-input-concepto-delete").val(concepto[0]['innerHTML']);
+            $("#modal-input-tipo-delete").val(tipo[0]['innerHTML']);
             $("#modal-input-precio-delete").val(precio[0]['innerHTML']);
             $("#modal-input-factor-delete").val(factor[0]['innerHTML']);
             $("#modal-input-comentarios-delete").val(comentarios[0]['innerHTML']);
@@ -458,6 +490,38 @@
         $('#delete-modal').on('hide.bs.modal', function() {
             $('.delete-item-trigger-clicked').removeClass('delete-item-trigger-clicked')
             $("#delete-form").trigger("reset");
+        });
+
+
+        $('#create').submit(function(e) {
+
+            e.preventDefault(); //this will prevent the default submit
+
+            if ($('#tipo').val() == null) {
+                $('body').removeClass('loading');
+
+                swal({
+                    title: "",
+                    text: "No ha elegido ningún valor para 'Tipo'!",
+                    icon: "error",
+                    buttons: 'Ok',
+                });
+                return false;
+            }
+            else if(parseInt($('#rango_bajo').val()) < parseInt($('#rango_alto').val())){
+                $(this).unbind('submit').submit(); // continue the submit unbind preventDefault
+            }
+            else{
+                $('body').removeClass('loading');
+                swal({
+                    title: "",
+                    text: "El Rango Bajo no puede ser mayor que Rango Alto!",
+                    icon: "error",
+                    buttons: 'Ok',
+                });
+                return false;
+            }
+
         });
 
     });

@@ -26,7 +26,7 @@
     <link rel="stylesheet" href="{{ asset('plugins/chosen/chosen.css') }}"> <!--choosen-->
     <link rel="stylesheet" href="{{ asset('css/chosen-form-control.css') }}">
     <style>
-        @media screen and (min-width: 767px) {
+        @media screen and (min-width: 767px) { /* 767  990 */
             .navbar-brand-full {
                 display: block !important;
             }
@@ -34,7 +34,7 @@
                 display: none !important;
             }
         }
-        @media screen and (max-width: 768px) {
+        @media screen and (max-width: 768px) { /* 768  991 */
             .navbar-brand-full {
                 display: none !important;
             }

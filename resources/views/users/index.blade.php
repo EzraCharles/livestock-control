@@ -123,20 +123,20 @@
                         <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                         @method('PUT')
 
-                        <div class="box-body">
+                        <div class="box-body row">
                             <div class="form-group" hidden>
                                 <label for="modal-input-id">ID</label>
                                 <input type="text" class="form-control" id="modal-input-id" name="id" readonly>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group col-6">
                                 <label for="modal-input-name">Nombre</label>
                                 <input type="text" class="form-control" id="modal-input-name" name="name" required>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group col-6">
                                 <label for="modal-input-email">Correo</label>
                                 <input type="text" class="form-control" id="modal-input-email" name="email" required>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group col-12">
                                 <label for="modal-input-role">Privilegio</label>
                                 <select class="form-control" id="modal-input-role" name="rol" required>
                                     <option value="Usuario">Usuario</option>
@@ -168,20 +168,20 @@
                         <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                         @method('DELETE')
 
-                        <div class="box-body">
+                        <div class="box-body row">
                             <div class="form-group" hidden>
                                 <label for="modal-input-id-delete">ID</label>
                                 <input type="text" class="form-control" id="modal-input-id-delete" name="id" readonly>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group col-6">
                                 <label for="modal-input-name-delete">Nombre</label>
                                 <input type="text" class="form-control" id="modal-input-name-delete" name="name" readonly>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group col-6">
                                 <label for="modal-input-email-delete">Correo</label>
                                 <input type="text" class="form-control" id="modal-input-email-delete" name="email" readonly>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group col-12">
                                 <label for="modal-input-role-delete">Privilegio</label>
                                 <select class="form-control" id="modal-input-role-delete" name="rol" readonly>
                                     <option value="Usuario">Usuario</option>

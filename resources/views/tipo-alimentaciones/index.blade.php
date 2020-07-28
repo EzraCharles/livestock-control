@@ -74,9 +74,9 @@
                                         <tr>
                                             <th><strong>ID</strong></th>
                                             <th><strong>Nombre</strong></th>
+                                            <th><strong>Fórmula</strong></th>
                                             <th><strong>Comentarios</strong></th>
                                             <th><strong>Creación</strong></th>
-                                            <th><strong>Fórmula</strong></th>
                                             <th><strong>Acciones</strong></th>
                                         </tr>
                                     </thead>
@@ -85,9 +85,9 @@
                                         <tr class="data-row">
                                             <td style="text-align: center; vertical-align: middle; " id="id">{{ $tipo_alimentacion->id }}</td>
                                             <td style="text-align: center; vertical-align: middle; " id="nombre">{{ $tipo_alimentacion->nombre }}</td>
-                                            <td style="text-align: center; vertical-align: middle; " id="comentarios">{{ $tipo_alimentacion->comentarios }}</td>
-                                            <td style="text-align: center; vertical-align: middle; " id="created_at">{{ $tipo_alimentacion->created_at }}</td>
                                             <td style="text-align: center; vertical-align: middle; " id="formula">{{ $tipo_alimentacion->formula->nombre }}
+                                                <td style="text-align: center; vertical-align: middle; " id="comentarios">{{ $tipo_alimentacion->comentarios }}</td>
+                                            <td style="text-align: center; vertical-align: middle; " id="created_at">{{ $tipo_alimentacion->created_at }}</td>
                                                 {{-- <div class="btn-group">
                                                     <button type="button" class="btn btn-info" data-toggle="modal" id="formula-item">
                                                         <i class="fa fa-atom"></i>
@@ -244,7 +244,7 @@
                 bom: true,
                 filename: 'Tipos-de-Alimentación-Grupo-RES',
                 exportOptions: {
-                    columns: [ 1, 2, 3 ]
+                    columns: [ 1, 2, 3, 4 ]
                 }
             },
             {
@@ -253,7 +253,7 @@
                 bom: true,
                 filename: 'Tipos-de-Alimentación-Grupo-RES',
                 exportOptions: {
-                    columns: [ 1, 2, 3 ]
+                    columns: [ 1, 2, 3, 4 ]
                 }
             },
             {
@@ -265,7 +265,7 @@
                 bom: true,
                 filename: 'Tipos-de-Alimentación-Grupo-RES',
                 exportOptions: {
-                    columns: [ 1, 2, 3 ]
+                    columns: [ 1, 2, 3, 4 ]
                 }
             },
             {
@@ -275,7 +275,7 @@
                 bom: true,
                 filename: 'Tipos-de-Alimentación-Grupo-RES',
                 exportOptions: {
-                    columns: [ 1, 2, 3 ]
+                    columns: [ 1, 2, 3, 4 ]
                 }
             },
             ],
