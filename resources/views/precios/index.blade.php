@@ -50,7 +50,7 @@
                                                     <label for="tipo">Tipo:</label>
                                                     <select class="form-control select-objects" id="tipo" name="tipo">
                                                         <option id="default-option" value="" disabled selected="selected">Eligir una opción...</option>
-                                                        <option value="Animales"> Animales</option>
+                                                        <option value="Animal"> Animal</option>
                                                         <option value="Tratamiento"> Tratamiento</option>
                                                         <option value="Formulación"> Formulación</option>
                                                     </select>
@@ -63,12 +63,15 @@
                                                     <label for="factor">Factor:</label>
                                                     <input class="form-control" type="number" min="0.0" step=".01" name="factor" required>
                                                 </div>
-                                                <div class="col-7">
+                                                <div class="col-5">
                                                     <label for="comentarios">Comentarios:</label>
                                                     <input class="form-control" type="text" name="comentarios">
                                                 </div>
                                                 <div class="col-2" style="padding-top: 30px; ">
-                                                    <label for="rango"><input id="rango" type="checkbox" name="rango"> Rango</label>
+                                                    <label for="rango"><input class="check" id="rango" type="checkbox" name="rango"> Animal</label>
+                                                </div>
+                                                <div class="col-2" style="padding-top: 30px; ">
+                                                    <label for="alimento"><input class="check" id="alimento" type="checkbox" name="alimento"> Alimento</label>
                                                 </div>
                                                 <div class="col-10" >
                                                     <div class="row" id="range">
@@ -88,7 +91,6 @@
                                                 <div class="col-2" style="float: right;">
                                                     <button class="btn grupo-res" style="float: right; margin-top: 30px;">Crear</button>
                                                 </div>
-
 
                                             </div>
                                         </form>
@@ -188,7 +190,7 @@
                                 <div class="form-group col-6">
                                     <label for="modal-input-tipo">Tipo:</label>
                                     <select class="form-control select-objects" id="modal-input-tipo" name="tipo" required>
-                                        <option value="Animales"> Animales</option>
+                                        <option value="Animal"> Animal</option>
                                         <option value="Tratamiento"> Tratamiento</option>
                                         <option value="Formulación"> Formulación</option>
                                     </select>
@@ -254,7 +256,7 @@
                                 <div class="form-group col-6">
                                     <label for="modal-input-tipo-delete">Tipo:</label>
                                     <select class="form-control" id="modal-input-tipo-delete" name="tipo" disabled readonly>
-                                        <option value="Animales"> Animales</option>
+                                        <option value="Animal"> Animal</option>
                                         <option value="Tratamiento"> Tratamiento</option>
                                         <option value="Formulación"> Formulación</option>
                                     </select>
@@ -311,6 +313,10 @@
     });
 
     $(document).ready(function() {
+
+        $('.check').click(function() {
+            $('.check').not(this).prop('checked', false);
+        });
 
         $('#add').on('click', function () {
             $('#add-item').toggle();

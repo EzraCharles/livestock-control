@@ -18,6 +18,8 @@ class CreateFormulasTable extends Migration
             $table->string('nombre');
             $table->float('proteina')->nullable();
             $table->float('grasa')->nullable();
+            $table->float('ceniza')->nullable();
+
             $table->float('importe');
             //$table->float('precio_kilo');
             $table->integer('kilogramos');

@@ -15,7 +15,7 @@ class TratamientoController extends Controller
     public function index()
     {
         $tratamientos = \App\Tratamiento::all();
-        $precios = \App\Precio::all();
+        $precios = \App\Precio::where('tipo', 'Tratamiento')->get();
         $tipos = \App\TipoTratamiento::all();
         return view('tratamientos.index', compact(['tratamientos', 'precios', 'tipos']));
     }
@@ -47,7 +47,7 @@ class TratamientoController extends Controller
 
         try {
             $precio = \App\Precio::find($request['precio_id']);
-            $tratamiento = \App\Tratamiento::create(array_merge($request->except('_token', '_method'), ['precio_registro' => $precio->precio]));
+            $tratamiento = \App\Tratamiento::create($request->except('_token', '_method')); //['precio_registro' => $precio->precio]
             alert()->success('Tratamiento creado exitosamente!')->persistent('Cerrar');
             return back();
         } catch (\Throwable $th) {
@@ -98,7 +98,7 @@ class TratamientoController extends Controller
 
         try {
             $precio = \App\Precio::find($request['precio_id']);
-            $tratamiento = \App\Tratamiento::whereId($request->id)->update(array_merge($request->except('_token', '_method'), ['precio_registro' => $precio->precio]));
+            $tratamiento = \App\Tratamiento::whereId($request->id)->update($request->except('_token', '_method'));
             alert()->success('Tratamiento editado exitosamente!')->persistent('Cerrar');
             return back();
         } catch (\Throwable $th) {

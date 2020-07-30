@@ -16,7 +16,6 @@ class CreateTratamientosTable extends Migration
         Schema::create('tratamientos', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nombre');
-            $table->float('precio_registro'); //tmp
             $table->string('comentarios')->nullable();
             //$table->integer('diagnostico_id')->unsigned();
             $table->integer('precio_id')->unsigned();

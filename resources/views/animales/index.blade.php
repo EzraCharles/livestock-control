@@ -11,11 +11,11 @@
                     <div class="card">
                         <div class="card-header">
                             <h3> <strong> Animales </strong></h3>
-                            <div class="col-md-12" style="padding-top: 15px; ">
+                            {{-- <div class="col-md-12" style="padding-top: 15px; ">
                                 <a href="{{ route('animales.create') }}" style="color: inherit;">
                                     <button class="btn grupo-res" id="add" style="text-align: left; float: right; margin-top: -50px;">Añadir Animal/Animales</button>
                                 </a>
-                            </div>
+                            </div> --}}
                         </div>
 
                         @if($errors->any())

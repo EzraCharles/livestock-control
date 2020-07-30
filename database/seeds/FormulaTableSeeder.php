@@ -17,6 +17,7 @@ class FormulaTableSeeder extends Seeder
                 'nombre' => 'Recepcion Silo MB',
                 'proteina' => 13.76,
                 'grasa' => 10.46,
+                'ceniza' => 2.99,
                 'importe' => 3453.78,
                 //'precio_kilo' => 3.45378,
                 'kilogramos' => 1000,

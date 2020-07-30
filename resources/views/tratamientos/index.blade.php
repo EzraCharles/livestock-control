@@ -83,7 +83,7 @@
                                         <tr>
                                             <th><strong>ID</strong></th>
                                             <th><strong>Nombre</strong></th>
-                                            <th><strong>Precio Registro</strong></th>
+                                            <th><strong>Precio</strong></th>
                                             <th><strong>Concepto de Precio</strong></th>
                                             <th><strong>Tipo</strong></th>
                                             <th><strong>Comentarios</strong></th>
@@ -96,7 +96,7 @@
                                         <tr class="data-row">
                                             <td style="text-align: center; vertical-align: middle; " id="id">{{ $tratamiento->id }}</td>
                                             <td style="text-align: center; vertical-align: middle; " id="nombre">{{ $tratamiento->nombre }}</td>
-                                            <td style="text-align: center; vertical-align: middle; " id="precio_registro">${{ number_format($tratamiento->precio_registro) }}</td>
+                                            <td style="text-align: center; vertical-align: middle; " id="precio_importe">${{ number_format($tratamiento->precio->precio) }}</td>
                                             <td style="text-align: center; vertical-align: middle; " id="precio">{{ $tratamiento->precio->concepto }}</td>
                                             <td style="text-align: center; vertical-align: middle; " id="tipo">{{ $tratamiento->tipoTratamiento->nombre }}</td>
                                             <td style="text-align: center; vertical-align: middle; " id="comentarios">{{ $tratamiento->comentarios }}</td>
@@ -213,14 +213,14 @@
                                 <input type="text" class="form-control" id="modal-input-id-delete" name="id" readonly>
                             </div>
                             <div class="row">
-                                <div class="form-group col-6">
+                                <div class="form-group col-12">
                                     <label for="modal-input-nombre-delete">Nombre</label>
                                     <input type="text" class="form-control" id="modal-input-nombre-delete" name="nombre" readonly>
                                 </div>
-                                <div class="form-group col-6">
+                                {{-- <div class="form-group col-6">
                                     <label for="modal-input-precioreg-delete">Precio de Registro</label>
                                     <input type="text" class="form-control" id="modal-input-precioreg-delete" name="precio_registro" readonly>
-                                </div>
+                                </div> --}}
                             </div>
                             <div class="form-group">
                                 <label for="modal-input-comentarios-delete">Comentarios</label>
@@ -358,7 +358,7 @@
             // get the data
             var id = row.children('#id');
             var nombre = row.children("#nombre");
-            var precio_registro = row.children("#precio_registro");
+            //var precio_registro = row.children("#precio_registro");
             var precio = row.children("#precio");
             var tipo = row.children("#tipo");
             var comentarios = row.children("#comentarios");
@@ -366,7 +366,7 @@
             // fill the data in the input fields
             $("#modal-input-id").val(id[0]['innerHTML']);
             $("#modal-input-nombre").val(nombre[0]['innerHTML']);
-            $("#modal-input-precioreg").val(precio_registro[0]['innerHTML']);
+            //$("#modal-input-precioreg").val(precio_registro[0]['innerHTML']);
             $("#modal-input-comentarios").val(comentarios[0]['innerHTML']);
 
             $("option:selected").removeAttr("selected");
@@ -407,13 +407,13 @@
             // get the data
             var id = row.children('#id');
             var nombre = row.children("#nombre");
-            var precio_registro = row.children("#precio_registro");
+            //var precio_registro = row.children("#precio_registro");
             var comentarios = row.children("#comentarios");
 
             // fill the data in the input fields
             $("#modal-input-id-delete").val(id[0]['innerHTML']);
             $("#modal-input-nombre-delete").val(nombre[0]['innerHTML']);
-            $("#modal-input-precioreg-delete").val(precio_registro[0]['innerHTML']);
+            //$("#modal-input-precioreg-delete").val(precio_registro[0]['innerHTML']);
             $("#modal-input-comentarios-delete").val(comentarios[0]['innerHTML']);
 
             $("#delete-form").attr('action', 'tratamientos/' + id[0]['innerHTML']);
