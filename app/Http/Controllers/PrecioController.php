@@ -94,8 +94,9 @@ class PrecioController extends Controller
      * @param  \App\Precio  $precio
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Precio $precio)
+    public function update(Request $request)
     {
+        //dd($request->all());
         $validator = $request->validate([
             'concepto' => 'required|max:255|min:4',
             'precio' => 'required|numeric',
@@ -103,6 +104,12 @@ class PrecioController extends Controller
             'rango' => 'nullable',
             'rango_alto' => 'nullable|numeric',
             'rango_bajo' => 'nullable|numeric',
+            'alimento' => 'nullable',
+            'materia_seca' => 'nullable|numeric',
+            'porcion_comestible' => 'nullable|numeric',
+            'grasa' => 'nullable|numeric',
+            'fibra' => 'nullable|numeric',
+            'ceniza' => 'nullable|numeric',
             'comentarios' => 'nullable|max:255|min:4',
         ]);
 

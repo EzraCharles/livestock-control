@@ -169,17 +169,14 @@
                                                         <button type="button" class="btn {{ $precio->rango == 1 ? 'btn-warning' : 'btn-success' }}" data-toggle="modal" id="item">
                                                             <i
                                                                 class="extraInfo fas {{ $precio->rango == 1 ? 'fa-code' : 'fa-utensils' }}"
-                                                                data-content="{{ $precio->rango == 1 ? $precio->rango_bajo . ' - ' . $precio->rango_alto : "
-                                                                Materia Seca: "  . $precio->materia_seca .
-                                                                " <br/>
-                                                                Porción comestible: "  . $precio->porcion_comestible .
-                                                                " <br/>
-                                                                Grasa: "  . $precio->grasa .
-                                                                " <br/>
-                                                                Fibra: "  . $precio->fibra .
-                                                                " <br/>
-                                                                Ceniza: "  . $precio->ceniza
-                                                                }}"
+                                                                data-content="
+                                                                    {{ $precio->rango == 1 ? $precio->rango_bajo . ' - ' . $precio->rango_alto : '' }}
+                                                                    {{ $precio->materia_seca != null ? "<strong> Materia Seca: </strong>"  . $precio->materia_seca . " <br/>" : '' }}
+                                                                    {{ $precio->porcion_comestible != null ? "<strong> Porción comestible: </strong>"  . $precio->porcion_comestible . " <br/>" : '' }}
+                                                                    {{ $precio->grasa != null ? "<strong> Grasa: </strong>"  . $precio->grasa . " <br/>" : '' }}
+                                                                    {{ $precio->fibra != null ? "<strong> Fibra: </strong>"  . $precio->fibra . " <br/>" : '' }}
+                                                                    {{ $precio->ceniza != null ? "<strong> Ceniza: </strong>"  . $precio->ceniza : '' }}
+                                                                "
                                                                 rel="popover" data-placement="bottom"
                                                                 data-original-title="{{ $precio->rango == 0 ? 'Datos Alimenticios' : 'Rangos de peso' }}"
                                                                 data-trigger="hover"
@@ -268,13 +265,36 @@
                                 </div>
                             </div>
                             <div id="modal-input-rangos" class="row">
+                                <input hidden type="number" class="range-edit-input" id="modal-input-rango-tmp">
                                 <div class="form-group col-6">
                                     <label for="modal-input-bajo">Rango bajo</label>
-                                    <input type="number" min="0.0" step=".01" class="form-control" id="modal-input-bajo" name="rango_bajo">
+                                    <input type="number" min="0.0" step=".01" class="form-control range-edit-input" id="modal-input-bajo" name="rango_bajo">
                                 </div>
                                 <div class="form-group col-6">
                                     <label for="modal-input-alto">Rango alto</label>
-                                    <input type="number" min="0.0" step=".01" class="form-control" id="modal-input-alto" name="rango_alto">
+                                    <input type="number" min="0.0" step=".01" class="form-control range-edit-input" id="modal-input-alto" name="rango_alto">
+                                </div>
+                            </div>
+                            <div id="modal-input-alimentos" class="row">
+                                <div class="form-group col-6">
+                                    <label for="modal-input-ms">Materia Seca</label>
+                                    <input type="number" min="0.0" step=".01" class="form-control food-edit-input" id="modal-input-ms" name="materia_seca">
+                                </div>
+                                <div class="form-group col-6">
+                                    <label for="modal-input-pc">Porcion Comestible</label>
+                                    <input type="number" min="0.0" step=".01" class="form-control food-edit-input" id="modal-input-pc" name="porcion_comestible">
+                                </div>
+                                <div class="form-group col-4">
+                                    <label for="modal-input-grasa">Grasa</label>
+                                    <input type="number" min="0.0" step=".01" class="form-control food-edit-input" id="modal-input-grasa" name="grasa">
+                                </div>
+                                <div class="form-group col-4">
+                                    <label for="modal-input-fibra">Fibra</label>
+                                    <input type="number" min="0.0" step=".01" class="form-control food-edit-input" id="modal-input-fibra" name="fibra">
+                                </div>
+                                <div class="form-group col-4">
+                                    <label for="modal-input-ceniza">Ceniza</label>
+                                    <input type="number" min="0.0" step=".01" class="form-control food-edit-input" id="modal-input-ceniza" name="ceniza">
                                 </div>
                             </div>
                         </div>
@@ -499,6 +519,7 @@
             var factor = row.children("#factor");
             var comentarios = row.children("#comentarios");
             var rango = row.children("#rango");
+            var alimento = row.children("#alimento");
 
             // fill the data in the input fields
             $("#modal-input-id").val(id[0]['innerHTML']);
@@ -516,16 +537,38 @@
                 var rango_bajo = row.children("#rango_bajo");
                 var rango_alto = row.children("#rango_alto");
 
+                $('#modal-input-alimentos').hide();
+                $('.food-edit-input').val(null);
+
                 $('#modal-input-rangos').show();
                 $("#modal-input-bajo").val(rango_bajo[0]['innerHTML']);
                 $("#modal-input-alto").val(rango_alto[0]['innerHTML']);
+                $("#modal-input-rango-tmp").val(rango[0]['innerHTML']);
+            }
+            else if (alimento[0]['innerHTML'] == 1) {
+                var materia_seca = row.children("#materia_seca");
+                var porcion_comestible = row.children("#porcion_comestible");
+                var grasa = row.children("#grasa");
+                var fibra = row.children("#fibra");
+                var ceniza = row.children("#ceniza");
+
+
+                $('#modal-input-rangos').hide();
+                $('.range-edit-input').val(null);
+
+                $('#modal-input-alimentos').show();
+                $("#modal-input-ms").val(materia_seca[0]['innerHTML']);
+                $("#modal-input-pc").val(porcion_comestible[0]['innerHTML']);
+                $("#modal-input-grasa").val(grasa[0]['innerHTML']);
+                $("#modal-input-fibra").val(fibra[0]['innerHTML']);
+                $("#modal-input-ceniza").val(ceniza[0]['innerHTML']);
             }
             else{
                 $('#modal-input-rangos').hide();
-                $("#modal-input-bajo").val('');
-                $("#modal-input-alto").val('');
+                $('#modal-input-alimentos').hide();
+                $('.range-edit-input').val(null);
+                $('.food-edit-input').val(null);
             }
-
 
             $("#edit-form").attr('action', 'precios/' + id[0]['innerHTML']);
         });
@@ -601,6 +644,25 @@
                 $('.range-input').val(null);
             }
 
+            $(this).unbind('submit').submit(); // continue the submit unbind preventDefault
+
+        });
+
+        $('#edit-form').submit(function(e) {
+            e.preventDefault(); //this will prevent the default submit
+
+            if ($('#modal-input-rango-tmp').val() != null) {
+                if(parseInt($('#modal-input-bajo').val()) > parseInt($('#modal-input-alto').val())){
+                    $('body').removeClass('loading');
+                    swal({
+                        title: "",
+                        text: "El Rango Bajo no puede ser mayor que Rango Alto!",
+                        icon: "error",
+                        buttons: 'Ok',
+                    });
+                    return false;
+                }
+            }
             $(this).unbind('submit').submit(); // continue the submit unbind preventDefault
 
         });
