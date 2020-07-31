@@ -39,10 +39,10 @@ class TratamientoController extends Controller
     public function store(Request $request)
     {
         $validator = $request->validate([
-            'nombre' => 'required|max:255|min:4',
-            'precio_id' => 'required|numeric',
-            'tipo_tratamiento_id' => 'required|numeric',
-            'comentarios' => 'nullable|max:255|min:2',
+            'nombre' => 'required|max:255|min:2',
+            'precio_id' => 'required|integer|min:1',
+            'tipo_tratamiento_id' => 'required|integer|min:1',
+            'comentarios' => 'nullable|min:2',
         ]);
 
         try {
@@ -89,11 +89,10 @@ class TratamientoController extends Controller
     public function update(Request $request)
     {
         $validator = $request->validate([
-            'nombre' => 'required|max:255|min:4',
-            /* 'precio_registro' => 'required|numeric', */
-            'precio_id' => 'required|numeric',
-            'tipo_tratamiento_id' => 'required|numeric',
-            'comentarios' => 'nullable|max:255|min:2',
+            'nombre' => 'required|max:255|min:2',
+            'precio_id' => 'required|integer|min:1',
+            'tipo_tratamiento_id' => 'required|integer|min:1',
+            'comentarios' => 'nullable|min:2',
         ]);
 
         try {

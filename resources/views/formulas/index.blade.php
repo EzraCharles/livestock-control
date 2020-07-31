@@ -238,11 +238,11 @@
                                     </div>
                                     <div class="form-group col-4">
                                         <label for="comp-porcentaje">Porcentaje</label>
-                                        <input type="number" min="0" step="0.01" class="form-control" id="comp-porcentaje" name="porcentaje">
+                                        <input type="number" min="0.01" step="0.01" class="form-control" id="comp-porcentaje" name="porcentaje">
                                     </div>
                                     <div class="form-group col-4">
                                         <label for="comp-kilogramos">Kilogramos</label>
-                                        <input type="number" min="1" step="1" class="form-control" id="comp-kilogramos" name="kilogramos">
+                                        <input type="number" min="0.01" step="0.01" class="form-control" id="comp-kilogramos" name="kilogramos">
                                     </div>
                                 </div>
                             </div>
@@ -306,11 +306,11 @@
                             <div class="row">
                                 <div class="form-group col-6">
                                     <label for="modal-input-comp-porcentaje">Porcentaje</label>
-                                    <input type="number" min="0" step="0.01" class="form-control" id="modal-input-comp-porcentaje" name="porcentaje">
+                                    <input type="number" min="0.01" step="0.01" class="form-control" id="modal-input-comp-porcentaje" name="porcentaje">
                                 </div>
                                 <div class="form-group col-6">
                                     <label for="modal-input-comp-kilogramos">Kilogramos</label>
-                                    <input type="number" min="1" step="1" class="form-control" id="modal-input-comp-kilogramos" name="kilogramos">
+                                    <input type="number" min="0.01" step="0.01" class="form-control" id="modal-input-comp-kilogramos" name="kilogramos">
                                 </div>
                             </div>
                         </div>

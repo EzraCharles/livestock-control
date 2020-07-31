@@ -39,19 +39,19 @@ class PrecioController extends Controller
         //dd($request->all());
         $validator = $request->validate([
             'concepto' => 'required|max:255|min:2',
-            'tipo' => 'required|max:255|min:4',
-            'precio' => 'required|numeric',
-            'factor' => 'required|numeric',
-            'rango' => 'nullable',
-            'rango_alto' => 'nullable|numeric',
-            'rango_bajo' => 'nullable|numeric',
-            'alimento' => 'nullable',
-            'materia_seca' => 'nullable|numeric',
-            'porcion_comestible' => 'nullable|numeric',
-            'grasa' => 'nullable|numeric',
-            'fibra' => 'nullable|numeric',
-            'ceniza' => 'nullable|numeric',
-            'comentarios' => 'nullable|max:255|min:4',
+            'tipo' => 'required|max:255|min:2',
+            'precio' => 'required|numeric|min:0.01',
+            'factor' => 'required|numeric|min:0.01',
+            'rango' => 'nullable|boolean',
+            'rango_alto' => 'nullable|numeric|min:0.01',
+            'rango_bajo' => 'nullable|numeric|min:0',
+            'alimento' => 'nullable|boolean',
+            'materia_seca' => 'nullable|numeric|min:0.01|max:100',
+            'porcion_comestible' => 'nullable|numeric|min:0.01|max:100',
+            'grasa' => 'nullable|numeric|min:0.01|max:100',
+            'fibra' => 'nullable|numeric|min:0.01|max:100',
+            'ceniza' => 'nullable|numeric|min:0.01|max:100',
+            'comentarios' => 'nullable|min:2',
         ]);
 
         try {
@@ -98,19 +98,20 @@ class PrecioController extends Controller
     {
         //dd($request->all());
         $validator = $request->validate([
-            'concepto' => 'required|max:255|min:4',
-            'precio' => 'required|numeric',
-            'factor' => 'required|numeric',
-            'rango' => 'nullable',
-            'rango_alto' => 'nullable|numeric',
-            'rango_bajo' => 'nullable|numeric',
-            'alimento' => 'nullable',
-            'materia_seca' => 'nullable|numeric',
-            'porcion_comestible' => 'nullable|numeric',
-            'grasa' => 'nullable|numeric',
-            'fibra' => 'nullable|numeric',
-            'ceniza' => 'nullable|numeric',
-            'comentarios' => 'nullable|max:255|min:4',
+            'concepto' => 'required|max:255|min:2',
+            'tipo' => 'required|max:255|min:2',
+            'precio' => 'required|numeric|min:0.01',
+            'factor' => 'required|numeric|min:0.01',
+            'rango' => 'nullable|boolean',
+            'rango_alto' => 'nullable|numeric|min:0.01',
+            'rango_bajo' => 'nullable|numeric|min:0',
+            'alimento' => 'nullable|boolean',
+            'materia_seca' => 'nullable|numeric|min:0.01|max:100',
+            'porcion_comestible' => 'nullable|numeric|min:0.01|max:100',
+            'grasa' => 'nullable|numeric|min:0.01|max:100',
+            'fibra' => 'nullable|numeric|min:0.01|max:100',
+            'ceniza' => 'nullable|numeric|min:0.01|max:100',
+            'comentarios' => 'nullable|min:2',
         ]);
 
         try {

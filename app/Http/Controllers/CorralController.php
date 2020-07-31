@@ -37,8 +37,8 @@ class CorralController extends Controller
     public function store(Request $request)
     {
         $validator = $request->validate([
-            'nombre' => 'required|max:255|min:4',
-            'comentarios' => 'nullable|max:255|min:4',
+            'nombre' => 'required|max:255|min:2',
+            'comentarios' => 'nullable|max:255|min:2',
         ]);
 
         try {
@@ -84,8 +84,8 @@ class CorralController extends Controller
     public function update(Request $request)
     {
         $validator = $request->validate([
-            'nombre' => 'required|max:255|min:4',
-            'comentarios' => 'nullable|max:255|min:4',
+            'nombre' => 'required|max:255|min:2',
+            'comentarios' => 'nullable|max:255|min:2',
         ]);
 
         try {

@@ -36,10 +36,10 @@ class FormulacionController extends Controller
     public function store(Request $request)
     {
         $validator = $request->validate([
-            'porcentaje' => 'required|numeric',
-            'kilogramos' => 'required|numeric',
-            'formula_id' => 'required|numeric',
-            'precio_id' => 'required|numeric',
+            'porcentaje' => 'required|numeric|min:0.01|max:100',
+            'kilogramos' => 'required|numeric|min:0.01',
+            'formula_id' => 'required|integer|min:1',
+            'precio_id' => 'required|integer|min:1',
         ]);
 
         //try {
@@ -105,10 +105,10 @@ class FormulacionController extends Controller
     public function update(Request $request)
     {
         $validator = $request->validate([
-            'id' => 'required|numeric',
-            'precio_id' => 'required|numeric',
-            'porcentaje' => 'required|numeric',
-            'kilogramos' => 'required|numeric',
+            'id' => 'required|integer|min:1',
+            'precio_id' => 'required|integer|min:1',
+            'porcentaje' => 'required|numeric|min:0.01|max:100',
+            'kilogramos' => 'required|numeric|min:0.01',
         ]);
 
         try {
@@ -128,7 +128,8 @@ class FormulacionController extends Controller
             echo json_encode($formulacion->formula);
         } catch (\Throwable $th) {
             //echo json_encode('error');
-            return response()->json(['error' => "Error"], 500);
+            //return response()->json(['error' => "Error"], 500);
+            return back()->withErrors(['msg' => $th]);
         }
     }
 

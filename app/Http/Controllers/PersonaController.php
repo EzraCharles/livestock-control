@@ -39,10 +39,10 @@ class PersonaController extends Controller
     public function store(Request $request)
     {
         $validator = $request->validate([
-            'nombre' => 'required|max:255|min:4',
+            'nombre' => 'required|max:255|min:2',
             'email' => 'nullable|email|unique:personas|max:255|min:4',
-            'tipo_persona_id' => 'required|numeric',
-            'comentarios' => 'nullable|max:255|min:4',
+            'tipo_persona_id' => 'required|integer|min:1',
+            'comentarios' => 'nullable|min:2',
         ]);
 
         try {
@@ -90,17 +90,17 @@ class PersonaController extends Controller
 
         if ($request['email'] == \App\Persona::find($request->id)->email) {
             $validator = $request->validate([
-                'nombre' => 'required|max:255|min:4',
-                'tipo_persona_id' => 'required|numeric',
-                'comentarios' => 'nullable|max:255|min:4',
+                'nombre' => 'required|max:255|min:2',
+                'tipo_persona_id' => 'required|integer|min:1',
+                'comentarios' => 'nullable|min:2',
             ]);
         }
         else{
             $validator = $request->validate([
-                'nombre' => 'required|max:255|min:4',
+                'nombre' => 'required|max:255|min:2',
                 'email' => 'nullable|email|unique:personas|max:255|min:4',
-                'tipo_persona_id' => 'required|numeric',
-                'comentarios' => 'nullable|max:255|min:4',
+                'tipo_persona_id' => 'required|integer|min:1',
+                'comentarios' => 'nullable|min:2',
             ]);
         }
 

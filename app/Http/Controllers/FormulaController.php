@@ -39,10 +39,19 @@ class FormulaController extends Controller
     public function store(Request $request)
     {
         //dd($request->all());
+        $validator = $request->validate([
+            'nombre' => 'required|min:2|max:255',
+            'proteina' => 'required|numeric|min:0.01|max:100',
+            'grasa' => 'required|numeric|min:0.01|max:100',
+            'ceniza' => 'required|numeric|min:0.01|max:100',
+            'comentarios' => 'nullable|min:2',
+        ]);
+
         $formula = new \App\Formula([
             'nombre'  => request('nombre'),
             'proteina'  => request('proteina'),
             'grasa'  => request('grasa'),
+            'ceniza'  => request('ceniza'),
             'comentarios' => request('comentarios'),
             'importe' => 0,
             'kilogramos' => 0,
@@ -105,10 +114,11 @@ class FormulaController extends Controller
     public function update(Request $request)
     {
         $validator = $request->validate([
-            'nombre' => 'required|max:255|min:4',
-            'proteina' => 'required|numeric',
-            'grasa' => 'required|numeric',
-            'comentarios' => 'nullable|max:255|min:4',
+            'nombre' => 'required|min:2|max:255',
+            'proteina' => 'required|numeric|min:0.01|max:100',
+            'grasa' => 'required|numeric|min:0.01|max:100',
+            'ceniza' => 'required|numeric|min:0.01|max:100',
+            'comentarios' => 'nullable|min:2',
         ]);
 
         try {

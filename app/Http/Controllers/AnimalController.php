@@ -42,9 +42,9 @@ class AnimalController extends Controller
         $validator = $request->validate([
             'arete' => 'required|max:15|min:10',
             'arete_res' => 'nullable|size:4',
-            'tipo_id' => 'required|numeric',
-            'persona_id' => 'required|numeric',
-            'comentarios' => 'nullable|max:255|min:4',
+            'tipo_id' => 'required|integer|min:1',
+            'persona_id' => 'required|integer|min:1',
+            'comentarios' => 'nullable|max:255|min:2',
         ]);
 
         try {
@@ -94,9 +94,9 @@ class AnimalController extends Controller
         $validator = $request->validate([
             'arete' => 'required|max:15|min:10',
             'arete_res' => 'nullable|size:4',
-            'tipo_animal_id' => 'required|numeric',
-            'persona_id' => 'required|numeric',
-            'comentarios' => 'nullable|max:255|min:4',
+            'tipo_animal_id' => 'required|integer|min:1',
+            'persona_id' => 'required|integer|min:1',
+            'comentarios' => 'nullable|max:255|min:2',
         ]);
 
         try {
@@ -105,7 +105,7 @@ class AnimalController extends Controller
             return back();
         } catch (\Throwable $th) {
             alert()->error('Oops, algo salió mal!')->persistent('Cerrar');
-            return back()->withErrors(['msg' => $validator]);
+            return back()->withErrors(['msg' => $validator]); //th
         }
     }
 
