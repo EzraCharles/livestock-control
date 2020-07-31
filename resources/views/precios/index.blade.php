@@ -59,11 +59,11 @@
                                                     <label for="precio">Precio:</label>
                                                     <input class="form-control" type="number" min="0.0" step=".01" name="precio" required>
                                                 </div>
-                                                <div class="col-3">
+                                                <div class="col-3" style="padding-top: 10px; ">
                                                     <label for="factor">Factor:</label>
                                                     <input class="form-control" type="number" min="0.0" step=".01" name="factor" required>
                                                 </div>
-                                                <div class="col-5">
+                                                <div class="col-5" style="padding-top: 10px; ">
                                                     <label for="comentarios">Comentarios:</label>
                                                     <input class="form-control" type="text" name="comentarios">
                                                 </div>
@@ -73,18 +73,40 @@
                                                 <div class="col-2" style="padding-top: 30px; ">
                                                     <label for="alimento"><input class="check" id="alimento" type="checkbox" name="alimento"> Alimento</label>
                                                 </div>
-                                                <div class="col-10" >
+                                                <div class="col-10" style="padding-top: 10px; ">
                                                     <div class="row" id="range">
                                                         <div class="col-2"></div>
                                                         <div class="col-4">
                                                             <label for="rango-bajo">Rango bajo:</label>
-                                                            <input class="form-control" type="number" min="0.0" step=".01" id="rango_bajo" name="rango_bajo">
+                                                            <input class="form-control range-input" type="number" min="0.0" step=".01" id="rango_bajo" name="rango_bajo">
                                                         </div>
                                                         <div class="col-4">
                                                             <label for="rango-alto">Rango alto:</label>
-                                                            <input class="form-control" type="number" min="0.0" step=".01" id="rango_alto" name="rango_alto">
+                                                            <input class="form-control range-input" type="number" min="0.0" step=".01" id="rango_alto" name="rango_alto">
                                                         </div>
                                                         <div class="col-2"></div>
+                                                    </div>
+                                                    <div class="row" id="food">
+                                                        <div class="col-3">
+                                                            <label for="materia_seca">Materia seca:</label>
+                                                            <input class="form-control food-input" type="number" min="0.0" step=".01" id="materia_seca" name="materia_seca">
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <label for="porcion_comestible">P.C.:</label>
+                                                            <input class="form-control food-input" type="number" min="0.0" step=".01" id="porcion_comestible" name="porcion_comestible">
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <label for="grasa">Grasa:</label>
+                                                            <input class="form-control food-input" type="number" min="0.0" step=".01" id="grasa" name="grasa">
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <label for="fibra">Fibra:</label>
+                                                            <input class="form-control food-input" type="number" min="0.0" step=".01" id="fibra" name="fibra">
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <label for="ceniza">Ceniza:</label>
+                                                            <input class="form-control food-input" type="number" min="0.0" step=".01" id="ceniza" name="ceniza">
+                                                        </div>
                                                     </div>
                                                 </div>
 
@@ -112,7 +134,13 @@
                                             <th hidden><strong>Rango</strong></th>
                                             <th hidden><strong>Rango bajo</strong></th>
                                             <th hidden><strong>Rango alto</strong></th>
-                                            <th><strong>Rango</strong></th>
+                                            <th hidden><strong>Alimento</strong></th>
+                                            <th hidden><strong>Materia Seca</strong></th>
+                                            <th hidden><strong>Porción Comestible</strong></th>
+                                            <th hidden><strong>Grasa</strong></th>
+                                            <th hidden><strong>Fibra</strong></th>
+                                            <th hidden><strong>Ceniza</strong></th>
+                                            <th><strong>Datos</strong></th>
                                             <th><strong>Acciones</strong></th>
                                         </tr>
                                     </thead>
@@ -129,11 +157,42 @@
                                             <td hidden style="text-align: center; vertical-align: middle; " id="rango">{{ $precio->rango }}</td>
                                             <td hidden style="text-align: center; vertical-align: middle; " id="rango_bajo">{{ $precio->rango_bajo }}</td>
                                             <td hidden style="text-align: center; vertical-align: middle; " id="rango_alto">{{ $precio->rango_alto }}</td>
+                                            <td hidden style="text-align: center; vertical-align: middle; " id="alimento">{{ $precio->alimento }}</td>
+                                            <td hidden style="text-align: center; vertical-align: middle; " id="materia_seca">{{ $precio->materia_seca }}</td>
+                                            <td hidden style="text-align: center; vertical-align: middle; " id="porcion_comestible">{{ $precio->porcion_comestible }}</td>
+                                            <td hidden style="text-align: center; vertical-align: middle; " id="grasa">{{ $precio->grasa }}</td>
+                                            <td hidden style="text-align: center; vertical-align: middle; " id="fibra">{{ $precio->fibra }}</td>
+                                            <td hidden style="text-align: center; vertical-align: middle; " id="ceniza">{{ $precio->ceniza }}</td>
                                             <td>
                                                 <div class="btn-group">
-                                                    <button type="button" class="btn {{ $precio->rango == 1 ? 'btn-success' : 'btn-danger' }}" data-toggle="modal" id="rangos">
-                                                        <i class="extraInfo fas {{ $precio->rango == 1 ? 'fa-check' : 'fa-times' }}" data-content="{{ $precio->rango == 1 ? $precio->rango_bajo . ' - ' . $precio->rango_alto : '' }}" rel="popover" data-placement="bottom" data-original-title="{{ $precio->rango == 0 ? 'Sin Rangos' : 'Rangos de peso' }}" data-trigger="hover"></i>
-                                                    </button>
+                                                    @if ($precio->rango == 1 || $precio->alimento == 1)
+                                                        <button type="button" class="btn {{ $precio->rango == 1 ? 'btn-warning' : 'btn-success' }}" data-toggle="modal" id="item">
+                                                            <i
+                                                                class="extraInfo fas {{ $precio->rango == 1 ? 'fa-code' : 'fa-utensils' }}"
+                                                                data-content="{{ $precio->rango == 1 ? $precio->rango_bajo . ' - ' . $precio->rango_alto : "
+                                                                Materia Seca: "  . $precio->materia_seca .
+                                                                " <br/>
+                                                                Porción comestible: "  . $precio->porcion_comestible .
+                                                                " <br/>
+                                                                Grasa: "  . $precio->grasa .
+                                                                " <br/>
+                                                                Fibra: "  . $precio->fibra .
+                                                                " <br/>
+                                                                Ceniza: "  . $precio->ceniza
+                                                                }}"
+                                                                rel="popover" data-placement="bottom"
+                                                                data-original-title="{{ $precio->rango == 0 ? 'Datos Alimenticios' : 'Rangos de peso' }}"
+                                                                data-trigger="hover"
+                                                                data-html="true" >
+                                                            </i>
+                                                        </button>
+                                                    @else
+                                                        <button type="button" class="btn btn-danger" data-toggle="modal" id="item">
+                                                            <i class="extraInfo fas fa-times" rel="popover"
+                                                                data-placement="bottom" data-original-title="Sin Datos" data-trigger="hover">
+                                                            </i>
+                                                        </button>
+                                                    @endif
                                                 </div>
                                             </td>
                                             <td>
@@ -295,27 +354,36 @@
 <script>
     $('#add-item').hide();
     $('#range').hide();
+    $('#food').hide();
     $('#modal-input-rangos').hide();
     $('#hr-divisor').hide();
 
     $('.extraInfo').popover();
     $('#popoverOption').popover({ trigger: "hover" });
 
-    $("#rango").change(function() {
-        if(this.checked) {
-            $(this).attr('value', '1');
-            $('#range').show();
-        }
-        else{
-            $('#range').hide();
-            $(this).attr('value', '0');
-        }
-    });
-
     $(document).ready(function() {
 
         $('.check').click(function() {
             $('.check').not(this).prop('checked', false);
+
+            if ($(this).attr('name') == 'rango' && this.checked) {
+                $('#range').show();
+                $('#food').hide();
+                $(this).attr('value', '1');
+                //$('#food').attr('value', '0');
+            }
+            else if ($(this).attr('name') == 'alimento' && this.checked) {
+                $('#range').hide();
+                $('#food').show();
+                $(this).attr('value', '1');
+                //$('#range').attr('value', '0');
+            }
+            else{
+                $('#food').hide();
+                $('#range').hide();
+                //$('#range').attr('value', '0');
+                //$('#food').attr('value', '0');
+            }
         });
 
         $('#add').on('click', function () {
@@ -514,19 +582,26 @@
                 });
                 return false;
             }
-            else if(parseInt($('#rango_bajo').val()) < parseInt($('#rango_alto').val())){
-                $(this).unbind('submit').submit(); // continue the submit unbind preventDefault
+            else if ($('#rango').is(':checked')){
+                if(parseInt($('#rango_bajo').val()) < parseInt($('#rango_alto').val())){
+                    $('.food-input').val(null);
+                }
+                else{
+                    $('body').removeClass('loading');
+                    swal({
+                        title: "",
+                        text: "El Rango Bajo no puede ser mayor que Rango Alto!",
+                        icon: "error",
+                        buttons: 'Ok',
+                    });
+                    return false;
+                }
             }
-            else{
-                $('body').removeClass('loading');
-                swal({
-                    title: "",
-                    text: "El Rango Bajo no puede ser mayor que Rango Alto!",
-                    icon: "error",
-                    buttons: 'Ok',
-                });
-                return false;
+            else if ($('#alimento').is(':checked')) {
+                $('.range-input').val(null);
             }
+
+            $(this).unbind('submit').submit(); // continue the submit unbind preventDefault
 
         });
 

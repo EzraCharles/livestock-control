@@ -1,12 +1,7 @@
 @extends('layouts.app')
 
 @section('general')
-{{--
-    background-engorda
-    background-vacuno
-    beef-cattle
-    cattle
-    --}}
+
 <style>
     body,html {
         height: 100%;
@@ -59,11 +54,11 @@
                             <div class="form-group row">
                                 <div class="col-md-8 offset-md-2">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                                        {{-- <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
 
                                         <label class="form-check-label" for="remember">
                                             Recordarme
-                                        </label>
+                                        </label> --}}
                                         <a href="{{ route('register') }}" style="color: #994e14; padding-left: 50px;">Registrarme</a>
                                     </div>
                                 </div>
