@@ -9,6 +9,7 @@
 
 <!-- Button DataTable -->
 <script src="{{ asset('js/jquery.dataTables.min.js')}}"></script>
+<script src="{{ asset('js/dataTables.fixedColumns.min.js')}}"></script>
 <script src="{{ asset('js/dataTables.bootstrap4.min.js')}}"></script>
 <script src="{{ asset('js/dataTables.buttons.min.js')}}"></script>
 <script src="{{ asset('js/buttons.flash.min.js')}}"></script>

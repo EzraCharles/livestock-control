@@ -258,8 +258,14 @@
                             </div>
                         </form>
                     </div>
+                    <style>
+                        div.dataTables_wrapper {
+                            width: auto;
+                            margin: 0 auto;
+                        }
+                    </style>
                     <div id="components-table">
-                        <table id="myTableComponentes" class="table table-striped table-hover table-condensed" style="text-align: center; vertical-align: middle; margin-bottom: 0px";>
+                        <table id="myTableComponentes" class="display nowrap" style="text-align: center; vertical-align: middle; margin-bottom: 0px; width:100%">
                             <thead>
                                 <tr>
                                 <th><strong>ID</strong></th>
@@ -538,6 +544,7 @@
                     "data":{ input: f_id },
                     "dataSrc" : ""
                 },
+                "scrollX": true,
                 "columns": [
                     {
                         "data": "id",
@@ -776,8 +783,11 @@
                                     icon: "success",
                                     type: "success"
                                 }).then(() => {
-                                    $('#' + data.id).find('#importe').text(data.importe);
-                                    $('#' + data.id).find('#kilogramos').text(data.kilogramos);
+                                    $('#' + data.id).find('#importe').text(new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(data.importe));
+                                    $('#' + data.id).find('#kilogramos').text(data.kilogramos.toFixed(2));
+                                    $('#' + data.id).find('#proteina').text(data.proteina.toFixed(2));
+                                    $('#' + data.id).find('#grasa').text(data.grasa.toFixed(2));
+                                    $('#' + data.id).find('#ceniza').text(data.ceniza.toFixed(2));
 
                                     $("#componentes-modal").modal('show');
                                 });
@@ -880,8 +890,11 @@
                     }).then(() => {
                         $("#edit-comp-modal").modal('hide');
 
-                        $('#' + data.id).find('#importe').text(data.importe);
-                        $('#' + data.id).find('#kilogramos').text(data.kilogramos);
+                        $('#' + data.id).find('#importe').text(new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(data.importe));
+                        $('#' + data.id).find('#kilogramos').text(data.kilogramos.toFixed(2));
+                        $('#' + data.id).find('#proteina').text(data.proteina.toFixed(2));
+                        $('#' + data.id).find('#grasa').text(data.grasa.toFixed(2));
+                        $('#' + data.id).find('#ceniza').text(data.ceniza.toFixed(2));
                     });
                 },
                 error: function(data){
@@ -932,8 +945,12 @@
                             $('#componentes-modal').modal('show');
                         }, 500);
 
-                        $('#' + data.id).find('#importe').text(data.importe);
-                        $('#' + data.id).find('#kilogramos').text(data.kilogramos);
+                        $('#' + data.id).find('#importe').text(new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(data.importe));
+                        $('#' + data.id).find('#kilogramos').text(data.kilogramos.toFixed(2));
+                        $('#' + data.id).find('#proteina').text(data.proteina.toFixed(2));
+                        $('#' + data.id).find('#grasa').text(data.grasa.toFixed(2));
+                        $('#' + data.id).find('#ceniza').text(data.ceniza.toFixed(2));
+
                     });
                 },
                 error: function(data){

@@ -59,12 +59,6 @@ class FormulacionController extends Controller
         ]);
         $formulacion->save();
 
-        $formulacion->formula->importe = $formulacion->formula->formulaciones()->sum('importe');
-        $formulacion->formula->save();
-
-        $formulacion->formula->kilogramos = $formulacion->formula->formulaciones()->sum('kilogramos');
-        $formulacion->formula->save();
-
         $proteina = 0.0;
         $grasa = 0.0;
         $ceniza = 0.0;
@@ -79,6 +73,13 @@ class FormulacionController extends Controller
         $formula->grasa = $grasa;
         $formula->ceniza = $ceniza;
         $formula->save();
+
+        $formulacion->formula->importe = $formulacion->formula->formulaciones()->sum('importe');
+        $formulacion->formula->save();
+
+        $formulacion->formula->kilogramos = $formulacion->formula->formulaciones()->sum('kilogramos');
+        $formulacion->formula->save();
+
 
         echo json_encode($formulacion->formula);
         /* } catch (\Throwable $th) {
@@ -130,15 +131,6 @@ class FormulacionController extends Controller
 
             $formulacion = \App\Formulacion::find($request->id);
 
-            $formulacion->importe = $formulacion->precio->precio / $formulacion->precio->factor * $formulacion->kilogramos;
-            $formulacion->save();
-
-            $formulacion->formula->importe = $formulacion->formula->formulaciones()->sum('importe');
-            $formulacion->formula->save();
-
-            $formulacion->formula->kilogramos = $formulacion->formula->formulaciones()->sum('kilogramos');
-            $formulacion->formula->save();
-
             $proteina = 0.0;
             $grasa = 0.0;
             $ceniza = 0.0;
@@ -147,11 +139,25 @@ class FormulacionController extends Controller
                 $proteina += $componente->kilogramos * $componente->precio->porcion_comestible / 1000;
                 $grasa += $componente->kilogramos * $componente->precio->grasa / 1000;
                 $ceniza += $componente->kilogramos * $componente->precio->ceniza / 1000;
+
+                if ($componente->importe != $componente->precio->precio / $componente->precio->factor * $componente->kilogramos) {
+                    $componente->importe = $componente->precio->precio / $componente->precio->factor * $componente->kilogramos;
+                    $componente->save();
+                }
             }
 
             $formulacion->formula->proteina = $proteina;
             $formulacion->formula->grasa = $grasa;
             $formulacion->formula->ceniza = $ceniza;
+            $formulacion->formula->save();
+
+            $formulacion->importe = $formulacion->precio->precio / $formulacion->precio->factor * $formulacion->kilogramos;
+            $formulacion->save();
+
+            $formulacion->formula->importe = $formulacion->formula->formulaciones()->sum('importe');
+            $formulacion->formula->save();
+
+            $formulacion->formula->kilogramos = $formulacion->formula->formulaciones()->sum('kilogramos');
             $formulacion->formula->save();
 
             echo json_encode($formulacion->formula);
@@ -181,10 +187,30 @@ class FormulacionController extends Controller
 
                 $formula = \App\Formula::find($request['fid']);
 
-                $formula->importe = $formulacion->formula->formulaciones()->sum('importe');
+                $proteina = 0.0;
+                $grasa = 0.0;
+                $ceniza = 0.0;
+
+                foreach ($formula->formulaciones as $componente) {
+                    $proteina += $componente->kilogramos * $componente->precio->porcion_comestible / 1000;
+                    $grasa += $componente->kilogramos * $componente->precio->grasa / 1000;
+                    $ceniza += $componente->kilogramos * $componente->precio->ceniza / 1000;
+
+                    if ($componente->importe != $componente->precio->precio / $componente->precio->factor * $componente->kilogramos) {
+                        $componente->importe = $componente->precio->precio / $componente->precio->factor * $componente->kilogramos;
+                        $componente->save();
+                    }
+                }
+
+                $formula->proteina = $proteina;
+                $formula->grasa = $grasa;
+                $formula->ceniza = $ceniza;
                 $formula->save();
 
-                $formula->kilogramos = $formulacion->formula->formulaciones()->sum('kilogramos');
+                $formula->importe = $formula->formulaciones()->sum('importe');
+                $formula->save();
+
+                $formula->kilogramos = $formula->formulaciones()->sum('kilogramos');
                 $formula->save();
 
                 echo json_encode($formula);
