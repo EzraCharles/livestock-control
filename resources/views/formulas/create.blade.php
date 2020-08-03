@@ -43,7 +43,7 @@
                                 </div>
                                 <div class="form-group col-4">
                                     <label for="kilogramos">Kilogramos:</label>
-                                    <input type="number" min="1" step="1" class="form-control kilogramos" id="kilogramos" name="kilogramos[]" required disabled>
+                                    <input type="number" min="0.01" step="0.01" class="form-control kilogramos" id="kilogramos" name="kilogramos[]" required disabled>
                                 </div>
                             </div>
                             <button id="add_request" type="button" class="btn btn-info" style="float:right; margin: 5px;"><i class="fa fa-plus" aria-hidden="true"></i></button>
@@ -63,13 +63,13 @@
                                     @method('POST')
                                     @csrf
                                     <div class="row">
-                                        <div class="col-6">
+                                        <div class="col-12">
                                             <div class="form-group">
                                                 <label for="nombre">Nombre:</label>
                                                 <input type="text" class="form-control" name="nombre" id="nombre" required>
                                             </div>
                                         </div>
-                                        <div class="col-3">
+                                        {{-- <div class="col-3">
                                             <div class="form-group ">
                                                 <label for="proteina">Proteina:</label><br/>
                                                 <input type="number" min="0.01" step="0.01" class="form-control" name="proteina" id="proteina" required>
@@ -81,6 +81,12 @@
                                                 <input type="number" min="0.01" step="0.01" class="form-control" name="grasa" id="grasa" required>
                                             </div>
                                         </div>
+                                        <div class="col-3">
+                                            <div class="form-group ">
+                                                <label for="ceniza">Ceniza:</label><br/>
+                                                <input type="number" min="0.01" step="0.01" class="form-control" name="ceniza" id="ceniza" required>
+                                            </div>
+                                        </div> --}}
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <label for="comentarios">Comentarios:</label>
@@ -117,7 +123,7 @@
 
         $(document).on("click", "#add_request", function(){
 
-            if ($('#nombre').val().length != 0 && $('#proteina').val().length != 0 && $('#grasa').val().length != 0) {
+            if ($('#nombre').val().length != 0) { //&& $('#proteina').val().length != 0 && $('#grasa').val().length != 0 && $('#ceniza').val().length != 0
                 var newobject = $("#new_req").clone(true).appendTo($("#multiple-req-adds"));
                 newobject.show();
 
@@ -231,7 +237,7 @@
                     return el != null && el != "";
                 });
 
-                var total = porcentaje.reduce((a, b) => parseInt(a) + parseInt(b), 0);
+                var total = porcentaje.reduce((a, b) => parseFloat(a) + parseFloat(b), 0);
                 if(total != 100){
                     $('body').removeClass('loading');
 

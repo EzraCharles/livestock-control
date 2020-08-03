@@ -65,8 +65,22 @@ class FormulacionController extends Controller
         $formulacion->formula->kilogramos = $formulacion->formula->formulaciones()->sum('kilogramos');
         $formulacion->formula->save();
 
-        echo json_encode($formulacion->formula);
+        $proteina = 0.0;
+        $grasa = 0.0;
+        $ceniza = 0.0;
 
+        foreach ($formula->formulaciones as $componente) {
+            $proteina += $componente->kilogramos * $componente->precio->porcion_comestible / 1000;
+            $grasa += $componente->kilogramos * $componente->precio->grasa / 1000;
+            $ceniza += $componente->kilogramos * $componente->precio->ceniza / 1000;
+        }
+
+        $formula->proteina = $proteina;
+        $formula->grasa = $grasa;
+        $formula->ceniza = $ceniza;
+        $formula->save();
+
+        echo json_encode($formulacion->formula);
         /* } catch (\Throwable $th) {
             alert()->error('Oops, algo salió mal!')->persistent('Cerrar');
             return back()->withErrors(['msg' => $validator]);
@@ -123,6 +137,21 @@ class FormulacionController extends Controller
             $formulacion->formula->save();
 
             $formulacion->formula->kilogramos = $formulacion->formula->formulaciones()->sum('kilogramos');
+            $formulacion->formula->save();
+
+            $proteina = 0.0;
+            $grasa = 0.0;
+            $ceniza = 0.0;
+
+            foreach ($formulacion->formula->formulaciones as $componente) {
+                $proteina += $componente->kilogramos * $componente->precio->porcion_comestible / 1000;
+                $grasa += $componente->kilogramos * $componente->precio->grasa / 1000;
+                $ceniza += $componente->kilogramos * $componente->precio->ceniza / 1000;
+            }
+
+            $formulacion->formula->proteina = $proteina;
+            $formulacion->formula->grasa = $grasa;
+            $formulacion->formula->ceniza = $ceniza;
             $formulacion->formula->save();
 
             echo json_encode($formulacion->formula);

@@ -50,6 +50,7 @@
                                             <th><strong>Nombre</strong></th>
                                             <th><strong>Proteína</strong></th>
                                             <th><strong>Grasa</strong></th>
+                                            <th><strong>Ceniza</strong></th>
                                             <th><strong>Importe</strong></th>
                                             <th><strong>Kilogramos</strong></th>
                                             <th><strong>Comentarios</strong></th>
@@ -65,7 +66,8 @@
                                                 <td style="text-align: center; vertical-align: middle; " id="nombre">{{ $formula->nombre }}</td>
                                                 <td style="text-align: center; vertical-align: middle; " id="proteina">{{ $formula->proteina }}</td>
                                                 <td style="text-align: center; vertical-align: middle; " id="grasa">{{ $formula->grasa }}</td>
-                                                <td style="text-align: center; vertical-align: middle; " id="importe">{{ $formula->importe }}</td>
+                                                <td style="text-align: center; vertical-align: middle; " id="ceniza">{{ $formula->ceniza }}</td>
+                                                <td style="text-align: center; vertical-align: middle; " id="importe">${{ number_format($formula->importe, 2) }}</td>
                                                 <td style="text-align: center; vertical-align: middle; " id="kilogramos">{{ $formula->kilogramos }}</td>
                                                 <td style="text-align: center; vertical-align: middle; " id="comentarios">{{ $formula->comentarios }}</td>
                                                 <td style="text-align: center; vertical-align: middle; " id="created_at">{{ $formula->created_at }}</td>
@@ -128,16 +130,20 @@
                                     <input type="text" class="form-control" id="modal-input-nombre" name="nombre" required>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="form-group col-6">
+                            {{-- <div class="row">
+                                <div class="form-group col-4">
                                     <label for="modal-input-proteina">Proteína</label>
                                     <input type="number" min="0" step="0.01" class="form-control" id="modal-input-proteina" name="proteina">
                                 </div>
-                                <div class="form-group col-6">
+                                <div class="form-group col-4">
                                     <label for="modal-input-grasa">Grasa</label>
                                     <input type="number" min="0" step="0.01" class="form-control" id="modal-input-grasa" name="grasa">
                                 </div>
-                            </div>
+                                <div class="form-group col-4">
+                                    <label for="modal-input-ceniza">Ceniza</label>
+                                    <input type="number" min="0" step="0.01" class="form-control" id="modal-input-ceniza" name="ceniza">
+                                </div>
+                            </div> --}}
                             <div class="form-group">
                                 <label for="modal-input-comentarios">Comentarios</label>
                                 <textarea type="text" class="form-control" id="modal-input-comentarios" name="comentarios"></textarea>
@@ -177,7 +183,7 @@
                                     <label for="modal-input-nombre-delete">Nombre</label>
                                     <input type="text" class="form-control" id="modal-input-nombre-delete" name="nombre" readonly>
                                 </div>
-                                <div class="form-group col-4">
+                                {{-- <div class="form-group col-4">
                                     <label for="modal-input-proteina-delete">Proteína</label>
                                     <input type="text" class="form-control" id="modal-input-proteina-delete" name="proteina" readonly>
                                 </div>
@@ -186,9 +192,9 @@
                                     <input type="text" class="form-control" id="modal-input-grasa-delete" name="grasa" readonly>
                                 </div>
                                 <div class="form-group col-4">
-                                    <label for="modal-input-kilogramos-delete">Kilogramos</label>
-                                    <input type="text" class="form-control" id="modal-input-kilogramos-delete" name="kilogramos" readonly>
-                                </div>
+                                    <label for="modal-input-ceniza-delete">Ceniza</label>
+                                    <input type="text" class="form-control" id="modal-input-ceniza-delete" name="ceniza" readonly>
+                                </div> --}}
                             </div>
                             <div class="form-group">
                                 <label for="modal-input-comentarios-delete">Comentarios</label>
@@ -207,7 +213,7 @@
     </div>
 
     <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" id="componentes-modal">
-        <div class="modal-dialog modal-lg" >
+        <div class="modal-dialog modal-xl" >
             <div class="modal-content" >
                 <div class="modal-header">
                     <h4 class="modal-title" align="center"><b>Componentes de Fórmula </b></h4>  <h5 style="padding-left: 70px" id="porcentaje-total"></h5>
@@ -261,13 +267,17 @@
                                 <th><strong>Kilogramos</strong></th>
                                 <th><strong>Porcentaje</strong></th>
                                 <th><strong>Importe</strong></th>
+                                <th><strong>Proteína</strong></th>
+                                <th><strong>Grasa</strong></th>
+                                <th><strong>Fibra</strong></th>
+                                <th><strong>Ceniza</strong></th>
                                 <th><strong>Acciones</strong></th>
                                 </tr>
                             </thead>
                         </table>
                         <br/>
                         <h5 id="proportional-relationship"></h5>
-                        <button  style="float: right;" type="button" class="btn btn-warning" id="link-componente">Añadir Componente</button>
+                        <button  style="float: right;" type="button" class="btn grupo-res" id="link-componente">Añadir Componente</button>
                     </div>
                 </div>
             </div>
@@ -444,16 +454,14 @@
             var nombre = row.children("#nombre");
             var proteina = row.children("#proteina");
             var grasa = row.children("#grasa");
-            var importe = row.children("#importe");
-            var kilogramos = row.children("#kilogramos");
+            var ceniza = row.children("#ceniza");
             var comentarios = row.children("#comentarios");
 
             $("#modal-input-id").val(id[0]['innerHTML']);
             $("#modal-input-nombre").val(nombre[0]['innerHTML']);
-            $("#modal-input-proteina").val(proteina[0]['innerHTML']);
+            /* $("#modal-input-proteina").val(proteina[0]['innerHTML']);
             $("#modal-input-grasa").val(grasa[0]['innerHTML']);
-            $("#modal-input-importe").val(importe[0]['innerHTML']);
-            $("#modal-input-kilogramos").val(kilogramos[0]['innerHTML']);
+            $("#modal-input-ceniza").val(ceniza[0]['innerHTML']); */
             $("#modal-input-comentarios").val(comentarios[0]['innerHTML']);
 
             $("#edit-form").attr('action', 'formulas/' + id[0]['innerHTML']);
@@ -474,17 +482,15 @@
             var nombre = row.children("#nombre");
             var proteina = row.children("#proteina");
             var grasa = row.children("#grasa");
-            var importe = row.children("#importe");
-            var kilogramos = row.children("#kilogramos");
+            var ceniza = row.children("#ceniza");
             var comentarios = row.children("#comentarios");
 
             // fill the data in the input fields
             $("#modal-input-id-delete").val(id[0]['innerHTML']);
             $("#modal-input-nombre-delete").val(nombre[0]['innerHTML']);
-            $("#modal-input-proteina-delete").val(proteina[0]['innerHTML']);
+            /* $("#modal-input-proteina-delete").val(proteina[0]['innerHTML']);
             $("#modal-input-grasa-delete").val(grasa[0]['innerHTML']);
-            $("#modal-input-importe-delete").val(importe[0]['innerHTML']);
-            $("#modal-input-kilogramos-delete").val(kilogramos[0]['innerHTML']);
+            $("#modal-input-ceniza-delete").val(ceniza[0]['innerHTML']); */
             $("#modal-input-comentarios-delete").val(comentarios[0]['innerHTML']);
 
             $("#delete-form").attr('action', 'formulas/' + id[0]['innerHTML']);
@@ -567,6 +573,31 @@
                         "data": "importe",
                         "createdCell":  function (td, cellData, rowData, row, col) {
                             $(td).attr('id', 'importe');
+                        },
+                        "render": $.fn.dataTable.render.number( ',', '.', 2, '$' ),
+                    },
+                    {
+                        "data": "precio.porcion_comestible",
+                        "createdCell":  function (td, cellData, rowData, row, col) {
+                            $(td).attr('id', 'porcion_comestible');
+                        }
+                    },
+                    {
+                        "data": "precio.grasa",
+                        "createdCell":  function (td, cellData, rowData, row, col) {
+                            $(td).attr('id', 'grasa');
+                        }
+                    },
+                    {
+                        "data": "precio.fibra",
+                        "createdCell":  function (td, cellData, rowData, row, col) {
+                            $(td).attr('id', 'fibra');
+                        }
+                    },
+                    {
+                        "data": "precio.ceniza",
+                        "createdCell":  function (td, cellData, rowData, row, col) {
+                            $(td).attr('id', 'ceniza');
                         }
                     },
                     {

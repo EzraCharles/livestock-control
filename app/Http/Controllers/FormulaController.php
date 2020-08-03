@@ -41,17 +41,17 @@ class FormulaController extends Controller
         //dd($request->all());
         $validator = $request->validate([
             'nombre' => 'required|min:2|max:255',
-            'proteina' => 'required|numeric|min:0.01|max:100',
+            /* 'proteina' => 'required|numeric|min:0.01|max:100',
             'grasa' => 'required|numeric|min:0.01|max:100',
-            'ceniza' => 'required|numeric|min:0.01|max:100',
+            'ceniza' => 'required|numeric|min:0.01|max:100', */
             'comentarios' => 'nullable|min:2',
         ]);
 
         $formula = new \App\Formula([
             'nombre'  => request('nombre'),
-            'proteina'  => request('proteina'),
+            /* 'proteina'  => request('proteina'),
             'grasa'  => request('grasa'),
-            'ceniza'  => request('ceniza'),
+            'ceniza'  => request('ceniza'), */
             'comentarios' => request('comentarios'),
             'importe' => 0,
             'kilogramos' => 0,
@@ -75,6 +75,21 @@ class FormulaController extends Controller
         $formula->save();
 
         $formula->kilogramos = $formula->formulaciones()->sum('kilogramos');
+        $formula->save();
+
+        $proteina = 0.0;
+        $grasa = 0.0;
+        $ceniza = 0.0;
+
+        foreach ($formula->formulaciones as $componente) {
+            $proteina += $componente->kilogramos * $componente->precio->porcion_comestible / 1000;
+            $grasa += $componente->kilogramos * $componente->precio->grasa / 1000;
+            $ceniza += $componente->kilogramos * $componente->precio->ceniza / 1000;
+        }
+
+        $formula->proteina = $proteina;
+        $formula->grasa = $grasa;
+        $formula->ceniza = $ceniza;
         $formula->save();
 
         alert()->success('Fórmula creada exitosamente!')->persistent('Cerrar');
@@ -115,9 +130,9 @@ class FormulaController extends Controller
     {
         $validator = $request->validate([
             'nombre' => 'required|min:2|max:255',
-            'proteina' => 'required|numeric|min:0.01|max:100',
+            /* 'proteina' => 'required|numeric|min:0.01|max:100',
             'grasa' => 'required|numeric|min:0.01|max:100',
-            'ceniza' => 'required|numeric|min:0.01|max:100',
+            'ceniza' => 'required|numeric|min:0.01|max:100', */
             'comentarios' => 'nullable|min:2',
         ]);
 

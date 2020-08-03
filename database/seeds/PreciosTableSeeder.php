@@ -205,7 +205,7 @@ class PreciosTableSeeder extends Seeder
             [
                 'concepto' => 'P. Soya',
                 'tipo' => 'Formulación',
-                'precio' => 1300,
+                'precio' => 10300,
                 'factor' => 1000,
                 'alimento' => true,
                 'materia_seca' => 90,
@@ -247,7 +247,7 @@ class PreciosTableSeeder extends Seeder
             [
                 'concepto' => 'MYCOAD',
                 'tipo' => 'Formulación',
-                'precio' => 4800,
+                'precio' => 27560,
                 'factor' => 1000,
                 'alimento' => true,
                 'materia_seca' => 0,
