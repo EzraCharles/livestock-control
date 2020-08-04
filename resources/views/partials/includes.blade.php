@@ -8,6 +8,7 @@
 <script src="{{ asset('plugins/chosen/chosen.jquery.js') }}"></script><!-- chosen-->
 
 <!-- Button DataTable -->
+<script src="{{ asset('js/moment-with-locales.min.js')}}"></script>
 <script src="{{ asset('js/jquery.dataTables.min.js')}}"></script>
 <script src="{{ asset('js/dataTables.fixedColumns.min.js')}}"></script>
 <script src="{{ asset('js/dataTables.bootstrap4.min.js')}}"></script>
@@ -18,4 +19,3 @@
 <script src="{{ asset('js/jszip.min.js')}}"></script>
 <script src="{{ asset('js/pdfmake.min.js')}}"></script>
 <script src="{{ asset('js/vfs_fonts.js')}}"></script>
-

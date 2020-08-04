@@ -82,7 +82,7 @@
                                             <td style="text-align: center; vertical-align: middle; " id="rol">{{ $usuario->rol }}</td>
                                             <td style="text-align: center; vertical-align: middle; " id="email">{{ $usuario->email }}</td>
                                             <td style="text-align: center; vertical-align: middle; " id="created_at">{{ date('d-m-Y H:i', strtotime($usuario->created_at)) }}</td>
-                                            <td>
+                                            <td style="text-align: center; vertical-align: middle; ">
                                                 <div class="btn-group">
                                                     <a href="{{ url('usuarios/'.$usuario->id) }}" style="color: inherit;">
                                                         <button type="button" class="btn btn-success" data-toggle="modal" id="show-item">

@@ -77,7 +77,7 @@
                                             <td style="text-align: center; vertical-align: middle; " id="nombre">{{ $corral->nombre }}</td>
                                             <td style="text-align: center; vertical-align: middle; " id="comentarios">{{ $corral->comentarios }}</td>
                                             <td style="text-align: center; vertical-align: middle; " id="created_at">{{ date('d-m-Y H:i', strtotime($corral->created_at)) }}</td>
-                                            <td>
+                                            <td style="text-align: center; vertical-align: middle; ">
                                                 <div class="btn-group">
                                                     <a href="{{ url('corrales/'.$corral->id) }}" style="color: inherit;">
                                                         <button type="button" class="btn btn-success" data-toggle="modal" id="show-item">

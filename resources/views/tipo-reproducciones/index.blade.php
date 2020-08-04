@@ -77,7 +77,7 @@
                                             <td style="text-align: center; vertical-align: middle; " id="nombre">{{ $tipo_reproduccion->nombre }}</td>
                                             <td style="text-align: center; vertical-align: middle; " id="comentarios">{{ $tipo_reproduccion->comentarios }}</td>
                                             <td style="text-align: center; vertical-align: middle; " id="created_at">{{ date('d-m-Y H:i', strtotime($tipo_reproduccion->created_at)) }}</td>
-                                            <td>
+                                            <td style="text-align: center; vertical-align: middle; ">
                                                 <div class="btn-group">
                                                     <a href="{{ url('tipo-reproducciones/'.$tipo_reproduccion->id) }}" style="color: inherit;">
                                                         <button type="button" class="btn btn-success" data-toggle="modal" id="show-item">

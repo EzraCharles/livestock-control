@@ -70,16 +70,19 @@
                                                 <td style="text-align: center; vertical-align: middle; " id="importe">${{ number_format($formula->importe, 2) }}</td>
                                                 <td style="text-align: center; vertical-align: middle; " id="kilogramos">{{ $formula->kilogramos }}</td>
                                                 <td style="text-align: center; vertical-align: middle; " id="comentarios">{{ $formula->comentarios }}</td>
-                                                <td style="text-align: center; vertical-align: middle; " id="updated_at">{{ date('d-m-Y H:i', strtotime($formula->updated_at)) }}</td>
-                                                <td>
+                                                <td style="text-align: center; vertical-align: middle; {{ $formula->updated_at->diffInDays(Carbon\Carbon::now() ,false) > 30 ? 'background: #ff9696' : ''}}" id="updated_at">{{ date('d-m-Y H:i', strtotime($formula->updated_at)) }}</td>
+                                                <td style="text-align: center; vertical-align: middle; ">
                                                     <div class="btn-group">
                                                         <button type="button" class="btn btn-info" data-toggle="modal" id="componentes-item">
                                                             <i class="fa fa-list-ul"></i>
                                                         </button>
                                                     </div>
                                                 </td>
-                                                <td>
+                                                <td style="text-align: center; vertical-align: middle; ">
                                                     <div class="btn-group">
+                                                        <button type="button" class="btn btn-warning" data-toggle="modal" id="update-item">
+                                                            <i class="fa fa-wrench"></i>
+                                                        </button>
                                                         <a href="{{ url('formulas/'.$formula->id) }}" style="color: inherit;">
                                                             <button type="button" class="btn btn-success" data-toggle="modal" id="show-item">
                                                                 <i class="far fa-eye"></i>
@@ -444,12 +447,79 @@
 
         $(document).on('click', "#edit-item", function() {
             $(this).addClass('edit-item-trigger-clicked'); //useful for identifying which trigger was clicked and consequently grab data from the correct row and not the wrong one.
-            $('#edit-modal').modal()
+            $('#edit-modal').modal();
         });
 
         $(document).on('click', "#delete-item", function() {
             $(this).addClass('delete-item-trigger-clicked'); //useful for identifying which trigger was clicked and consequently grab data from the correct row and not the wrong one.
             $('#delete-modal').modal();
+        });
+
+        $(document).on('click', "#update-item", function() {
+            $('body').addClass('loading');
+
+            $(this).addClass('update-item-trigger-clicked'); //useful for identifying which trigger was clicked and consequently grab data from the correct row and not the wrong one.
+
+            var el = $(".update-item-trigger-clicked"); // See how its usefull right here?
+            var row = el.closest(".data-row");
+            var id = row.children('#id');
+
+            $.ajax({
+                type: 'POST',
+                url: 'revisar_formula',
+                dataType: 'json',
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    input: id[0]['innerHTML'],
+                },
+                success: function(data) {
+                    $('body').removeClass('loading');
+
+                    if(data != "error"){
+                        swal({
+                            title: "",
+                            text: "Fórmula revisada y actualizada exitosamente!",
+                            icon: "success",
+                            type: "success"
+                        }).then(() => {
+                            $('#' + data.id).find('#importe').text(new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(data.importe));
+                            $('#' + data.id).find('#kilogramos').text(data.kilogramos);
+                            $('#' + data.id).find('#proteina').text(data.proteina.toFixed(2));
+                            $('#' + data.id).find('#grasa').text(data.grasa.toFixed(2));
+                            $('#' + data.id).find('#ceniza').text(data.ceniza.toFixed(2));
+                            $('#' + data.id).find('#updated_at').text(moment(data.updated_at).format('DD-MM-YYYY h:mm'));
+                            $('#' + data.id).find('#update-item').remove();
+
+                        });
+                    }
+                    else{
+                        swal({
+                            tite: "",
+                            text: "Fórmula no actualizada correctamente!",
+                            icon: "error",
+                            type: "error"
+                        }).then(() => {
+                            //
+                        });
+                    }
+
+                },
+                error: function(data) {
+                    $('body').removeClass('loading');
+
+                    swal({
+                        tite: "",
+                        text: "Oops, ocurrió un error, intente más tarde!",
+                        icon: "error",
+                        type: "error"
+                    }).then(() => {
+                        //
+                    });
+
+                }
+            });
+
+            $('.update-item-trigger-clicked').removeClass('update-item-trigger-clicked');
         });
 
         // on modal show
@@ -477,7 +547,7 @@
 
         // on modal hide
         $('#edit-modal').on('hide.bs.modal', function() {
-            $('.edit-item-trigger-clicked').removeClass('edit-item-trigger-clicked')
+            $('.edit-item-trigger-clicked').removeClass('edit-item-trigger-clicked');
             $("#edit-form").trigger("reset");
         });
 

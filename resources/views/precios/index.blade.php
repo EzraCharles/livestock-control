@@ -163,7 +163,7 @@
                                             <td hidden style="text-align: center; vertical-align: middle; " id="grasa">{{ $precio->grasa }}</td>
                                             <td hidden style="text-align: center; vertical-align: middle; " id="fibra">{{ $precio->fibra }}</td>
                                             <td hidden style="text-align: center; vertical-align: middle; " id="ceniza">{{ $precio->ceniza }}</td>
-                                            <td>
+                                            <td style="text-align: center; vertical-align: middle; ">
                                                 <div class="btn-group">
                                                     @if ($precio->rango == 1 || $precio->alimento == 1)
                                                         <button type="button" class="btn {{ $precio->rango == 1 ? 'btn-warning' : 'btn-success' }}" data-toggle="modal" id="item">
@@ -192,7 +192,7 @@
                                                     @endif
                                                 </div>
                                             </td>
-                                            <td>
+                                            <td style="text-align: center; vertical-align: middle; ">
                                                 <div class="btn-group">
                                                     <a href="{{ url('precios/'.$precio->id) }}" style="color: inherit;">
                                                         <button type="button" class="btn btn-success" data-toggle="modal" id="show-item">

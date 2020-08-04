@@ -94,7 +94,7 @@
                                                     </button>
                                                 </div> --}}
                                             </td>
-                                            <td>
+                                            <td style="text-align: center; vertical-align: middle; ">
                                                 <div class="btn-group">
                                                     <a href="{{ url('tipo-alimentaciones/'.$tipo_alimentacion->id) }}" style="color: inherit;">
                                                         <button type="button" class="btn btn-success" data-toggle="modal" id="show-item">

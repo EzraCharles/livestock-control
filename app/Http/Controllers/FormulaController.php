@@ -164,6 +164,46 @@ class FormulaController extends Controller
         return back();
     }
 
+    public function check(Request $request)
+    {
+        //dd($request->all());
+        try {
+            $formula = \App\Formula::find($request->input);
+
+            $proteina = 0.0;
+            $grasa = 0.0;
+            $ceniza = 0.0;
+
+            foreach ($formula->formulaciones as $componente) {
+                $proteina += $componente->kilogramos * $componente->precio->porcion_comestible / 1000;
+                $grasa += $componente->kilogramos * $componente->precio->grasa / 1000;
+                $ceniza += $componente->kilogramos * $componente->precio->ceniza / 1000;
+
+                if ($componente->importe != $componente->precio->precio / $componente->precio->factor * $componente->kilogramos) {
+                    $componente->importe = $componente->precio->precio / $componente->precio->factor * $componente->kilogramos;
+                    $componente->save();
+                }
+            }
+
+            $formula->proteina = $proteina;
+            $formula->grasa = $grasa;
+            $formula->ceniza = $ceniza;
+            $formula->save();
+
+            $formula->importe = $formula->formulaciones()->sum('importe');
+            $formula->save();
+
+            $formula->kilogramos = $formula->formulaciones()->sum('kilogramos');
+            $formula->save();
+
+            echo json_encode($formula);
+        } catch (\Throwable $th) {
+            //echo json_encode('error');
+            //return response()->json(['error' => "Error"], 500);
+            return back()->withErrors(['msg' => $th]);
+        }
+    }
+
     public function componentes(Request $request)
     {
         $componentes = \App\Formulacion::where('formula_id', $request['input'])->with('precio')->get();

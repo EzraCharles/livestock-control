@@ -96,7 +96,7 @@
                                             <td style="text-align: center; vertical-align: middle; " id="email">{{ $persona->email }}</td>
                                             <td style="text-align: center; vertical-align: middle; " id="comentarios">{{ $persona->comentarios }}</td>
                                             <td style="text-align: center; vertical-align: middle; " id="created_at">{{ date('d-m-Y H:i', strtotime($persona->created_at)) }}</td>
-                                            <td>
+                                            <td style="text-align: center; vertical-align: middle; ">
                                                 <div class="btn-group">
                                                     <a href="{{ url('personas/'.$persona->id) }}" style="color: inherit;">
                                                         <button type="button" class="btn btn-success" data-toggle="modal" id="show-item">
