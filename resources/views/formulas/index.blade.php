@@ -64,9 +64,9 @@
                                             <tr class="data-row" id="{{ $formula->id }}">
                                                 <td style="text-align: center; vertical-align: middle; " id="id">{{ $formula->id }}</td>
                                                 <td style="text-align: center; vertical-align: middle; " id="nombre">{{ $formula->nombre }}</td>
-                                                <td style="text-align: center; vertical-align: middle; " id="proteina">{{ $formula->proteina }}</td>
-                                                <td style="text-align: center; vertical-align: middle; " id="grasa">{{ $formula->grasa }}</td>
-                                                <td style="text-align: center; vertical-align: middle; " id="ceniza">{{ $formula->ceniza }}</td>
+                                                <td style="text-align: center; vertical-align: middle; " id="proteina">{{ $formula->proteina }} %</td>
+                                                <td style="text-align: center; vertical-align: middle; " id="grasa">{{ $formula->grasa }} %</td>
+                                                <td style="text-align: center; vertical-align: middle; " id="ceniza">{{ $formula->ceniza }} %</td>
                                                 <td style="text-align: center; vertical-align: middle; " id="importe">${{ number_format($formula->importe, 2) }}</td>
                                                 <td style="text-align: center; vertical-align: middle; " id="kilogramos">{{ $formula->kilogramos }}</td>
                                                 <td style="text-align: center; vertical-align: middle; " id="comentarios">{{ $formula->comentarios }}</td>
@@ -80,9 +80,6 @@
                                                 </td>
                                                 <td style="text-align: center; vertical-align: middle; ">
                                                     <div class="btn-group">
-                                                        <button type="button" class="btn btn-warning" data-toggle="modal" id="update-item">
-                                                            <i class="fa fa-wrench"></i>
-                                                        </button>
                                                         <a href="{{ url('formulas/'.$formula->id) }}" style="color: inherit;">
                                                             <button type="button" class="btn btn-success" data-toggle="modal" id="show-item">
                                                                 <i class="far fa-eye"></i>
@@ -90,6 +87,9 @@
                                                         </a>
                                                         <button type="button" class="btn btn-info" data-toggle="modal" id="edit-item">
                                                             <i class="fa fa-edit"></i>
+                                                        </button>
+                                                        <button type="button" class="btn btn-warning" data-toggle="modal" id="update-item">
+                                                            <i class="fa fa-wrench"></i>
                                                         </button>
                                                         <button type="button" class="btn btn-danger" data-toggle="modal" id="delete-item">
                                                             <i class="fa fa-trash"></i>
@@ -484,11 +484,11 @@
                         }).then(() => {
                             $('#' + data.id).find('#importe').text(new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(data.importe));
                             $('#' + data.id).find('#kilogramos').text(data.kilogramos);
-                            $('#' + data.id).find('#proteina').text(data.proteina.toFixed(2));
-                            $('#' + data.id).find('#grasa').text(data.grasa.toFixed(2));
-                            $('#' + data.id).find('#ceniza').text(data.ceniza.toFixed(2));
-                            $('#' + data.id).find('#updated_at').text(moment(data.updated_at).format('DD-MM-YYYY h:mm'));
-                            $('#' + data.id).find('#update-item').remove();
+                            $('#' + data.id).find('#proteina').text(data.proteina.toFixed(2) + ' %');
+                            $('#' + data.id).find('#grasa').text(data.grasa.toFixed(2) + ' %');
+                            $('#' + data.id).find('#ceniza').text(data.ceniza.toFixed(2) + ' %');
+                            $('#' + data.id).find('#updated_at').text(moment(data.updated_at).format('DD-MM-YYYY H:mm'));
+                            //$('#' + data.id).find('#update-item').remove();
 
                         });
                     }
@@ -597,9 +597,6 @@
 
             // get the data
             f_id = row.children('#id')[0]['innerHTML'];
-            console.log(row);
-            console.log(f_id);
-            console.log(row.children('#nombre')[0]['innerHTML']);
             dynamicVariable = row.children('#nombre')[0]['innerHTML'];
 
             $("#myTableComponentes").DataTable().destroy();
@@ -650,6 +647,10 @@
                             $(td).attr('id', 'porcentaje');
                             tmpPrc = cellData;
                             porcentajeFinal += cellData;
+
+                        },
+                        render: function ( data, type, row ) {
+                            return data + ' %';
                         }
                     },
                     {
@@ -825,7 +826,7 @@
             setTimeout(function(){
                 $("#create-componente").hide();
                 $('#components-table').show();
-            }, 500);
+            }, 700);
             //$('.componente-item-trigger-clicked').removeClass('componente-item-trigger-clicked');
         });
 
@@ -860,10 +861,11 @@
                                     type: "success"
                                 }).then(() => {
                                     $('#' + data.id).find('#importe').text(new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(data.importe));
-                                    $('#' + data.id).find('#kilogramos').text(data.kilogramos.toFixed(2));
-                                    $('#' + data.id).find('#proteina').text(data.proteina.toFixed(2));
-                                    $('#' + data.id).find('#grasa').text(data.grasa.toFixed(2));
-                                    $('#' + data.id).find('#ceniza').text(data.ceniza.toFixed(2));
+                                    $('#' + data.id).find('#kilogramos').text(data.kilogramos);
+                                    $('#' + data.id).find('#proteina').text(data.proteina.toFixed(2) + ' %');
+                                    $('#' + data.id).find('#grasa').text(data.grasa.toFixed(2) + ' %');
+                                    $('#' + data.id).find('#ceniza').text(data.ceniza.toFixed(2) + ' %');
+                                    $('#' + data.id).find('#updated_at').text(moment(data.updated_at).format('DD-MM-YYYY H:mm'));
 
                                     $("#componentes-modal").modal('show');
                                 });
@@ -916,7 +918,7 @@
             var kilogramos = row.children("#kilogramos");
 
             $("#modal-input-comp-id").val(id[0]['innerHTML']);
-            $("#modal-input-comp-porcentaje").val(porcentaje[0]['innerHTML']);
+            $("#modal-input-comp-porcentaje").val(parseFloat(porcentaje[0]['innerHTML'].replace(' %', '')));
             $("#modal-input-comp-kilogramos").val(kilogramos[0]['innerHTML']);
 
             $("option:selected").removeAttr("selected");
@@ -941,7 +943,7 @@
 
             setTimeout(function(){
                 $("#componentes-modal").modal('show');
-            }, 500);
+            }, 700);
         });
 
         $('#edit-comp-form').submit(function(e) {
@@ -967,10 +969,12 @@
                         $("#edit-comp-modal").modal('hide');
 
                         $('#' + data.id).find('#importe').text(new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(data.importe));
-                        $('#' + data.id).find('#kilogramos').text(data.kilogramos.toFixed(2));
-                        $('#' + data.id).find('#proteina').text(data.proteina.toFixed(2));
-                        $('#' + data.id).find('#grasa').text(data.grasa.toFixed(2));
-                        $('#' + data.id).find('#ceniza').text(data.ceniza.toFixed(2));
+                        $('#' + data.id).find('#kilogramos').text(data.kilogramos);
+                        $('#' + data.id).find('#proteina').text(data.proteina.toFixed(2) + ' %');
+                        $('#' + data.id).find('#grasa').text(data.grasa.toFixed(2) + ' %');
+                        $('#' + data.id).find('#ceniza').text(data.ceniza.toFixed(2) + ' %');
+                        $('#' + data.id).find('#updated_at').text(moment(data.updated_at).format('DD-MM-YYYY H:mm'));
+
                     });
                 },
                 error: function(data){
@@ -1019,13 +1023,14 @@
                     }).then(() => {
                         setTimeout(function(){
                             $('#componentes-modal').modal('show');
-                        }, 500);
+                        }, 700);
 
                         $('#' + data.id).find('#importe').text(new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(data.importe));
-                        $('#' + data.id).find('#kilogramos').text(data.kilogramos.toFixed(2));
-                        $('#' + data.id).find('#proteina').text(data.proteina.toFixed(2));
-                        $('#' + data.id).find('#grasa').text(data.grasa.toFixed(2));
-                        $('#' + data.id).find('#ceniza').text(data.ceniza.toFixed(2));
+                        $('#' + data.id).find('#kilogramos').text(data.kilogramos);
+                        $('#' + data.id).find('#proteina').text(data.proteina.toFixed(2) + ' %');
+                        $('#' + data.id).find('#grasa').text(data.grasa.toFixed(2) + ' %');
+                        $('#' + data.id).find('#ceniza').text(data.ceniza.toFixed(2) + ' %');
+                        $('#' + data.id).find('#updated_at').text(moment(data.updated_at).format('DD-MM-YYYY H:mm'));
 
                     });
                 },
@@ -1044,7 +1049,7 @@
                     }).then(() => {
                         setTimeout(function(){
                             $('#componentes-modal').modal('show');
-                        }, 500);
+                        }, 700);
                     });
                 }
             });

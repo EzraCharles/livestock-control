@@ -188,6 +188,7 @@ class FormulaController extends Controller
             $formula->proteina = $proteina;
             $formula->grasa = $grasa;
             $formula->ceniza = $ceniza;
+            $formula->updated_at = \Carbon\Carbon::now();
             $formula->save();
 
             $formula->importe = $formula->formulaciones()->sum('importe');
