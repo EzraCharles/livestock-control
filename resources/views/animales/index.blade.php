@@ -60,7 +60,7 @@
                                             <td style="text-align: center; vertical-align: middle; " id="tipo">{{ $animal->tipoAnimal->nombre }}</td>
                                             <td style="text-align: center; vertical-align: middle; " id="productor">{{ $animal->persona->nombre }}</td>
                                             <td style="text-align: center; vertical-align: middle; " id="comentarios">{{ $animal->comentarios }}</td>
-                                            <td style="text-align: center; vertical-align: middle; " id="created_at">{{ $animal->created_at }}</td>
+                                            <td style="text-align: center; vertical-align: middle; " id="created_at">{{ date('d-m-Y H:i', strtotime($animal->created_at)) }}</td>
                                             <td>
                                                 <div class="btn-group">
                                                     <a href="{{ url('animales/'.$animal->id) }}" style="color: inherit;">

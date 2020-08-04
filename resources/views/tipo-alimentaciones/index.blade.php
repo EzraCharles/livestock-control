@@ -87,7 +87,7 @@
                                             <td style="text-align: center; vertical-align: middle; " id="nombre">{{ $tipo_alimentacion->nombre }}</td>
                                             <td style="text-align: center; vertical-align: middle; " id="formula">{{ $tipo_alimentacion->formula->nombre }}
                                                 <td style="text-align: center; vertical-align: middle; " id="comentarios">{{ $tipo_alimentacion->comentarios }}</td>
-                                            <td style="text-align: center; vertical-align: middle; " id="created_at">{{ $tipo_alimentacion->created_at }}</td>
+                                            <td style="text-align: center; vertical-align: middle; " id="created_at">{{ date('d-m-Y H:i', strtotime($tipo_alimentacion->created_at)) }}</td>
                                                 {{-- <div class="btn-group">
                                                     <button type="button" class="btn btn-info" data-toggle="modal" id="formula-item">
                                                         <i class="fa fa-atom"></i>

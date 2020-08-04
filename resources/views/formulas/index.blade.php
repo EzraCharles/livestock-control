@@ -54,7 +54,7 @@
                                             <th><strong>Importe</strong></th>
                                             <th><strong>Kilogramos</strong></th>
                                             <th><strong>Comentarios</strong></th>
-                                            <th><strong>Creación</strong></th>
+                                            <th><strong>Actualización</strong></th>
                                             <th><strong>Items</strong></th>
                                             <th><strong>Acciones</strong></th>
                                         </tr>
@@ -70,7 +70,7 @@
                                                 <td style="text-align: center; vertical-align: middle; " id="importe">${{ number_format($formula->importe, 2) }}</td>
                                                 <td style="text-align: center; vertical-align: middle; " id="kilogramos">{{ $formula->kilogramos }}</td>
                                                 <td style="text-align: center; vertical-align: middle; " id="comentarios">{{ $formula->comentarios }}</td>
-                                                <td style="text-align: center; vertical-align: middle; " id="created_at">{{ $formula->created_at }}</td>
+                                                <td style="text-align: center; vertical-align: middle; " id="updated_at">{{ date('d-m-Y H:i', strtotime($formula->updated_at)) }}</td>
                                                 <td>
                                                     <div class="btn-group">
                                                         <button type="button" class="btn btn-info" data-toggle="modal" id="componentes-item">
@@ -358,6 +358,8 @@
 
     var badKg = [];
 
+    var dynamicVariable = '';
+
     $(document).ready(function() {
         $('#create-componente').hide();
         $('#proportional-relationship').hide();
@@ -525,6 +527,10 @@
 
             // get the data
             f_id = row.children('#id')[0]['innerHTML'];
+            console.log(row);
+            console.log(f_id);
+            console.log(row.children('#nombre')[0]['innerHTML']);
+            dynamicVariable = row.children('#nombre')[0]['innerHTML'];
 
             $("#myTableComponentes").DataTable().destroy();
             //$("#modal-input-search").focus();
@@ -660,18 +666,18 @@
                         extend: 'csv',
                         charset: 'UTF-8',
                         bom: true,
-                        filename: 'Formulacion-Grupo-RES',
+                        filename: 'Formulacion-Grupo-RES--' + dynamicVariable,
                         exportOptions: {
-                            columns: [ 1, 2, 3, 4, 5, 6, 7 ]
+                            columns: [ 1, 2, 3, 4, 5, 6, 7, 8 ]
                         }
                     },
                     {
                         extend: 'excel',
                         charset: 'UTF-8',
                         bom: true,
-                        filename: 'Formulacion-Grupo-RES',
+                        filename: 'Formulacion-Grupo-RES--' + dynamicVariable,
                         exportOptions: {
-                            columns: [ 1, 2, 3, 4, 5, 6, 7 ]
+                            columns: [ 1, 2, 3, 4, 5, 6, 7, 8 ]
                         }
                     },
                     {
@@ -681,9 +687,9 @@
                         },
                         charset: 'UTF-8',
                         bom: true,
-                        filename: 'Formulacion-Grupo-RES',
+                        filename: 'Formulacion-Grupo-RES--' + dynamicVariable,
                         exportOptions: {
-                            columns: [ 1, 2, 3, 4, 5, 6, 7 ]
+                            columns: [ 1, 2, 3, 4, 5, 6, 7, 8 ]
                         }
                     },
                     {
@@ -691,9 +697,9 @@
                         text: 'Imprimir',
                         charset: 'UTF-8',
                         bom: true,
-                        filename: 'Formulacion-Grupo-RES',
+                        filename: 'Formulacion-Grupo-RES--' + dynamicVariable,
                         exportOptions: {
-                            columns: [ 1, 2, 3, 4, 5, 6, 7 ]
+                            columns: [ 1, 2, 3, 4, 5, 6, 7, 8 ]
                         }
                     },
                 ],
