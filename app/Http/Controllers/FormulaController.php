@@ -44,7 +44,7 @@ class FormulaController extends Controller
             /* 'proteina' => 'required|numeric|min:0.01|max:100',
             'grasa' => 'required|numeric|min:0.01|max:100',
             'ceniza' => 'required|numeric|min:0.01|max:100', */
-            'comentarios' => 'nullable|min:2',
+            'comentarios' => 'nullable|min:2|max:255',
         ]);
 
         $formula = new \App\Formula([
@@ -133,7 +133,7 @@ class FormulaController extends Controller
             /* 'proteina' => 'required|numeric|min:0.01|max:100',
             'grasa' => 'required|numeric|min:0.01|max:100',
             'ceniza' => 'required|numeric|min:0.01|max:100', */
-            'comentarios' => 'nullable|min:2',
+            'comentarios' => 'nullable|min:2|max:255',
         ]);
 
         try {

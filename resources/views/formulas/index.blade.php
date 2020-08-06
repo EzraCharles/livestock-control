@@ -130,7 +130,7 @@
                             <div class="row">
                                 <div class="form-group col-12">
                                     <label for="modal-input-nombre">Nombre</label>
-                                    <input type="text" class="form-control" id="modal-input-nombre" name="nombre" required>
+                                    <input type="text" class="form-control" id="modal-input-nombre" name="nombre" required minlength="2" maxlength="255">
                                 </div>
                             </div>
                             {{-- <div class="row">
@@ -149,7 +149,7 @@
                             </div> --}}
                             <div class="form-group">
                                 <label for="modal-input-comentarios">Comentarios</label>
-                                <textarea type="text" class="form-control" id="modal-input-comentarios" name="comentarios"></textarea>
+                                <textarea type="text" class="form-control" id="modal-input-comentarios" name="comentarios" minlength="2" maxlength="255"></textarea>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -166,7 +166,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" align="center"><b>Borrar Animal</b></h4>
+                    <h4 class="modal-title" align="center"><b>Borrar Fórmula</b></h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -247,7 +247,7 @@
                                     </div>
                                     <div class="form-group col-4">
                                         <label for="comp-porcentaje">Porcentaje</label>
-                                        <input type="number" min="0.01" step="0.01" class="form-control" id="comp-porcentaje" name="porcentaje">
+                                        <input type="number" min="0.01" max="100" step="0.01" class="form-control" id="comp-porcentaje" name="porcentaje">
                                     </div>
                                     <div class="form-group col-4">
                                         <label for="comp-kilogramos">Kilogramos</label>
@@ -325,7 +325,7 @@
                             <div class="row">
                                 <div class="form-group col-6">
                                     <label for="modal-input-comp-porcentaje">Porcentaje</label>
-                                    <input type="number" min="0.01" step="0.01" class="form-control" id="modal-input-comp-porcentaje" name="porcentaje">
+                                    <input type="number" min="0.01" max="100" step="0.01" class="form-control" id="modal-input-comp-porcentaje" name="porcentaje">
                                 </div>
                                 <div class="form-group col-6">
                                     <label for="modal-input-comp-kilogramos">Kilogramos</label>
