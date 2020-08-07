@@ -14,9 +14,14 @@ class TipoAlimentacionController extends Controller
      */
     public function index()
     {
-        $tipo_alimentaciones = \App\TipoAlimentacion::all();
-        $formulas = \App\Formula::all();
-        return view('tipo-alimentaciones.index', compact(['tipo_alimentaciones', 'formulas']));
+        try {
+            $tipo_alimentaciones = \App\TipoAlimentacion::all();
+            $formulas = \App\Formula::all();
+            return view('tipo-alimentaciones.index', compact(['tipo_alimentaciones', 'formulas']));
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal! Si persiste el error favor de consultar servicio técnico')->persistent('Cerrar');
+            return back()->withErrors(['msg' => $th]);
+        }
     }
 
     /**
@@ -61,8 +66,13 @@ class TipoAlimentacionController extends Controller
      */
     public function show($id)
     {
-        $tipo = \App\TipoAlimentacion::find($id);
-        return view('tipo-alimentaciones.show', compact('tipo'));
+        try {
+            $tipo = \App\TipoAlimentacion::find($id);
+            return view('tipo-alimentaciones.show', compact('tipo'));
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal! Si persiste el error favor de consultar servicio técnico')->persistent('Cerrar');
+            return back()->withErrors(['msg' => $th]);
+        }
     }
 
     /**

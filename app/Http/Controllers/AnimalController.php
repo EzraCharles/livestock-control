@@ -14,11 +14,16 @@ class AnimalController extends Controller
      */
     public function index()
     {
-        $animales = \App\Animal::all();
-        $personas = \App\Persona::where('tipo_persona_id', 3)->get();
-        $tipos = \App\TipoAnimal::all();
+        try {
+            $animales = \App\Animal::all();
+            $personas = \App\Persona::where('tipo_persona_id', 3)->get();
+            $tipos = \App\TipoAnimal::all();
 
-        return view('animales.index', compact(['animales', 'personas', 'tipos']));
+            return view('animales.index', compact(['animales', 'personas', 'tipos']));
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal! Si persiste el error favor de consultar servicio técnico')->persistent('Cerrar');
+            return back()->withErrors(['msg' => $th]);
+        }
     }
 
     /**
@@ -28,7 +33,12 @@ class AnimalController extends Controller
      */
     public function create()
     {
-        return view('animales.create');
+        try {
+            return view('animales.create');
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal! Si persiste el error favor de consultar servicio técnico')->persistent('Cerrar');
+            return back()->withErrors(['msg' => $th]);
+        }
     }
 
     /**
@@ -65,8 +75,13 @@ class AnimalController extends Controller
      */
     public function show($id)
     {
-        $animal = \App\Animal::find($id);
-        return view('animales.show', compact('animal'));
+        try {
+            $animal = \App\Animal::find($id);
+            return view('animales.show', compact('animal'));
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal! Si persiste el error favor de consultar servicio técnico')->persistent('Cerrar');
+            return back()->withErrors(['msg' => $th]);
+        }
     }
 
     /**
@@ -77,8 +92,13 @@ class AnimalController extends Controller
      */
     public function edit($id)
     {
-        $animal = \App\Animal::find($id);
-        return view('animales.edit', compact('animal'));
+        try {
+            $animal = \App\Animal::find($id);
+            return view('animales.edit', compact('animal'));
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal! Si persiste el error favor de consultar servicio técnico')->persistent('Cerrar');
+            return back()->withErrors(['msg' => $th]);
+        }
     }
 
     /**

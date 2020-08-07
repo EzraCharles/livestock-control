@@ -14,9 +14,14 @@ class FormulaController extends Controller
      */
     public function index()
     {
-        $formulas = \App\Formula::all();
-        $precios = \App\Precio::where('tipo', 'Formulación')->get();
-        return view('formulas.index', compact(['formulas', 'precios']));
+        try {
+            $formulas = \App\Formula::all();
+            $precios = \App\Precio::where('tipo', 'Formulación')->get();
+            return view('formulas.index', compact(['formulas', 'precios']));
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal! Si persiste el error favor de consultar servicio técnico')->persistent('Cerrar');
+            return back()->withErrors(['msg' => $th]);
+        }
     }
 
     /**
@@ -26,8 +31,13 @@ class FormulaController extends Controller
      */
     public function create()
     {
-        $precios = \App\Precio::where('tipo', 'Formulación')->get();
-        return view('formulas.create', compact(['precios']));
+        try {
+            $precios = \App\Precio::where('tipo', 'Formulación')->get();
+            return view('formulas.create', compact(['precios']));
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal! Si persiste el error favor de consultar servicio técnico')->persistent('Cerrar');
+            return back()->withErrors(['msg' => $th]);
+        }
     }
 
     /**
@@ -47,53 +57,58 @@ class FormulaController extends Controller
             'comentarios' => 'nullable|min:2|max:255',
         ]);
 
-        $formula = new \App\Formula([
-            'nombre'  => request('nombre'),
-            /* 'proteina'  => request('proteina'),
-            'grasa'  => request('grasa'),
-            'ceniza'  => request('ceniza'), */
-            'comentarios' => request('comentarios'),
-            'importe' => 0,
-            'kilogramos' => 0,
-        ]);
-        $formula->save();
-
-        for ($i=0; $i < sizeof(request('porcentaje')); $i++) {
-            $precio = \App\Precio::find(request('precio_id')[$i]);
-
-            $formulacion = new \App\Formulacion([
-                'kilogramos' => request('kilogramos')[$i],
-                'porcentaje' => request('porcentaje')[$i],
-                'formula_id' => $formula->id,
-                'precio_id' => request('precio_id')[$i],
-                'importe' => $precio->precio / $precio->factor * request('kilogramos')[$i],
+        try {
+            $formula = new \App\Formula([
+                'nombre'  => request('nombre'),
+                /* 'proteina'  => request('proteina'),
+                'grasa'  => request('grasa'),
+                'ceniza'  => request('ceniza'), */
+                'comentarios' => request('comentarios'),
+                'importe' => 0,
+                'kilogramos' => 0,
             ]);
-            $formulacion->save();
+            $formula->save();
+
+            for ($i=0; $i < sizeof(request('porcentaje')); $i++) {
+                $precio = \App\Precio::find(request('precio_id')[$i]);
+
+                $formulacion = new \App\Formulacion([
+                    'kilogramos' => request('kilogramos')[$i],
+                    'porcentaje' => request('porcentaje')[$i],
+                    'formula_id' => $formula->id,
+                    'precio_id' => request('precio_id')[$i],
+                    'importe' => $precio->precio / $precio->factor * request('kilogramos')[$i],
+                ]);
+                $formulacion->save();
+            }
+
+            $formula->importe = $formula->formulaciones()->sum('importe');
+            $formula->save();
+
+            $formula->kilogramos = $formula->formulaciones()->sum('kilogramos');
+            $formula->save();
+
+            $proteina = 0.0;
+            $grasa = 0.0;
+            $ceniza = 0.0;
+
+            foreach ($formula->formulaciones as $componente) {
+                $proteina += $componente->kilogramos * $componente->precio->porcion_comestible / 1000;
+                $grasa += $componente->kilogramos * $componente->precio->grasa / 1000;
+                $ceniza += $componente->kilogramos * $componente->precio->ceniza / 1000;
+            }
+
+            $formula->proteina = $proteina;
+            $formula->grasa = $grasa;
+            $formula->ceniza = $ceniza;
+            $formula->save();
+
+            alert()->success('Fórmula creada exitosamente!')->persistent('Cerrar');
+            return back();
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal! Si persiste el error favor de consultar servicio técnico')->persistent('Cerrar');
+            return back()->withErrors(['msg' => $th]);
         }
-
-        $formula->importe = $formula->formulaciones()->sum('importe');
-        $formula->save();
-
-        $formula->kilogramos = $formula->formulaciones()->sum('kilogramos');
-        $formula->save();
-
-        $proteina = 0.0;
-        $grasa = 0.0;
-        $ceniza = 0.0;
-
-        foreach ($formula->formulaciones as $componente) {
-            $proteina += $componente->kilogramos * $componente->precio->porcion_comestible / 1000;
-            $grasa += $componente->kilogramos * $componente->precio->grasa / 1000;
-            $ceniza += $componente->kilogramos * $componente->precio->ceniza / 1000;
-        }
-
-        $formula->proteina = $proteina;
-        $formula->grasa = $grasa;
-        $formula->ceniza = $ceniza;
-        $formula->save();
-
-        alert()->success('Fórmula creada exitosamente!')->persistent('Cerrar');
-        return back();
     }
 
     /**
@@ -104,8 +119,13 @@ class FormulaController extends Controller
      */
     public function show($id)
     {
-        $formula = \App\Formula::find($id);
-        return view('formulas.show', compact('formula'));
+        try {
+            $formula = \App\Formula::find($id);
+            return view('formulas.show', compact('formula'));
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal! Si persiste el error favor de consultar servicio técnico')->persistent('Cerrar');
+            return back()->withErrors(['msg' => $th]);
+        }
     }
 
     /**
@@ -207,14 +227,22 @@ class FormulaController extends Controller
 
     public function componentes(Request $request)
     {
-        $componentes = \App\Formulacion::where('formula_id', $request['input'])->with('precio')->get();
-        echo json_encode($componentes);
+        try {
+            $componentes = \App\Formulacion::where('formula_id', $request['input'])->with('precio')->get();
+            echo json_encode($componentes);
+        } catch (\Throwable $th) {
+            echo json_encode('error');
+        }
     }
 
     public function getPrecios()
     {
-        $precios = \App\Precio::where('tipo', 'Formulación')->get();
-        echo json_encode($precios);
+        try {
+            $precios = \App\Precio::where('tipo', 'Formulación')->get();
+            echo json_encode($precios);
+        } catch (\Throwable $th) {
+            echo json_encode('error');
+        }
     }
 
 }

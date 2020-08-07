@@ -14,8 +14,13 @@ class DiagnosticoController extends Controller
      */
     public function index()
     {
-        $diagnosticos = \App\Diagnostico::all();
-        return view('diagnosticos.index', compact('diagnosticos'));
+        try {
+            $diagnosticos = \App\Diagnostico::all();
+            return view('diagnosticos.index', compact('diagnosticos'));
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal! Si persiste el error favor de consultar servicio técnico')->persistent('Cerrar');
+            return back()->withErrors(['msg' => $th]);
+        }
     }
 
     /**
@@ -59,8 +64,13 @@ class DiagnosticoController extends Controller
      */
     public function show($id)
     {
-        $diagnostico = \App\Diagnostico::find($id);
-        return view('diagnosticos.show', compact('diagnostico'));
+        try {
+            $diagnostico = \App\Diagnostico::find($id);
+            return view('diagnosticos.show', compact('diagnostico'));
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal! Si persiste el error favor de consultar servicio técnico')->persistent('Cerrar');
+            return back()->withErrors(['msg' => $th]);
+        }
     }
 
     /**

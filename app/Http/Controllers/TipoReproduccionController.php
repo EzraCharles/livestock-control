@@ -14,8 +14,13 @@ class TipoReproduccionController extends Controller
      */
     public function index()
     {
-        $tipo_reproducciones = \App\TipoReproduccion::all();
-        return view('tipo-reproducciones.index', compact(['tipo_reproducciones']));
+        try {
+            $tipo_reproducciones = \App\TipoReproduccion::all();
+            return view('tipo-reproducciones.index', compact(['tipo_reproducciones']));
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal! Si persiste el error favor de consultar servicio técnico')->persistent('Cerrar');
+            return back()->withErrors(['msg' => $th]);
+        }
     }
 
     /**
@@ -59,8 +64,13 @@ class TipoReproduccionController extends Controller
      */
     public function show($id)
     {
-        $tipo = \App\TipoReproduccion::find($id);
-        return view('tipo-reproducciones.show', compact('tipo'));
+        try {
+            $tipo = \App\TipoReproduccion::find($id);
+            return view('tipo-reproducciones.show', compact('tipo'));
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal! Si persiste el error favor de consultar servicio técnico')->persistent('Cerrar');
+            return back()->withErrors(['msg' => $th]);
+        }
     }
 
     /**

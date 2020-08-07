@@ -14,10 +14,15 @@ class PersonaController extends Controller
      */
     public function index()
     {
-        $personas = \App\Persona::all();
-        $tipos = \App\TipoPersona::all();
+        try {
+            $personas = \App\Persona::all();
+            $tipos = \App\TipoPersona::all();
 
-        return view('personas.index', compact(['personas', 'tipos']));
+            return view('personas.index', compact(['personas', 'tipos']));
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal! Si persiste el error favor de consultar servicio técnico')->persistent('Cerrar');
+            return back()->withErrors(['msg' => $th]);
+        }
     }
 
     /**
@@ -63,8 +68,13 @@ class PersonaController extends Controller
      */
     public function show($id)
     {
-        $persona = \App\Persona::find($id);
-        return view('personas.show', compact('persona'));
+        try {
+            $persona = \App\Persona::find($id);
+            return view('personas.show', compact('persona'));
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal! Si persiste el error favor de consultar servicio técnico')->persistent('Cerrar');
+            return back()->withErrors(['msg' => $th]);
+        }
     }
 
     /**

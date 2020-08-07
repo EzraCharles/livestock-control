@@ -14,8 +14,13 @@ class PrecioController extends Controller
      */
     public function index()
     {
-        $precios = \App\Precio::all();
-        return view('precios.index', compact('precios'));
+        try {
+            $precios = \App\Precio::all();
+            return view('precios.index', compact('precios'));
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal! Si persiste el error favor de consultar servicio técnico')->persistent('Cerrar');
+            return back()->withErrors(['msg' => $th]);
+        }
     }
 
     /**
@@ -72,8 +77,13 @@ class PrecioController extends Controller
      */
     public function show($id)
     {
-        $precio = \App\Precio::find($id);
-        return view('precios.show', compact('precio'));
+        try {
+            $precio = \App\Precio::find($id);
+            return view('precios.show', compact('precio'));
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal! Si persiste el error favor de consultar servicio técnico')->persistent('Cerrar');
+            return back()->withErrors(['msg' => $th]);
+        }
     }
 
     /**

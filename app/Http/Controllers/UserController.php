@@ -14,8 +14,13 @@ class UserController extends Controller
      */
     public function index()
     {
-        $usuarios = \App\User::all();
-        return view('users.index', compact('usuarios'));
+        try {
+            $usuarios = \App\User::all();
+            return view('users.index', compact('usuarios'));
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal! Si persiste el error favor de consultar servicio técnico')->persistent('Cerrar');
+            return back()->withErrors(['msg' => $th]);
+        }
     }
 
     /**
@@ -60,8 +65,13 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = \App\User::find($id);
-        return view('users.show', compact('user'));
+        try {
+            $user = \App\User::find($id);
+            return view('users.show', compact('user'));
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal! Si persiste el error favor de consultar servicio técnico')->persistent('Cerrar');
+            return back()->withErrors(['msg' => $th]);
+        }
     }
 
     /**

@@ -14,8 +14,13 @@ class TipoPersonaController extends Controller
      */
     public function index()
     {
-        $tipo_personas = \App\TipoPersona::all();
-        return view('tipo-personas.index', compact(['tipo_personas']));
+        try {
+            $tipo_personas = \App\TipoPersona::all();
+            return view('tipo-personas.index', compact(['tipo_personas']));
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal! Si persiste el error favor de consultar servicio técnico')->persistent('Cerrar');
+            return back()->withErrors(['msg' => $th]);
+        }
     }
 
     /**
@@ -59,8 +64,13 @@ class TipoPersonaController extends Controller
      */
     public function show($id)
     {
-        $tipo = \App\TipoPersona::find($id);
-        return view('tipo-personas.show', compact('tipo'));
+        try {
+            $tipo = \App\TipoPersona::find($id);
+            return view('tipo-personas.show', compact('tipo'));
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal! Si persiste el error favor de consultar servicio técnico')->persistent('Cerrar');
+            return back()->withErrors(['msg' => $th]);
+        }
     }
 
     /**

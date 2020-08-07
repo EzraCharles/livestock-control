@@ -42,50 +42,51 @@ class FormulacionController extends Controller
             'precio_id' => 'required|integer|min:1',
         ]);
 
-        //try {
-        $formula = \App\Formula::find(request('formula_id'));
-        if ($formula->formulaciones()->where('precio_id', request('precio_id'))->exists()) {
-            return response()->json(['error' => "El elemento <<" . \App\Precio::find(request('precio_id'))->concepto . ">> ya existe en la Fórmula"], 500);
+        try {
+            $formula = \App\Formula::find(request('formula_id'));
+            if ($formula->formulaciones()->where('precio_id', request('precio_id'))->exists()) {
+                return response()->json(['error' => "El elemento <<" . \App\Precio::find(request('precio_id'))->concepto . ">> ya existe en la Fórmula"], 500);
+            }
+
+            $precio = \App\Precio::find(request('precio_id'));
+
+            $formulacion = new \App\Formulacion([
+                "formula_id" => request("formula_id"),
+                "precio_id" => request("precio_id"),
+                "kilogramos" => request("kilogramos"),
+                "porcentaje" => request("porcentaje"),
+                "importe" => $precio->precio / $precio->factor * request('kilogramos'),
+            ]);
+            $formulacion->save();
+
+            $proteina = 0.0;
+            $grasa = 0.0;
+            $ceniza = 0.0;
+
+            foreach ($formula->formulaciones as $componente) {
+                $proteina += $componente->kilogramos * $componente->precio->porcion_comestible / 1000;
+                $grasa += $componente->kilogramos * $componente->precio->grasa / 1000;
+                $ceniza += $componente->kilogramos * $componente->precio->ceniza / 1000;
+            }
+
+            $formula->proteina = $proteina;
+            $formula->grasa = $grasa;
+            $formula->ceniza = $ceniza;
+            $formula->save();
+
+            $formulacion->formula->importe = $formulacion->formula->formulaciones()->sum('importe');
+            $formulacion->formula->save();
+
+            $formulacion->formula->kilogramos = $formulacion->formula->formulaciones()->sum('kilogramos');
+            $formulacion->formula->save();
+
+
+            echo json_encode($formulacion->formula);
+        } catch (\Throwable $th) {
+            //alert()->error('Oops, algo salió mal! Si persiste el error favor de consultar servicio técnico')->persistent('Cerrar');
+            echo json_encode('Oops, algo salió mal! Si persiste el error favor de consultar servicio técnico');
+            return back()->withErrors(['msg' => $th]); //validator
         }
-
-        $precio = \App\Precio::find(request('precio_id'));
-
-        $formulacion = new \App\Formulacion([
-            "formula_id" => request("formula_id"),
-            "precio_id" => request("precio_id"),
-            "kilogramos" => request("kilogramos"),
-            "porcentaje" => request("porcentaje"),
-            "importe" => $precio->precio / $precio->factor * request('kilogramos'),
-        ]);
-        $formulacion->save();
-
-        $proteina = 0.0;
-        $grasa = 0.0;
-        $ceniza = 0.0;
-
-        foreach ($formula->formulaciones as $componente) {
-            $proteina += $componente->kilogramos * $componente->precio->porcion_comestible / 1000;
-            $grasa += $componente->kilogramos * $componente->precio->grasa / 1000;
-            $ceniza += $componente->kilogramos * $componente->precio->ceniza / 1000;
-        }
-
-        $formula->proteina = $proteina;
-        $formula->grasa = $grasa;
-        $formula->ceniza = $ceniza;
-        $formula->save();
-
-        $formulacion->formula->importe = $formulacion->formula->formulaciones()->sum('importe');
-        $formulacion->formula->save();
-
-        $formulacion->formula->kilogramos = $formulacion->formula->formulaciones()->sum('kilogramos');
-        $formulacion->formula->save();
-
-
-        echo json_encode($formulacion->formula);
-        /* } catch (\Throwable $th) {
-            alert()->error('Oops, algo salió mal!')->persistent('Cerrar');
-            return back()->withErrors(['msg' => $validator]);
-        } */
     }
 
     /**
@@ -164,6 +165,7 @@ class FormulacionController extends Controller
         } catch (\Throwable $th) {
             //echo json_encode('error');
             //return response()->json(['error' => "Error"], 500);
+            echo json_encode('Oops, algo salió mal! Si persiste el error favor de consultar servicio técnico');
             return back()->withErrors(['msg' => $th]);
         }
     }
@@ -176,49 +178,53 @@ class FormulacionController extends Controller
      */
     public function destroy(Request $request)
     {
-        $formulacion = \App\Formulacion::find($request['input']);
+        try {
+            $formulacion = \App\Formulacion::find($request['input']);
 
-        if ($request['fid'] == $formulacion->formula->id) {
-            if ($formulacion->formula->formulaciones()->count() == 1) {
-                echo json_encode("error");
+            if ($request['fid'] == $formulacion->formula->id) {
+                if ($formulacion->formula->formulaciones()->count() == 1) {
+                    echo json_encode("error");
+                }
+                else {
+                    $formulacion->forceDelete();
+
+                    $formula = \App\Formula::find($request['fid']);
+
+                    $proteina = 0.0;
+                    $grasa = 0.0;
+                    $ceniza = 0.0;
+
+                    foreach ($formula->formulaciones as $componente) {
+                        $proteina += $componente->kilogramos * $componente->precio->porcion_comestible / 1000;
+                        $grasa += $componente->kilogramos * $componente->precio->grasa / 1000;
+                        $ceniza += $componente->kilogramos * $componente->precio->ceniza / 1000;
+
+                        if ($componente->importe != $componente->precio->precio / $componente->precio->factor * $componente->kilogramos) {
+                            $componente->importe = $componente->precio->precio / $componente->precio->factor * $componente->kilogramos;
+                            $componente->save();
+                        }
+                    }
+
+                    $formula->proteina = $proteina;
+                    $formula->grasa = $grasa;
+                    $formula->ceniza = $ceniza;
+                    $formula->save();
+
+                    $formula->importe = $formula->formulaciones()->sum('importe');
+                    $formula->save();
+
+                    $formula->kilogramos = $formula->formulaciones()->sum('kilogramos');
+                    $formula->save();
+
+                    echo json_encode($formula);
+                }
             }
             else {
-                $formulacion->forceDelete();
-
-                $formula = \App\Formula::find($request['fid']);
-
-                $proteina = 0.0;
-                $grasa = 0.0;
-                $ceniza = 0.0;
-
-                foreach ($formula->formulaciones as $componente) {
-                    $proteina += $componente->kilogramos * $componente->precio->porcion_comestible / 1000;
-                    $grasa += $componente->kilogramos * $componente->precio->grasa / 1000;
-                    $ceniza += $componente->kilogramos * $componente->precio->ceniza / 1000;
-
-                    if ($componente->importe != $componente->precio->precio / $componente->precio->factor * $componente->kilogramos) {
-                        $componente->importe = $componente->precio->precio / $componente->precio->factor * $componente->kilogramos;
-                        $componente->save();
-                    }
-                }
-
-                $formula->proteina = $proteina;
-                $formula->grasa = $grasa;
-                $formula->ceniza = $ceniza;
-                $formula->save();
-
-                $formula->importe = $formula->formulaciones()->sum('importe');
-                $formula->save();
-
-                $formula->kilogramos = $formula->formulaciones()->sum('kilogramos');
-                $formula->save();
-
-                echo json_encode($formula);
+                //echo json_encode('error');
+                return response()->json(['error' => "Error"], 500);
             }
-        }
-        else {
-            //echo json_encode('error');
-            return response()->json(['error' => "Error"], 500);
+        } catch (\Throwable $th) {
+            echo json_encode('Oops, algo salió mal! Si persiste el error favor de consultar servicio técnico');
         }
     }
 }

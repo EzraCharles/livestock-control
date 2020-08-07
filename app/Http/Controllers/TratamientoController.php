@@ -14,10 +14,15 @@ class TratamientoController extends Controller
      */
     public function index()
     {
-        $tratamientos = \App\Tratamiento::all();
-        $precios = \App\Precio::where('tipo', 'Tratamiento')->get();
-        $tipos = \App\TipoTratamiento::all();
-        return view('tratamientos.index', compact(['tratamientos', 'precios', 'tipos']));
+        try {
+            $tratamientos = \App\Tratamiento::all();
+            $precios = \App\Precio::where('tipo', 'Tratamiento')->get();
+            $tipos = \App\TipoTratamiento::all();
+            return view('tratamientos.index', compact(['tratamientos', 'precios', 'tipos']));
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal! Si persiste el error favor de consultar servicio técnico')->persistent('Cerrar');
+            return back()->withErrors(['msg' => $th]);
+        }
     }
 
     /**
@@ -64,8 +69,13 @@ class TratamientoController extends Controller
      */
     public function show($id)
     {
-        $tratamiento = \App\Tratamiento::find($id);
-        return view('tratamientos.show', compact('tratamiento'));
+        try {
+            $tratamiento = \App\Tratamiento::find($id);
+            return view('tratamientos.show', compact('tratamiento'));
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal! Si persiste el error favor de consultar servicio técnico')->persistent('Cerrar');
+            return back()->withErrors(['msg' => $th]);
+        }
     }
 
     /**

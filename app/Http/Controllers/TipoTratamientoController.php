@@ -14,8 +14,13 @@ class TipoTratamientoController extends Controller
      */
     public function index()
     {
-        $tipo_tratamientos = \App\TipoTratamiento::all();
-        return view('tipo-tratamientos.index', compact(['tipo_tratamientos']));
+        try {
+            $tipo_tratamientos = \App\TipoTratamiento::all();
+            return view('tipo-tratamientos.index', compact(['tipo_tratamientos']));
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal! Si persiste el error favor de consultar servicio técnico')->persistent('Cerrar');
+            return back()->withErrors(['msg' => $th]);
+        }
     }
 
     /**
@@ -59,8 +64,13 @@ class TipoTratamientoController extends Controller
      */
     public function show($id)
     {
-        $tipo = \App\TipoTratamiento::find($id);
-        return view('tipo-tratamientos.show', compact('tipo'));
+        try {
+            $tipo = \App\TipoTratamiento::find($id);
+            return view('tipo-tratamientos.show', compact('tipo'));
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal! Si persiste el error favor de consultar servicio técnico')->persistent('Cerrar');
+            return back()->withErrors(['msg' => $th]);
+        }
     }
 
     /**

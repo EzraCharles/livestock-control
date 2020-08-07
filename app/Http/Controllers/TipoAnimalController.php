@@ -14,8 +14,13 @@ class TipoAnimalController extends Controller
      */
     public function index()
     {
-        $tipo_animales = \App\TipoAnimal::all();
-        return view('tipo-animales.index', compact(['tipo_animales']));
+        try {
+            $tipo_animales = \App\TipoAnimal::all();
+            return view('tipo-animales.index', compact(['tipo_animales']));
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal! Si persiste el error favor de consultar servicio técnico')->persistent('Cerrar');
+            return back()->withErrors(['msg' => $th]);
+        }
     }
 
     /**
@@ -59,8 +64,13 @@ class TipoAnimalController extends Controller
      */
     public function show($id)
     {
-        $tipo = \App\TipoAnimal::find($id);
-        return view('tipo-animales.show', compact('tipo'));
+        try {
+            $tipo = \App\TipoAnimal::find($id);
+            return view('tipo-animales.show', compact('tipo'));
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal! Si persiste el error favor de consultar servicio técnico')->persistent('Cerrar');
+            return back()->withErrors(['msg' => $th]);
+        }
     }
 
     /**

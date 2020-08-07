@@ -14,8 +14,13 @@ class CorralController extends Controller
      */
     public function index()
     {
-        $corrales = \App\Corral::all();
-        return view('corrales.index', compact(['corrales']));
+        try {
+            $corrales = \App\Corral::all();
+            return view('corrales.index', compact(['corrales']));
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal! Si persiste el error favor de consultar servicio técnico')->persistent('Cerrar');
+            return back()->withErrors(['msg' => $th]);
+        }
     }
 
     /**
@@ -59,8 +64,13 @@ class CorralController extends Controller
      */
     public function show($id)
     {
-        $corral = \App\Corral::find($id);
-        return view('corrales.show', compact('corral'));
+        try {
+            $corral = \App\Corral::find($id);
+            return view('corrales.show', compact('corral'));
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal! Si persiste el error favor de consultar servicio técnico')->persistent('Cerrar');
+            return back()->withErrors(['msg' => $th]);
+        }
     }
 
     /**
