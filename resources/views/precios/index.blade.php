@@ -44,7 +44,7 @@
                                             <div class="row form-group">
                                                 <div class="col-5">
                                                     <label for="concepto">Concepto:</label>
-                                                    <input class="form-control" type="text" name="concepto" required>
+                                                    <input class="form-control" type="text" name="concepto" required minlength="2" maxlength="255">
                                                 </div>
                                                 <div class="col-4">
                                                     <label for="tipo">Tipo:</label>
@@ -65,7 +65,7 @@
                                                 </div>
                                                 <div class="col-5" style="padding-top: 10px; ">
                                                     <label for="comentarios">Comentarios:</label>
-                                                    <input class="form-control" type="text" name="comentarios">
+                                                    <input class="form-control" type="text" name="comentarios" minlength="2">
                                                 </div>
                                                 <div class="col-2" style="padding-top: 30px; ">
                                                     <label for="rango"><input class="check" id="rango" type="checkbox" name="rango"> Animal</label>
@@ -89,23 +89,23 @@
                                                     <div class="row" id="food">
                                                         <div class="col-3">
                                                             <label for="materia_seca">Materia seca:</label>
-                                                            <input class="form-control food-input" type="number" min="0.0" step=".01" id="materia_seca" name="materia_seca">
+                                                            <input class="form-control food-input" type="number" min="0.0" step=".01" max="100" id="materia_seca" name="materia_seca">
                                                         </div>
                                                         <div class="col-3">
                                                             <label for="porcion_comestible">P.C.:</label>
-                                                            <input class="form-control food-input" type="number" min="0.0" step=".01" id="porcion_comestible" name="porcion_comestible">
+                                                            <input class="form-control food-input" type="number" min="0.0" step=".01" max="100" id="porcion_comestible" name="porcion_comestible">
                                                         </div>
                                                         <div class="col-2">
                                                             <label for="grasa">Grasa:</label>
-                                                            <input class="form-control food-input" type="number" min="0.0" step=".01" id="grasa" name="grasa">
+                                                            <input class="form-control food-input" type="number" min="0.0" step=".01" max="100" id="grasa" name="grasa">
                                                         </div>
                                                         <div class="col-2">
                                                             <label for="fibra">Fibra:</label>
-                                                            <input class="form-control food-input" type="number" min="0.0" step=".01" id="fibra" name="fibra">
+                                                            <input class="form-control food-input" type="number" min="0.0" step=".01" max="100" id="fibra" name="fibra">
                                                         </div>
                                                         <div class="col-2">
                                                             <label for="ceniza">Ceniza:</label>
-                                                            <input class="form-control food-input" type="number" min="0.0" step=".01" id="ceniza" name="ceniza">
+                                                            <input class="form-control food-input" type="number" min="0.0" step=".01" max="100" id="ceniza" name="ceniza">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -240,7 +240,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="modal-input-concepto">Concepto</label>
-                                <input type="text" class="form-control" id="modal-input-concepto" name="concepto" required>
+                                <input type="text" class="form-control" id="modal-input-concepto" name="concepto" required minlength="2" maxlength="255">
                             </div>
                             <div class="row">
                                 <div class="form-group col-6">
@@ -261,7 +261,7 @@
                                 </div>
                                 <div class="form-group col-6">
                                     <label for="modal-input-comentarios">Comentarios</label>
-                                    <textarea type="text" class="form-control" id="modal-input-comentarios" name="comentarios"></textarea>
+                                    <textarea type="text" class="form-control" id="modal-input-comentarios" name="comentarios" minlength="2"></textarea>
                                 </div>
                             </div>
                             <div id="modal-input-rangos" class="row">
@@ -278,23 +278,23 @@
                             <div id="modal-input-alimentos" class="row">
                                 <div class="form-group col-6">
                                     <label for="modal-input-ms">Materia Seca</label>
-                                    <input type="number" min="0.0" step=".01" class="form-control food-edit-input" id="modal-input-ms" name="materia_seca">
+                                    <input type="number" min="0.0" step=".01" max="100" class="form-control food-edit-input" id="modal-input-ms" name="materia_seca">
                                 </div>
                                 <div class="form-group col-6">
                                     <label for="modal-input-pc">Porcion Comestible</label>
-                                    <input type="number" min="0.0" step=".01" class="form-control food-edit-input" id="modal-input-pc" name="porcion_comestible">
+                                    <input type="number" min="0.0" step=".01" max="100" class="form-control food-edit-input" id="modal-input-pc" name="porcion_comestible">
                                 </div>
                                 <div class="form-group col-4">
                                     <label for="modal-input-grasa">Grasa</label>
-                                    <input type="number" min="0.0" step=".01" class="form-control food-edit-input" id="modal-input-grasa" name="grasa">
+                                    <input type="number" min="0.0" step=".01" max="100" class="form-control food-edit-input" id="modal-input-grasa" name="grasa">
                                 </div>
                                 <div class="form-group col-4">
                                     <label for="modal-input-fibra">Fibra</label>
-                                    <input type="number" min="0.0" step=".01" class="form-control food-edit-input" id="modal-input-fibra" name="fibra">
+                                    <input type="number" min="0.0" step=".01" max="100" class="form-control food-edit-input" id="modal-input-fibra" name="fibra">
                                 </div>
                                 <div class="form-group col-4">
                                     <label for="modal-input-ceniza">Ceniza</label>
-                                    <input type="number" min="0.0" step=".01" class="form-control food-edit-input" id="modal-input-ceniza" name="ceniza">
+                                    <input type="number" min="0.0" step=".01" max="100" class="form-control food-edit-input" id="modal-input-ceniza" name="ceniza">
                                 </div>
                             </div>
                         </div>

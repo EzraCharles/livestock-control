@@ -39,7 +39,7 @@
                                 </div>
                                 <div class="form-group col-4">
                                     <label for="porcentaje">Porcentaje:</label>
-                                    <input type="number" min="0" step="0.01" class="form-control porcentaje" id="porcentaje" name="porcentaje[]" required disabled>
+                                    <input type="number" min="0" step="0.01" max="100" class="form-control porcentaje" id="porcentaje" name="porcentaje[]" required disabled>
                                 </div>
                                 <div class="form-group col-4">
                                     <label for="kilogramos">Kilogramos:</label>
@@ -90,7 +90,7 @@
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <label for="comentarios">Comentarios:</label>
-                                                <textarea rows="3" class="form-control" name="comentarios" id="comentarios"></textarea>
+                                                <textarea rows="3" class="form-control" name="comentarios" id="comentarios" minlength="2" maxlength="255"></textarea>
                                             </div>
                                         </div>
                                     </div>

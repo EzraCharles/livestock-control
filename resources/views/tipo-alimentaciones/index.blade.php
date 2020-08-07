@@ -44,7 +44,7 @@
                                             <div class="row form-group">
                                                 <div class="col-3">
                                                     <label for="nombre">Nombre:</label>
-                                                    <input class="form-control" type="text" name="nombre" required>
+                                                    <input class="form-control" type="text" name="nombre" required minlength="2" maxlength="255">
                                                 </div>
                                                 <div class="col-3">
                                                     <label for="formula_id">Fórmula</label>
@@ -57,7 +57,7 @@
                                                 </div>
                                                 <div class="col-4">
                                                     <label for="comentarios">Comentarios:</label>
-                                                    <input class="form-control" type="text" name="comentarios">
+                                                    <input class="form-control" type="text" name="comentarios" minlength="2">
                                                 </div>
                                                 <div class="col-2" style="float: right;">
                                                     <button class="btn grupo-res" style="float: right; margin-top: 30px;">Crear</button>
@@ -143,7 +143,7 @@
                             <div class="row">
                                 <div class="form-group col-6">
                                     <label for="modal-input-nombre">Nombre</label>
-                                    <input type="text" class="form-control" id="modal-input-nombre" name="nombre" required>
+                                    <input type="text" class="form-control" id="modal-input-nombre" name="nombre" required minlength="2" maxlength="255">
                                 </div>
                                 <div class="form-group col-6">
                                     <label for="modal-input-formula">Fórmula</label>
@@ -157,7 +157,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="modal-input-comentarios">Comentarios</label>
-                                <textarea type="text" class="form-control" id="modal-input-comentarios" name="comentarios"></textarea>
+                                <textarea type="text" class="form-control" id="modal-input-comentarios" name="comentarios" minlength="2"></textarea>
                             </div>
                         </div>
                         <div class="modal-footer">
