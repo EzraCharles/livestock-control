@@ -52,7 +52,7 @@
                                                 </div>
                                                 <div class="form-group col-4">
                                                     <label for="tipo">Tipo</label>
-                                                    <select class="form-control select-objects" name="tipo_persona_id" required>
+                                                    <select class="form-control select-objects" name="tipo_persona_id" id="tipo_persona_id">
                                                         <option value="" disabled selected>Eligir una opción...</option>
                                                         @foreach ($tipos as $tipo)
                                                             <option value="{{$tipo->id}}"> {{$tipo->nombre}}</option>
@@ -214,8 +214,6 @@
         </div>
     </div>
 
-
-
 </main>
 
 <div class="modal loadingmodal"></div>
@@ -236,6 +234,26 @@
                 $(this).text('Cancelar');
                 $('#hr-divisor').show();
             }
+        });
+
+        $('#create').submit(function(e) {
+
+            e.preventDefault(); //this will prevent the default submit
+
+            if ($('#tipo_persona_id').val() == null) {
+                $('body').removeClass('loading');
+
+                swal({
+                    title: "",
+                    text: "No ha elegido ningún valor para 'Tipo'!",
+                    icon: "error",
+                    buttons: 'Ok',
+                });
+                return false;
+            }
+
+            $(this).unbind('submit').submit(); // continue the submit unbind preventDefault
+
         });
 
         /**

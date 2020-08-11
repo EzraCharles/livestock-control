@@ -42,7 +42,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $validator = $request->validate([
-            'name' => 'required|max:255|min:4',
+            'name' => 'required|max:255|min:2',
             'email' => 'required|email|unique:users|max:255|min:4',
             'rol' => 'required|max:255|min:4',
         ]);
@@ -96,13 +96,13 @@ class UserController extends Controller
     {
         if ($request['email'] == \App\User::find($request->id)->email) {
             $validator = $request->validate([
-                'name' => 'required|max:255|min:4',
+                'name' => 'required|max:255|min:2',
                 'rol' => 'required|max:255|min:4',
             ]);
         }
         else{
             $validator = $request->validate([
-                'name' => 'required|max:255|min:4',
+                'name' => 'required|max:255|min:2',
                 'email' => 'required|email|unique:users|max:255|min:4',
                 'rol' => 'required|max:255|min:4',
             ]);

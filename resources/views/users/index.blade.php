@@ -41,11 +41,11 @@
                                         <div class="row form-group">
                                             <div class="col-4">
                                                 <label for="name">Nombre:</label>
-                                                <input class="form-control" type="text" name="name" required>
+                                                <input class="form-control" type="text" name="name" required minlength="2" maxlength="255">
                                             </div>
                                             <div class="col-4">
                                                 <label for="email">Correo:</label>
-                                                <input class="form-control" type="email" name="email" required>
+                                                <input class="form-control" type="email" name="email" required minlength="4" maxlength="255">
                                             </div>
                                             <div class="col-3">
                                                 <label for="rol">Privilegio:</label>
@@ -130,11 +130,11 @@
                             </div>
                             <div class="form-group col-6">
                                 <label for="modal-input-name">Nombre</label>
-                                <input type="text" class="form-control" id="modal-input-name" name="name" required>
+                                <input type="text" class="form-control" id="modal-input-name" name="name" required minlength="2" maxlength="255">
                             </div>
                             <div class="form-group col-6">
                                 <label for="modal-input-email">Correo</label>
-                                <input type="text" class="form-control" id="modal-input-email" name="email" required>
+                                <input type="email" class="form-control" id="modal-input-email" name="email" required minlength="4" maxlength="255">
                             </div>
                             <div class="form-group col-12">
                                 <label for="modal-input-role">Privilegio</label>

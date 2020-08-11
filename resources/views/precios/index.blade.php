@@ -61,7 +61,7 @@
                                                 </div>
                                                 <div class="col-3" style="padding-top: 10px; ">
                                                     <label for="factor">Factor:</label>
-                                                    <input class="form-control" type="number" min="0.0" step=".01" name="factor" required>
+                                                    <input class="form-control" type="number" min="0" step="1" name="factor" required>
                                                 </div>
                                                 <div class="col-5" style="padding-top: 10px; ">
                                                     <label for="comentarios">Comentarios:</label>

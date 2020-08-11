@@ -47,8 +47,8 @@
                                                     <input class="form-control" type="text" name="nombre" required minlength="2" maxlength="255">
                                                 </div>
                                                 <div class="form-group col-4">
-                                                    <label for="precio_id">Precio</label>
-                                                    <select class="form-control select-objects" id="precio_id" name="precio_id" required>
+                                                    <label for="precio_id">Concepto</label>
+                                                    <select class="form-control select-objects" id="precio_id" name="precio_id">
                                                         <option value="" disabled selected>Eligir una opción...</option>
                                                         @foreach ($precios as $precio)
                                                             <option value="{{$precio->id}}"> {{$precio->concepto}}</option>
@@ -57,7 +57,7 @@
                                                 </div>
                                                 <div class="form-group col-4">
                                                     <label for="tipo_tratamiento_id">Tipo:</label>
-                                                    <select class="form-control select-objects" id="tipo_tratamiento_id" name="tipo_tratamiento_id" required>
+                                                    <select class="form-control select-objects" id="tipo_tratamiento_id" name="tipo_tratamiento_id">
                                                         <option value="" disabled selected>Eligir una opción...</option>
                                                         @foreach ($tipos as $tipo)
                                                             <option value="{{$tipo->id}}"> {{$tipo->nombre}}</option>
@@ -260,6 +260,38 @@
                 $(this).text('Cancelar');
                 $('#hr-divisor').show();
             }
+        });
+
+
+        $('#create').submit(function(e) {
+
+            e.preventDefault(); //this will prevent the default submit
+
+            if ($('#precio_id').val() == null) {
+                $('body').removeClass('loading');
+
+                swal({
+                    title: "",
+                    text: "No ha elegido ningún valor para 'Concepto'!",
+                    icon: "error",
+                    buttons: 'Ok',
+                });
+                return false;
+            }
+            else if ($('#tipo_tratamiento_id').val() == null) {
+                $('body').removeClass('loading');
+
+                swal({
+                    title: "",
+                    text: "No ha elegido ningún valor para 'Tipo'!",
+                    icon: "error",
+                    buttons: 'Ok',
+                });
+                return false;
+            }
+
+            $(this).unbind('submit').submit(); // continue the submit unbind preventDefault
+
         });
 
         /**

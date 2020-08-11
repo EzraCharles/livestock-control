@@ -48,7 +48,7 @@
                                                 </div>
                                                 <div class="col-3">
                                                     <label for="formula_id">Fórmula</label>
-                                                    <select class="form-control select-objects" id="formula_id" name="formula_id" required>
+                                                    <select class="form-control select-objects" id="formula_id" name="formula_id">
                                                         <option value="" disabled selected>Eligir una opción...</option>
                                                         @foreach ($formulas as $formula)
                                                             <option value="{{$formula->id}}"> {{$formula->nombre}}</option>
@@ -231,6 +231,26 @@
                 $(this).text('Cancelar');
                 $('#hr-divisor').show();
             }
+        });
+
+        $('#create').submit(function(e) {
+
+            e.preventDefault(); //this will prevent the default submit
+
+            if ($('#formula_id').val() == null) {
+                $('body').removeClass('loading');
+
+                swal({
+                    title: "",
+                    text: "No ha elegido ningún valor para 'Fórmula'!",
+                    icon: "error",
+                    buttons: 'Ok',
+                });
+                return false;
+            }
+
+            $(this).unbind('submit').submit(); // continue the submit unbind preventDefault
+
         });
 
         /**
