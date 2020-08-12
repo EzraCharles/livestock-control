@@ -701,6 +701,46 @@
         </div>
     </div>
 
+    <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" id="componentes-modal">
+        <div class="modal-dialog modal-xl" >
+            <div class="modal-content" >
+                <div class="modal-header">
+                    <h4 class="modal-title" align="center"><b>Componentes de Fórmula </b></h4>  <h5 style="padding-left: 70px" id="porcentaje-total"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" >
+                    <style>
+                        div.dataTables_wrapper {
+                            width: auto;
+                            margin: 0 auto;
+                        }
+                    </style>
+                    <div id="components-table">
+                        <table id="myTableComponentes" class="display nowrap" style="text-align: center; vertical-align: middle; margin-bottom: 0px; width:100%">
+                            <thead>
+                                <tr>
+                                <th><strong>ID</strong></th>
+                                <th><strong>Concepto</strong></th>
+                                <th><strong>Kilogramos</strong></th>
+                                <th><strong>Porcentaje</strong></th>
+                                <th><strong>Importe</strong></th>
+                                <th><strong>Proteína</strong></th>
+                                <th><strong>Grasa</strong></th>
+                                <th><strong>Fibra</strong></th>
+                                <th><strong>Ceniza</strong></th>
+                                {{-- <th><strong>Acciones</strong></th> --}}
+                                </tr>
+                            </thead>
+                        </table>
+                        <br/>
+                        <h5 id="proportional-relationship"></h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </main>
 
 <div class="modal loadingmodal"></div>
@@ -1840,6 +1880,252 @@
         });
 
 
+        // COMPONENTES
+        $(document).on('click', "#componentes-item", function() {
+            $('.componente-item-trigger-clicked').removeClass('componente-item-trigger-clicked');
+
+            $(this).addClass('componente-item-trigger-clicked'); //useful for identifying which trigger was clicked and consequently grab data from the correct row and not the wrong one.
+            $('#componentes-modal').modal();
+        });
+
+        $('#componentes-modal').on('show.bs.modal', function() {
+
+            var el = $(".componente-item-trigger-clicked"); // See how its usefull right here?
+            var row = el.closest(".data-row");
+
+            // get the data
+            f_id = row.children('#id')[0]['innerHTML'];
+            dynamicVariable = row.children('#nombre')[0]['innerHTML'];
+
+            $("#myTableComponentes").DataTable().destroy();
+            //$("#modal-input-search").focus();
+            porcentajeFinal = 0;
+            kilogramosFinal = 0;
+            badKg = [];
+            $('#proportional-relationship').hide();
+
+            table = $("#myTableComponentes").DataTable({
+                "initComplete": function (settings, json) {
+                    $("#myTableComponentes").wrap("<div style='overflow:auto; width:100%;position:relative;'></div>");
+                },
+                "ajax": {
+                    "url": "componentes",
+                    "dataType": "json",
+                    "type": "GET",
+                    "data":{ input: f_id },
+                    "dataSrc" : ""
+                },
+                "scrollX": true,
+                "columns": [
+                    {
+                        "data": "id",
+                        "createdCell":  function (td, cellData, rowData, row, col) {
+                            $(td).attr('id', 'id');
+                            //$(td).attr('hidden', 'true');
+                        }
+                    },
+                    {
+                        "data": "precio.concepto",
+                        "createdCell":  function (td, cellData, rowData, row, col) {
+                            $(td).attr('id', 'precio');
+                            tmpConc = cellData;
+                        }
+                    },
+                    {
+                        "data": "kilogramos",
+                        "createdCell":  function (td, cellData, rowData, row, col) {
+                            $(td).attr('id', 'kilogramos');
+                            tmpKg = cellData;
+                            kilogramosFinal += cellData;
+                        }
+                    },
+                    {
+                        "data": "porcentaje",
+                        "createdCell":  function (td, cellData, rowData, row, col) {
+                            $(td).attr('id', 'porcentaje');
+                            tmpPrc = cellData;
+                            porcentajeFinal += cellData;
+
+                        },
+                        render: function ( data, type, row ) {
+                            return data + ' %';
+                        }
+                    },
+                    {
+                        "data": "importe",
+                        "createdCell":  function (td, cellData, rowData, row, col) {
+                            $(td).attr('id', 'importe');
+                        },
+                        "render": $.fn.dataTable.render.number( ',', '.', 2, '$' ),
+                    },
+                    {
+                        "data": "precio.porcion_comestible",
+                        "createdCell":  function (td, cellData, rowData, row, col) {
+                            $(td).attr('id', 'porcion_comestible');
+                        }
+                    },
+                    {
+                        "data": "precio.grasa",
+                        "createdCell":  function (td, cellData, rowData, row, col) {
+                            $(td).attr('id', 'grasa');
+                        }
+                    },
+                    {
+                        "data": "precio.fibra",
+                        "createdCell":  function (td, cellData, rowData, row, col) {
+                            $(td).attr('id', 'fibra');
+                        }
+                    },
+                    {
+                        "data": "precio.ceniza",
+                        "createdCell":  function (td, cellData, rowData, row, col) {
+                            $(td).attr('id', 'ceniza');
+                        }
+                    },
+                    /* {
+                        "data": null,
+                        "render": function() {
+                            return `
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-info"  id="edit-item-comp">
+                                    <i class="fa fa-edit"></i>
+                                </button>
+                                <button type="button" class="btn btn-danger"  id="delete-item-comp">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </div>
+                            `
+                        }
+                    } */
+                ],
+                'createdRow': function( row, data, dataIndex ) {
+                    $(row).addClass('data-row');
+
+                    tmpTot = tmpKg * 100 / tmpPrc;
+                    badKg.push({concepto:tmpConc, total:tmpTot });
+                },
+                "deferRender": true,
+                "language": {
+                    "sProcessing":    "Procesando...",
+                    "sLengthMenu":    "Mostrar _MENU_ registros",
+                    "sZeroRecords":   "No se encontraron resultados",
+                    "sEmptyTable":    "Ningún dato disponible en esta tabla",
+                    "sInfo":          "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    "sInfoEmpty":     "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered":  "(filtrado de un total de _MAX_ registros)",
+                    "sInfoPostFix":   "",
+                    "sSearch":        "Buscar:",
+                    "sUrl":           "",
+                    "sInfoThousands":  ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst":    "Primero",
+                        "sLast":    "Último",
+                        "sNext":    "Siguiente",
+                        "sPrevious": "Anterior"
+                    },
+                    "oAria": {
+                        "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                    }
+                },
+                dom: 'lfrtip', //B
+                buttons: [
+                    {
+                        extend: 'csv',
+                        charset: 'UTF-8',
+                        bom: true,
+                        filename: 'Formulacion-Grupo-RES--' + dynamicVariable,
+                        exportOptions: {
+                            columns: [ 1, 2, 3, 4, 5, 6, 7, 8 ]
+                        }
+                    },
+                    {
+                        extend: 'excel',
+                        charset: 'UTF-8',
+                        bom: true,
+                        filename: 'Formulacion-Grupo-RES--' + dynamicVariable,
+                        exportOptions: {
+                            columns: [ 1, 2, 3, 4, 5, 6, 7, 8 ]
+                        }
+                    },
+                    {
+                        extend: 'pdf',
+                        customize: function(doc) {
+                            doc.content[1].margin = [ 50, 0, 50, 0 ] //left, top, right, bottom
+                        },
+                        charset: 'UTF-8',
+                        bom: true,
+                        filename: 'Formulacion-Grupo-RES--' + dynamicVariable,
+                        exportOptions: {
+                            columns: [ 1, 2, 3, 4, 5, 6, 7, 8 ]
+                        }
+                    },
+                    {
+                        extend: 'print',
+                        text: 'Imprimir',
+                        charset: 'UTF-8',
+                        bom: true,
+                        filename: 'Formulacion-Grupo-RES--' + dynamicVariable,
+                        exportOptions: {
+                            columns: [ 1, 2, 3, 4, 5, 6, 7, 8 ]
+                        }
+                    },
+                ],
+                initComplete: function () {
+                    var btns = $('.dt-button');
+                    btns.addClass('btn grupo-res');
+                    btns.removeClass('dt-button');
+                    $('#porcentaje-total').text(" Sumatoria de los porcentajes: " + porcentajeFinal);
+
+                    if (porcentajeFinal != 100) {
+                        $('#porcentaje-total').css('color', 'red');
+                    }
+                    else{
+                        $('#porcentaje-total').css('color', '#00f400');
+
+                        var repeated = [];
+                        var different = [];
+                        var conceptos = [];
+
+                        for (var i in badKg) {
+                            if (different.includes(badKg[i]["total"])) {
+                                repeated.push(badKg[i]["total"]);
+                            }
+                            else{
+                                different.push(badKg[i]["total"]);
+                                conceptos.push(badKg[i]["concepto"]);
+                            }
+                        }
+
+                        if(conceptos.length != 1){
+                            $('#proportional-relationship').text('Error de proporcionalidad: << ' + conceptos.join(" || ") + " >>");
+                            $('#proportional-relationship').css('color', 'red');
+                            $('#proportional-relationship').show();
+                        }
+                        else{
+                            $('#proportional-relationship').text('');
+                        }
+                    }
+
+                }
+
+            });
+
+        });
+
+        // on modal hide
+        $('#componentes-modal').on('hide.bs.modal', function() {
+            $("#add-comp-form").trigger("reset");
+
+            $("#comp-precio option[id='default-option']").attr("selected", "selected");
+            $('#comp-precio').trigger("chosen:updated");
+
+            setTimeout(function(){
+                $('#components-table').show();
+            }, 700);
+            //$('.componente-item-trigger-clicked').removeClass('componente-item-trigger-clicked');
+        });
     });
 
 </script>
