@@ -8,7 +8,9 @@
             <div class="row justify-content-center" style="margin-top: 24px;">
                 <div class="col-md-12">
                     <div class="card">
-                        <div class="card-header">Dashboard</div>
+                        <div class="card-header">
+                            <h3> <strong> Dashboard </strong></h3>
+                        </div>
 
                         <div class="card-body">
                             @if (session('status'))

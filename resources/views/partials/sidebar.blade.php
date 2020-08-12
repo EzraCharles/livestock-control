@@ -2,7 +2,7 @@
     <nav class="sidebar-nav">
         <ul class="nav" >
             <li class="nav-item">
-                <a class="nav-link" href="dashboard">
+                <a class="nav-link" href="{{ route('dashboard') }}">
                     <i class="nav-icon icon-speedometer"></i> Dashboard
                 </a>
                 @if (Auth::user()->rol === 'Administrador')
@@ -13,6 +13,10 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#">
                         <i class="nav-icon fas fa-handshake"></i> Liquidación </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('eliminados') }}">
+                        <i class="nav-icon fas fa-eraser"></i> Eliminados </a>
                     </li>
                 @endif
             </li>

@@ -18,6 +18,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('dashboard', 'HomeController@index')->name('dashboard');
+Route::get('eliminados', 'HomeController@eliminados')->name('eliminados');
 
 Route::resource('usuarios', 'UserController')->except(['create', 'edit']);
 Route::resource('precios', 'PrecioController')->except(['create', 'edit']);
@@ -33,9 +34,9 @@ Route::resource('tipo-personas', 'TipoPersonaController')->except(['create', 'ed
 
 Route::resource('formulas', 'FormulaController')->except(['edit']);
 Route::resource('formulaciones', 'FormulacionController')->only(['update', 'destroy', 'store']);
-Route::post('revisar_formula', 'FormulaController@check');
-
-Route::get('componentes', 'FormulaController@componentes');
-Route::get('getPrecios', 'FormulaController@getPrecios');
 
 Route::resource('animales', 'AnimalController');
+
+Route::post('revisar_formula', 'FormulaController@check');
+Route::get('componentes', 'FormulaController@componentes');
+Route::get('getPrecios', 'FormulaController@getPrecios');
