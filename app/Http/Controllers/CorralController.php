@@ -125,4 +125,36 @@ class CorralController extends Controller
 
         return back();
     }
+
+    /**
+     * Restore the specified resource from deleted.
+     *
+     * @param  \App\Corral  $corral
+     * @return \Illuminate\Http\Response
+     */
+    public function restore(Request $request)
+    {
+        try {
+            $corral = \App\Corral::withTrashed()->find($request['input'])->restore();
+            echo json_encode('success');
+        } catch (\Throwable $th) {
+            echo json_encode('error');
+        }
+    }
+
+    /**
+     * Remove permanently the specified resource from deleted.
+     *
+     * @param  \App\Corral  $corral
+     * @return \Illuminate\Http\Response
+     */
+    public function delete(Request $request)
+    {
+        try {
+            $corral = \App\Corral::withTrashed()->find($request['input'])->forceDelete();
+            echo json_encode('success');
+        } catch (\Throwable $th) {
+            echo json_encode('error');
+        }
+    }
 }

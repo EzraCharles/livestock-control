@@ -40,3 +40,33 @@ Route::resource('animales', 'AnimalController');
 Route::post('revisar_formula', 'FormulaController@check');
 Route::get('componentes', 'FormulaController@componentes');
 Route::get('getPrecios', 'FormulaController@getPrecios');
+
+// Delete
+Route::post('eliminar-usuario', 'UserController@delete');
+Route::post('eliminar-precio', 'PrecioController@delete');
+Route::post('eliminar-animal', 'AnimalController@delete');
+Route::post('eliminar-persona', 'PersonaController@delete');
+Route::post('eliminar-diagnostico', 'DiagnosticoController@delete');
+Route::post('eliminar-tratamiento', 'TratamientoController@delete');
+Route::post('eliminar-corral', 'CorralController@delete');
+Route::post('eliminar-formula', 'FormulaController@delete');
+Route::post('eliminar-tipoTratamiento', 'TipoTratamientoController@delete');
+Route::post('eliminar-tipoReproduccion', 'TipoReproduccionController@delete');
+Route::post('eliminar-tipoAnimal', 'TipoAnimalController@delete');
+Route::post('eliminar-tipoPersona', 'TipoPersonaController@delete');
+Route::post('eliminar-tipoAlimentacion', 'TipoAlimentacionController@delete');
+
+// Restore
+Route::post('recuperar-usuario', 'UserController@restore');
+Route::post('recuperar-precio', 'PrecioController@restore');
+Route::post('recuperar-animal', 'AnimalController@restore');
+Route::post('recuperar-persona', 'PersonaController@restore');
+Route::post('recuperar-diagnostico', 'DiagnosticoController@restore');
+Route::post('recuperar-tratamiento', 'TratamientoController@restore');
+Route::post('recuperar-corral', 'CorralController@restore');
+Route::post('recuperar-formula', 'FormulaController@restore');
+Route::post('recuperar-tipoTratamiento', 'TipoTratamientoController@restore');
+Route::post('recuperar-tipoReproduccion', 'TipoReproduccionController@restore');
+Route::post('recuperar-tipoAnimal', 'TipoAnimalController@restore');
+Route::post('recuperar-tipoPersona', 'TipoPersonaController@restore');
+Route::post('recuperar-tipoAlimentacion', 'TipoAlimentacionController@restore');

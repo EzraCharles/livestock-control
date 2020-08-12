@@ -125,4 +125,36 @@ class DiagnosticoController extends Controller
 
         return back();
     }
+
+    /**
+     * Restore the specified resource from deleted.
+     *
+     * @param  \App\Diagnostico  $diagnostico
+     * @return \Illuminate\Http\Response
+     */
+    public function restore(Request $request)
+    {
+        try {
+            $diagnostico = \App\Diagnostico::withTrashed()->find($request['input'])->restore();
+            echo json_encode('success');
+        } catch (\Throwable $th) {
+            echo json_encode('error');
+        }
+    }
+
+    /**
+     * Remove permanently the specified resource from deleted.
+     *
+     * @param  \App\Diagnostico  $diagnostico
+     * @return \Illuminate\Http\Response
+     */
+    public function delete(Request $request)
+    {
+        try {
+            $diagnostico = \App\Diagnostico::withTrashed()->find($request['input'])->forceDelete();
+            echo json_encode('success');
+        } catch (\Throwable $th) {
+            echo json_encode('error');
+        }
+    }
 }

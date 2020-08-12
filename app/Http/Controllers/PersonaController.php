@@ -141,4 +141,37 @@ class PersonaController extends Controller
 
         return back();
     }
+
+    /**
+     * Restore the specified resource from deleted.
+     *
+     * @param  \App\Persona  $persona
+     * @return \Illuminate\Http\Response
+     */
+    public function restore(Request $request)
+    {
+        try {
+            $persona = \App\Persona::withTrashed()->find($request['input'])->restore();
+            echo json_encode('success');
+        } catch (\Throwable $th) {
+            echo json_encode('error');
+        }
+    }
+
+    /**
+     * Remove permanently the specified resource from deleted.
+     *
+     * @param  \App\Persona  $persona
+     * @return \Illuminate\Http\Response
+     */
+    public function delete(Request $request)
+    {
+        try {
+            $persona = \App\Persona::withTrashed()->find($request['input'])->forceDelete();
+            echo json_encode('success');
+        } catch (\Throwable $th) {
+            echo json_encode('error');
+        }
+    }
+
 }

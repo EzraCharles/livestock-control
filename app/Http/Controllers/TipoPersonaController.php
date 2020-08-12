@@ -125,4 +125,36 @@ class TipoPersonaController extends Controller
 
         return back();
     }
+
+    /**
+     * Restore the specified resource from deleted.
+     *
+     * @param  \App\TipoPersona  $tipo_persona
+     * @return \Illuminate\Http\Response
+     */
+    public function restore(Request $request)
+    {
+        try {
+            $tipo_persona = \App\TipoPersona::withTrashed()->find($request['input'])->restore();
+            echo json_encode('success');
+        } catch (\Throwable $th) {
+            echo json_encode('error');
+        }
+    }
+
+    /**
+     * Remove permanently the specified resource from deleted.
+     *
+     * @param  \App\TipoPersona  $tipo_persona
+     * @return \Illuminate\Http\Response
+     */
+    public function delete(Request $request)
+    {
+        try {
+            $tipo_persona = \App\TipoPersona::withTrashed()->find($request['input'])->forceDelete();
+            echo json_encode('success');
+        } catch (\Throwable $th) {
+            echo json_encode('error');
+        }
+    }
 }

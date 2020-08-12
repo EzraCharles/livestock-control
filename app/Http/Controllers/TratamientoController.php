@@ -133,4 +133,36 @@ class TratamientoController extends Controller
 
         return back();
     }
+
+    /**
+     * Restore the specified resource from deleted.
+     *
+     * @param  \App\Tratamiento  $tratamiento
+     * @return \Illuminate\Http\Response
+     */
+    public function restore(Request $request)
+    {
+        try {
+            $tratamiento = \App\Tratamiento::withTrashed()->find($request['input'])->restore();
+            echo json_encode('success');
+        } catch (\Throwable $th) {
+            echo json_encode('error');
+        }
+    }
+
+    /**
+     * Remove permanently the specified resource from deleted.
+     *
+     * @param  \App\Tratamiento  $tratamiento
+     * @return \Illuminate\Http\Response
+     */
+    public function delete(Request $request)
+    {
+        try {
+            $tratamiento = \App\Tratamiento::withTrashed()->find($request['input'])->forceDelete();
+            echo json_encode('success');
+        } catch (\Throwable $th) {
+            echo json_encode('error');
+        }
+    }
 }

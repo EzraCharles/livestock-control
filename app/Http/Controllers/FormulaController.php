@@ -245,4 +245,38 @@ class FormulaController extends Controller
         }
     }
 
+    /**
+     * Restore the specified resource from deleted.
+     *
+     * @param  \App\Formula  $formula
+     * @return \Illuminate\Http\Response
+     */
+    public function restore(Request $request)
+    {
+        try {
+            $formula = \App\Formula::withTrashed()->find($request['input'])->restore();
+            echo json_encode('success');
+        } catch (\Throwable $th) {
+            echo json_encode('error');
+        }
+    }
+
+    /**
+     * Remove permanently the specified resource from deleted.
+     *
+     * @param  \App\Formula  $formula
+     * @return \Illuminate\Http\Response
+     */
+    public function delete(Request $request)
+    {
+        try {
+            $formula = \App\Formula::withTrashed()->find($request['input']);
+            $formula->formulaciones()->forceDelete();
+            $formula->forceDelete();
+            echo json_encode('success');
+        } catch (\Throwable $th) {
+            echo json_encode('error');
+        }
+    }
+
 }
