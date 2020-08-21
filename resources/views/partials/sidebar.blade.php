@@ -23,7 +23,7 @@
             <li class="nav-title">Módulos</li>
 
             <li class="nav-item">
-                <a class="nav-link" href="#">{{-- route('captura') --}}
+                <a class="nav-link" href="{{ route('captura') }}">
                 <i class="nav-icon fas fa-barcode"></i> Ingreso </a> {{--COMPRA--}}
             </li>
             <li class="nav-item">
@@ -51,6 +51,11 @@
                 <i class="nav-icon far fa-eye"></i> Criadero </a>
             </li>
 
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('animales.index') }}">
+                <i class="nav-icon fas fa-paw"></i> Animales </a>
+            </li>
+
             <li class="nav-item nav-dropdown">
                 <a class="nav-link  nav-dropdown-toggle" href="#">
                 <i class="nav-icon icon-people"></i> Catálogos</a>
@@ -67,10 +72,6 @@
                         </li>
                     @endif
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('animales.index') }}">
-                        <i class="nav-icon fas fa-paw"></i> Animales </a>
-                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('personas.index') }}">
                         <i class="nav-icon fas fa-tractor"></i> Personas </a>
@@ -95,10 +96,13 @@
                         <a class="nav-link" href="{{ route('corrales.index') }}">
                         <i class="nav-icon fas fa-landmark"></i> Corrales </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('formulas.index') }}">
-                        <i class="nav-icon fas fa-seedling"></i> Fórmulas </a>
-                    </li>
+                    @if (Auth::user()->rol === 'Administrador')
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('formulas.index') }}">
+                            <i class="nav-icon fas fa-seedling"></i> Fórmulas </a>
+                        </li>
+                    @endif
+
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('tipo-animales.index') }}">
                         <i class="nav-icon fas fa-horse"></i> Tipo de Animal </a>
