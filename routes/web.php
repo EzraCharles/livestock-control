@@ -78,4 +78,6 @@ Route::group(['middleware' => 'admin'], function () {
     Route::post('recuperar-tipoAlimentacion', 'TipoAlimentacionController@restore');
 });
 
+// MODULES HIGH IMPORTANCE
+Route::resource('compras', 'CompraController')->except(['edit'])->middleware('admin');
 

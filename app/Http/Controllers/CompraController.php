@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Compra;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Builder;
 
 class CompraController extends Controller
 {
@@ -34,7 +35,34 @@ class CompraController extends Controller
      */
     public function create()
     {
-        //
+        try {
+            $tipos = \App\TipoAnimal::all();
+
+            $proveedores = \App\Persona::with(['tipoPersona'=> function ($query) {
+                $query->where([
+                    ['nombre', '=', 'Proveedor'],
+                ]);
+            }])->whereHas('tipoPersona', function (Builder $query) {
+                $query->where([
+                    ['nombre', '=', 'Proveedor'],
+                ]);
+            })->get();
+
+            $productores = \App\Persona::with(['tipoPersona'=> function ($query) {
+                $query->where([
+                    ['nombre', '=', 'Productor'],
+                ]);
+            }])->whereHas('tipoPersona', function (Builder $query) {
+                $query->where([
+                    ['nombre', '=', 'Productor'],
+                ]);
+            })->get();
+
+            return view('compras.create', compact(['tipos', 'proveedores', 'productores']));
+        } catch (\Throwable $th) {
+            alert()->error('Oops, algo salió mal! Si persiste el error favor de consultar servicio técnico')->persistent('Cerrar');
+            return back()->withErrors(['msg' => $th]);
+        }
     }
 
     /**

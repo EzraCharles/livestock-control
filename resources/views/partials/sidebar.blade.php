@@ -23,7 +23,7 @@
             <li class="nav-title">Módulos</li>
 
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('captura') }}">
+                <a class="nav-link" href="{{ route('compras.create') }}">
                 <i class="nav-icon fas fa-barcode"></i> Ingreso </a> {{--COMPRA--}}
             </li>
             <li class="nav-item">
