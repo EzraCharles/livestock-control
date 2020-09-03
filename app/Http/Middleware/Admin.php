@@ -15,10 +15,15 @@ class Admin
      */
     public function handle($request, Closure $next)
     {
-        if (auth()->check() && auth()->user()->rol == "Administrador")
-            return $next($request);
+        if (auth()->check()){
+            if (auth()->user()->rol == "Administrador"){
+                return $next($request);
+            }
+            else{
+                alert()->error('Usted no tiene acceso a esta ruta!')->persistent('Cerrar');
+            }
+        }
 
-        alert()->error('Usted no tiene acceso a esta ruta!')->persistent('Cerrar');
         return back();
     }
 }
