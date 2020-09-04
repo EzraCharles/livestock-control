@@ -162,10 +162,6 @@
 
 <script type="text/javascript">
     $(document).ready(function(){
-        /* var table = $('#apd_table').DataTable({
-            "paging": false,
-            "autoWidth": true,
-        }); */
         var count = 0;
 
         $(".select-objects").on('change', function() {
@@ -189,7 +185,6 @@
                 $(this).parent().after(html);
             }
             else{
-                //console.log($(this).parent().parent().find('.nueva-persona'));
                 $(this).parent().parent().find('.nueva-persona-' + this.id).remove();
             }
         });
@@ -215,13 +210,14 @@
                 }
             }
             else{
-                return true;
+                console.log('else terturn');
+                //return true;
             }
 
             if (!isNaN(arete)) {
                 count++;
                 var markup =
-                `<tr>
+                `<tr style='background:` + color + `'>
                     <td>` + count + `</td>
                     <td><input type='checkbox' name='record'></td>
                     <td class="attrArete">` + $('#arete').val() + `</td>
@@ -235,13 +231,7 @@
                 </tr>`;
 
                 $("table tbody").append(markup);
-                /* table.row.add(
-                    [
-                        count, 'd', data[0].serial, data[0].mlfbbackflush, package, data[0].quantity, code
-                    ]
-                ).draw(); */
 
-                //$("#palet").trigger('reset');
                 $('#arete').val('');
                 $('#peso').val('');
                 $('#comentarios').val('');
@@ -274,8 +264,11 @@
         });
 
         $('input').on("change", function(e) {
+            console.log($(this).val());
+            console.log(this.id);
+
             if($(this).val() == 'stop' || $(this).val() == 'STOP'){
-                pdf();
+                submitInfo();
             }
         });
 
@@ -285,44 +278,62 @@
 
     var masterID = 0;
 
-    function pdf(){
-
+    function submitInfo(){
+        console.log('subinfo');
         var array = [];
 
         $('.attrTable tr').each(function (a, b) {
-            var serie = $('.attrSerie', b).text();
-            var mlfb = $('.attrMLFB', b).text();
-            var quantity = $('.attrQuantity', b).text();
-            var package = $('.attrPackage', b).text();
-            var code = $('.attrCode', b).text();
+            var arete = $('.attrArete', b).text();
+            var sexo = $('.attrSexo', b).text();
+            var peso = $('.attrPeso', b).text();
+            var comentarios = $('.attrComentarios', b).text();
+            var folio = $('.attrFolio', b).text();
+            var factura = $('.attrFactura', b).text();
+            var reemo = $('.attrREEMO', b).text();
+            var productor = $('.attrProductor', b).text();
 
             array.push({
-                Serie: serie,
-                MLFB: mlfb,
-                Quantity: quantity,
-                Package: package,
-                Code: code,
+                Arete: arete,
+                Sexo: sexo,
+                Peso: peso,
+                Comentarios: comentarios,
+                Folio: folio,
+                Factura: factura,
+                Reemo: reemo,
+                Productor: productor,
             });
 
         });
         array.shift();
 
+        var form = $("#embarque").serializeArray();
+        var formData = [];
+        var arr = {};
+
+        $.each(form, function(i, field){
+            var name = field.name;
+            var val = field.value;
+            arr[name] = val;
+        });
+        formData.push(arr);
+
+        /* jQuery.each( fields, function( i, field ) {
+            $( "#results" ).append( field.value + " " );
+        }); */
+
         $.ajax({
             type: "POST",
             dataType: 'json',
-            url: 'generatePDF',
+            url: 'animales',
             data: {
                 "_token": "{{ csrf_token() }}",
                 input: array,
-                storagefloor: $('#storagefloor').val(),
-                flag: masterID,
+                form: formData,
             },
             success: function(data)
             {
-                masterID = data.id;
-                //location.reload();
+                /* masterID = data.id;
 
-                // window.open('../'.concat(String(data).substring(1, data.length-1)), '_blank');
                 var render =
                 `<div id='remove_div'>
                     <iframe
@@ -341,11 +352,12 @@
 
                 $('#pdf_frame').html(render);
 
-                //$('#bt').click();
+                //$('#bt').click(); */
+                console.log(data);
 
                 swal({
                     title: "",
-                    text: "Master generada exitosamente!",
+                    text: "Embarque generado exitosamente!",
                     icon: "success",
                     type: "success",
                 }).then(() => {

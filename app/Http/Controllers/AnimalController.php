@@ -59,6 +59,7 @@ class AnimalController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request);
         $validator = $request->validate([
             'arete' => 'required|max:15|min:10',
             'arete_res' => 'nullable|size:4',
