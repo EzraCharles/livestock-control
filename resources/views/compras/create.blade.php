@@ -17,7 +17,6 @@
                             <h3> <strong> Ingreso </strong></h3>
                             <div class="col-md-12" style="margin-top: -35px;">
                                 {{-- <button class="btn grupo-res" style="text-align: left; float: right; margin-top: -50px;" onclick="window.location = 'compras'">Ver Compras</button> --}}
-                                <button id="delete_info" type="button" class="btn btn-danger" style="float: right; margin-left: 5px;">Borrar</button>
                                 <button id="new" type="button" class="btn btn-info" style="float: right;">Nuevo</button>
                             </div>
                         </div>
@@ -126,8 +125,33 @@
                                         </div>
                                     </div>
                                 </form>
-                                <div id="show_frame"></div>
-                                <div class="row">
+                                <div id="show_frame" style="border: solid 3px red;
+                                border-radius: 15px;
+                                padding: 10px;
+                                margin-bottom: 10px;
+                                text-align: center;">
+                                    <input type="number" id="embarque_id" name="embarque_id" value="0" hidden>
+                                    <button id="delete_info" type="button" class="btn btn-danger" style="float: right; margin-left: 5px; margin-bottom: 10px;">Borrar Todo</button>
+
+                                    <h3><strong>Observaciones</strong></h3>
+                                    <table width="100%" id="observations_table" align="center" class="table table-striped table-hover table-condensed" >
+                                        <thead>
+                                            <tr>
+                                                <th hidden><strong>ID</strong></th>
+                                                <th><strong>Fila</strong></th>
+                                                <th><strong>Arete</strong></th>
+                                                <th><strong>Sexo</strong></th>
+                                                <th><strong>Productor</strong></th>
+                                                <th><strong>Comentarios</strong></th>
+                                                <th><strong>Creación</strong></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="row" style="padding-top: 15px">
                                     <div class="col-md-9">
                                     </div>
                                     <div class="col-md-3">
@@ -170,6 +194,7 @@
 <script type="text/javascript">
     $(document).ready(function(){
         var count = 0;
+        $('#show_frame').hide();
 
         $(".select-objects").on('change', function() {
             if ($(this).val() == 'otro') {
@@ -286,7 +311,7 @@
                     <td class="attrProductor" hidden>` + productor_val + `</td>
                 </tr>`;
 
-                $("table tbody").append(markup);
+                $("#aretes_table tbody").append(markup);
 
                 $('#arete').val('');
                 $('#peso').val('');
@@ -403,6 +428,7 @@
                 "_token": "{{ csrf_token() }}",
                 input: array,
                 form: formData,
+                embarque: $('#embarque_id').val(),
             },
             success: function(data)
             {
@@ -412,28 +438,47 @@
                 $('body').removeClass('loading');
 
                 embarqueID = data.embarque;
+                $('#embarque_id').val(embarqueID);
 
                 var render = '';
 
                 data.observaciones.forEach(element => {
+                    console.log(element);
+                    console.log(element.fila);
                     render +=
-                    `<div id='remove_div'>
-                        <input class='btn btn-danger' type="button" id="cancel"
-                            onclick="
-                                $('#remove_div').remove();
-                                $('#serie').val('');
-                                $('#serie').focus();"
-                        value="Cancelar PDF" />
-                    </div>`;
+                        `<tr>
+                            <td hidden>` + element.id + `</td>
+                            <td>` + element.fila + `</td>
+                            <td>` + element.arete + `</td>
+                            <td>` + element.tipo_animal.nombre + `</td>
+                            <td>` + element.persona.nombre + `</td>
+                            <td>` + element.comentarios + `</td>
+                            <td>` + element.created_at + `</td>
+                        </tr>`;
                 });
 
-                $('#show_frame').html(render);
+                console.log(render);
+
+                $('#show_frame').show();
+                $('#observations_table tbody').html("");
+                $('#observations_table tbody').append(render);
 
                 swal({
                     title: "",
                     text: "Embarque generado exitosamente!",
                     icon: "success",
                     type: "success",
+                }).then(() => {
+                    //location.reload();
+                });
+            },
+            error: function() {
+                $('body').removeClass('loading');
+                swal({
+                    title: "",
+                    text: "Oops, algo salió mal, intente más tarde!",
+                    icon: "error",
+                    type: "error",
                 }).then(() => {
                     //location.reload();
                 });
@@ -480,7 +525,7 @@
 
     $('#delete_info').on('click', function(){
         //console.log(masterID)
-        $.ajax({
+        /* $.ajax({
             type: "POST",
             dataType: 'json',
             url: 'deletemasterajax',
@@ -509,7 +554,7 @@
                     //location.reload();
                 });
             }
-        });
+        }); */
     });
 </script>
 

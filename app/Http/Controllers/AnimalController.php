@@ -60,9 +60,10 @@ class AnimalController extends Controller
      */
     public function store(Request $request)
     {
-        /* dd($request['input'][0]); */
+        /* dd($request["embarque"]); */
 
         /* try { */
+        if ($request["embarque"] == 0) {
             $proveedor = $request['form'][0]['proveedor'];
 
             if ($proveedor == "otro") {
@@ -124,7 +125,7 @@ class AnimalController extends Controller
                 }
 
                 //get element with all relationships if already exist
-                $animal_known = \App\Animal::where('arete', 'LIKE', '%' . substr($row['Arete'], -10))->get()->first();
+                $animal_known = \App\Animal::with('persona', 'tipoAnimal', 'registros')->where('arete', 'LIKE', '%' . substr($row['Arete'], -10))->get()->first();
                 /* $animal_owned =  (array) DB::connection('mysql')->select('CALL sp_checkAnimalExistence (?)', [substr($row['Arete'], -10)])[0]; */
 
                 if ($animal_known) {
@@ -138,7 +139,8 @@ class AnimalController extends Controller
                         "arete_4" => substr($row['Arete'], -4),
                         "persona_id" => $productor,
                         "tipo_animal_id" => $sexo,
-                    ]);
+                        "comentarios" => $request['form'][0]['comentarios'],
+                ]);
                     $animal->save();
                 }
 
@@ -156,6 +158,7 @@ class AnimalController extends Controller
                     "peso" => $row['Peso'],
                     "embarque_id" => $embarque->id,
                     "animal_id" => $animal->id,
+                    "comentarios" => $request['form'][0]['comentarios'],
                     /* "peso_neto" => $request['fecha'],
                     "importe" => $request['fecha'], */
                     /* "dieta" => , */
@@ -165,6 +168,10 @@ class AnimalController extends Controller
             }
 
             echo json_encode(['observaciones' => $observations, 'embarque' => $embarque->id]);
+        }
+        else {
+
+        }
         /* } catch (\Throwable $th) {
             alert()->error('Oops, algo salió mal!')->persistent('Cerrar');
             return back()->withErrors(['msg' => $validator]);
