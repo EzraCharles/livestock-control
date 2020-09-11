@@ -60,6 +60,13 @@
                                                 <label for="package">Fecha: </label>
                                                 <input class="form-control" type="date" name="fecha" value="{{ date('Y-m-d') }}" id="fecha" required>
                                             </div>
+                                            <div class="col-4" style="padding-top: 30px; ">
+                                                <label for="acopio"><input class="check" id="acopio" type="checkbox" name="acopio"> Acopio</label>
+                                            </div>
+                                            <div class="col-12 form-group">
+                                                <label for="comentarios_embarque">Comentarios del embarque: </label>
+                                                <input class="form-control" type="text" name="comentarios_embarque" id="comentarios_embarque">
+                                            </div>
                                         </div>
                                         <br/><hr><br/>
 
@@ -119,7 +126,7 @@
                                         </div>
                                     </div>
                                 </form>
-                                {{-- <div id="pdf_frame"></div> --}}
+                                <div id="show_frame"></div>
                                 <div class="row">
                                     <div class="col-md-9">
                                     </div>
@@ -166,20 +173,19 @@
 
         $(".select-objects").on('change', function() {
             if ($(this).val() == 'otro') {
-                var tipo_id = 0;
+                /* var tipo_id = 0;
 
                 if (this.id == 'proveedor') {
                     tipo_id = 2;
                 }
                 else if (this.id == 'productor') {
                     tipo_id = 3;
-                }
+                } */
 
                 var html = `
                 <div class="col-4 form-group nueva-persona-` + this.id + `">
                     <label for="nombre">Nombre de nuevo ` + this.id + `: </label>
-                    <input class="form-control" type="text" name="tipo_persona_id" id="tipo_persona_id" value="` + tipo_id + `" hidden>
-                    <input class="form-control" type="text" name="nombre[]" id="nombre">
+                    <input class="form-control" type="text" name="nombre_` + this.id + `" id="nombre_` + this.id + `">
                 </div>
                 `;
                 $(this).parent().after(html);
@@ -216,18 +222,68 @@
 
             if (!isNaN(arete)) {
                 count++;
+
+                var sexo_text = '';
+                var sexo_val = '';
+                var productor_text = '';
+                var productor_val = '';
+
+                if ($('#sexo').val() == null) {
+                    swal({
+                        title: "",
+                        text: "No ha elegido ninguna opción para Sexo!",
+                        icon: "error",
+                        type: "error",
+                    }).then(() => {
+                        $('#sexo').trigger('chosen:deactivate');
+                        $('#sexo').focus();
+                        $('#sexo').trigger('chosen:activate');
+                    });
+                }
+                else if ($('#sexo').val() == 'otro') {
+                    sexo_text = $('#nombre_sexo').val();
+                    sexo_val = $('#nombre_sexo').val();
+                }
+                else{
+                    sexo_text = $('#sexo option:selected').text();
+                    sexo_val = $('#sexo').val();
+                }
+
+                if ($('#productor').val() == null) {
+                    swal({
+                        title: "",
+                        text: "No ha elegido ninguna opción para Productor!",
+                        icon: "error",
+                        type: "error",
+                    }).then(() => {
+                        $('#productor').trigger('chosen:deactivate');
+                        $('#productor').focus();
+                        $('#productor').trigger('chosen:activate');
+                    });
+                }
+                else if ($('#productor').val() == 'otro') {
+                    productor_text = $('#nombre_productor').val();
+                    productor_val = $('#nombre_productor').val();
+                }
+                else{
+                    productor_text = $('#productor option:selected').text();
+                    productor_val = $('#productor').val();
+                }
+
                 var markup =
-                `<tr style='background:` + color + `'>
-                    <td>` + count + `</td>
+                `<tr id='tr` + count + `' style='background:` + color + `'>
+                    <td class="attrRow">` + count + `</td>
                     <td><input type='checkbox' name='record'></td>
                     <td class="attrArete">` + $('#arete').val() + `</td>
-                    <td class="attrSexo">` + $('#sexo').val() + `</td>
+                    <td>` + sexo_text + `</td>
+                    <td class="attrSexo" hidden>` + sexo_val + `</td>
                     <td class="attrPeso">` + $('#peso').val() + `</td>
                     <td class="attrComentarios">` + $('#comentarios').val() + `</td>
                     <td class="attrFolio">` + $('#folio_factura').val() + `</td>
                     <td class="attrFactura">` + $('#factura_fiscal').val() + `</td>
                     <td class="attrREEMO">` + $('#reemo').val() + `</td>
-                    <td class="attrProductor">` + $('#productor').val() + `</td>
+                    <td>` + productor_text + `</td>
+                    <td class="attrProductor" hidden>` + productor_val + `</td>
                 </tr>`;
 
                 $("table tbody").append(markup);
@@ -264,11 +320,25 @@
         });
 
         $('input').on("change", function(e) {
-            console.log($(this).val());
-            console.log(this.id);
+            /* console.log($(this).val());
+            console.log(this.id); */
 
             if($(this).val() == 'stop' || $(this).val() == 'STOP'){
-                submitInfo();
+                if ($('#proveedor').val() == null) {
+                    swal({
+                        title: "",
+                        text: "No ha elegido ninguna opción para Proveedor!",
+                        icon: "error",
+                        type: "error",
+                    }).then(() => {
+                        $('#proveedor').trigger('chosen:deactivate');
+                        $('#proveedor').focus();
+                        $('#proveedor').trigger('chosen:activate');
+                    });
+                }
+                else{
+                    submitInfo();
+                }
             }
         });
 
@@ -276,13 +346,16 @@
     });
 
 
-    var masterID = 0;
+    var embarqueID = 0;
 
     function submitInfo(){
+        $('body').addClass('loading');
+
         console.log('subinfo');
         var array = [];
 
         $('.attrTable tr').each(function (a, b) {
+            var fila = $('.attrRow', b).text();
             var arete = $('.attrArete', b).text();
             var sexo = $('.attrSexo', b).text();
             var peso = $('.attrPeso', b).text();
@@ -293,6 +366,7 @@
             var productor = $('.attrProductor', b).text();
 
             array.push({
+                Fila: fila,
                 Arete: arete,
                 Sexo: sexo,
                 Peso: peso,
@@ -332,28 +406,28 @@
             },
             success: function(data)
             {
-                /* masterID = data.id;
-
-                var render =
-                `<div id='remove_div'>
-                    <iframe
-                        src="` + String(data.url) + `" id="myFrame"
-                        frameborder="0" style="border:0;"
-                        width="100%" height="500" >
-                    </iframe>
-                    <input class='btn btn-warning' type="button" id="bt" onclick="print()" value="Imprimir PDF" />
-                    <input class='btn btn-danger' type="button" id="cancel"
-                        onclick="
-                            $('#remove_div').remove();
-                            $('#serie').val('');
-                            $('#serie').focus();"
-                    value="Cancelar PDF" />
-                </div>`;
-
-                $('#pdf_frame').html(render);
-
-                //$('#bt').click(); */
                 console.log(data);
+                console.log(data.observaciones);
+                console.log(data.embarque);
+                $('body').removeClass('loading');
+
+                embarqueID = data.embarque;
+
+                var render = '';
+
+                data.observaciones.forEach(element => {
+                    render +=
+                    `<div id='remove_div'>
+                        <input class='btn btn-danger' type="button" id="cancel"
+                            onclick="
+                                $('#remove_div').remove();
+                                $('#serie').val('');
+                                $('#serie').focus();"
+                        value="Cancelar PDF" />
+                    </div>`;
+                });
+
+                $('#show_frame').html(render);
 
                 swal({
                     title: "",

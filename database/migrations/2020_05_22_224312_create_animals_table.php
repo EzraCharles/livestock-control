@@ -19,7 +19,7 @@ class CreateAnimalsTable extends Migration
             $table->string('arete_4')->nullable();
             $table->string('arete_res')->nullable();
             $table->string('comentarios')->nullable();
-            $table->integer('persona_id')->unsigned();
+            $table->integer('persona_id')->nullable()->unsigned(); //not ->nullable()
             $table->integer('tipo_animal_id')->unsigned();
             $table->boolean('defuncion')->default(false);
             $table->softDeletes();

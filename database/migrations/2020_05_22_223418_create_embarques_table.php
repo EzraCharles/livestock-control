@@ -20,6 +20,8 @@ class CreateEmbarquesTable extends Migration
             $table->string('tipo_embarque');
             $table->string('comentarios')->nullable();
             $table->date('fecha');
+            $table->boolean('liquidacion')->nullable()->default(0);
+            $table->boolean('acopio')->default(0);
             $table->softDeletes();
             $table->timestamps();
         });

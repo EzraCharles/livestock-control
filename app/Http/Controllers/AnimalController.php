@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Animal;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AnimalController extends Controller
 {
@@ -59,23 +60,115 @@ class AnimalController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
-        $validator = $request->validate([
-            'arete' => 'required|max:15|min:10',
-            'arete_res' => 'nullable|size:4',
-            'tipo_id' => 'required|integer|min:1',
-            'persona_id' => 'required|integer|min:1',
-            'comentarios' => 'nullable|max:255|min:2',
-        ]);
+        /* dd($request['input'][0]); */
 
-        try {
-            $animal = \App\Animal::create($request->except('_token', '_method'));
-            alert()->success('Animal creado exitosamente!')->persistent('Cerrar');
-            return back();
-        } catch (\Throwable $th) {
+        /* try { */
+            $proveedor = $request['form'][0]['proveedor'];
+
+            if ($proveedor == "otro") {
+                $proveedor = new \App\Persona([
+                    "nombre" => $request['form'][0]['nombre_proveedor'],
+                    "tipo_persona_id" => 2,
+                ]);
+                $proveedor->save();
+
+                $proveedor = $proveedor->id;
+            }
+
+            $acopio = false;
+
+            if (array_key_exists('acopio', $request['form'][0])) {
+                $acopio = true;
+            }
+
+            $embarque = new \App\Embarque([
+                "persona_id" => $proveedor,
+                "usuario_id" => auth()->user()->id,
+                "tipo_embarque" => 'Compra',
+                "fecha" => $request['form'][0]['fecha'],
+                "acopio" => $acopio,
+                "comentarios" => $request['form'][0]['comentarios_embarque'],
+            ]);
+            $embarque->save();
+
+            $observations = [];
+
+            foreach ($request['input'] as $row) {
+                $productor = '';
+                $sexo = '';
+                $animal = '';
+
+                if (!is_numeric($row['Productor'])) {
+                    $productor = new \App\Persona([
+                        "nombre" => $row['Productor'],
+                        "tipo_persona_id" => 3,
+                    ]);
+                    $productor->save();
+
+                    $productor = $productor->id;
+                }
+                else{
+                    $productor = $row['Productor'];
+                }
+
+                if (!is_numeric($row['Sexo'])) {
+                    $sexo = new \App\TipoAnimal([
+                        "nombre" => $row['Sexo'],
+                    ]);
+                    $sexo->save();
+
+                    $sexo = $sexo->id;
+                }
+                else{
+                    $sexo = $row['Sexo'];
+                }
+
+                //get element with all relationships if already exist
+                $animal_known = \App\Animal::where('arete', 'LIKE', '%' . substr($row['Arete'], -10))->get()->first();
+                /* $animal_owned =  (array) DB::connection('mysql')->select('CALL sp_checkAnimalExistence (?)', [substr($row['Arete'], -10)])[0]; */
+
+                if ($animal_known) {
+                    $animal_known['fila'] = $row["Fila"];
+                    array_push($observations, $animal_known);
+                    $animal = $animal_known;
+                }
+                else{
+                    $animal = new \App\Animal([
+                        "arete" => $row['Arete'],
+                        "arete_4" => substr($row['Arete'], -4),
+                        "persona_id" => $productor,
+                        "tipo_animal_id" => $sexo,
+                    ]);
+                    $animal->save();
+                }
+
+                /* if ($animal_owned) {
+                    $animal_owned['observations'] = 'Presente';
+                    array_push($observations, $animal_owned);
+                    $flag = 1;
+                    $animal = $animal_owned;
+                } */
+
+                $compra = new \App\Compra([
+                    "folio_factura" => $row['Folio'],
+                    "factura_fiscal" => $row['Factura'],
+                    "reemo" => $row['Reemo'],
+                    "peso" => $row['Peso'],
+                    "embarque_id" => $embarque->id,
+                    "animal_id" => $animal->id,
+                    /* "peso_neto" => $request['fecha'],
+                    "importe" => $request['fecha'], */
+                    /* "dieta" => , */
+                ]);
+                $compra->save();
+
+            }
+
+            echo json_encode(['observaciones' => $observations, 'embarque' => $embarque->id]);
+        /* } catch (\Throwable $th) {
             alert()->error('Oops, algo salió mal!')->persistent('Cerrar');
             return back()->withErrors(['msg' => $validator]);
-        }
+        } */
     }
 
     /**
