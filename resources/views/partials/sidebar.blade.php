@@ -11,7 +11,7 @@
                         <i class="nav-icon fas fa-chart-pie"></i> Análisis </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="liquidacion">
                         <i class="nav-icon fas fa-handshake"></i> Liquidación </a>
                     </li>
                     <li class="nav-item">

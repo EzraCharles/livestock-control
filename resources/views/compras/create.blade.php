@@ -15,6 +15,7 @@
                     <div class="card">
                         <div class="card-header">
                             <h3> <strong> Ingreso </strong></h3>
+
                             <div class="col-md-12" style="margin-top: -35px;">
                                 {{-- <button class="btn grupo-res" style="text-align: left; float: right; margin-top: -50px;" onclick="window.location = 'compras'">Ver Compras</button> --}}
                                 <button id="new" type="button" class="btn btn-info" style="float: right;">Nuevo</button>
@@ -43,6 +44,9 @@
                                     @csrf
                                     <br/>
                                     <div class="col-md-12">
+                                        <div class="col-12" style="margin-top: -90px; padding-bottom: 50px; text-align: center">
+                                            <label for="documents"><input class="check" id="documents" type="checkbox" name="documents"> Documentos</label>
+                                        </div>
                                         <h4 style="text-align: center">Datos fijos</h4>
                                         <div class="row">
                                             <div class="col-4 form-group">
@@ -522,6 +526,10 @@
         location.reload();
     });
 
+    $('#documents').on('change', function() {
+        console.log(this.val());
+        console.log(this.isNaN());
+    });
 
     $('#delete_info').on('click', function(){
         //console.log(masterID)

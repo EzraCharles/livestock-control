@@ -68,17 +68,22 @@
                                                             <i class="far fa-eye"></i>
                                                         </button>
                                                     </a>
-                                                    <button type="button" class="btn btn-info" data-toggle="modal" id="edit-item">
-                                                        <i class="fa fa-bolt"></i>
-                                                    </button>
-                                                    <a href="{{ url('animales/'.$animal->id.'/editar') }}" style="color: inherit;">
+                                                    @if (Auth::user()->rol === 'Administrador')
+                                                        <button type="button" class="btn btn-info" data-toggle="modal" id="edit-item">
+                                                            <i class="fa fa-edit"></i>
+                                                        </button>
+                                                    @endif
+                                                    {{-- <a href="{{ url('animales/'.$animal->id.'/editar') }}" style="color: inherit;">
                                                         <button type="button" class="btn btn-info" data-toggle="modal" id="edit-complete">
                                                             <i class="fa fa-edit"></i>
                                                         </button>
-                                                    </a>
-                                                    <button type="button" class="btn btn-danger" data-toggle="modal" id="delete-item">
-                                                        <i class="fa fa-trash"></i>
-                                                    </button>
+                                                    </a> --}}
+                                                    @if (Auth::user()->rol === 'Administrador')
+                                                        <button type="button" class="btn btn-danger" data-toggle="modal" id="delete-item">
+                                                            <i class="fa fa-trash"></i>
+                                                        </button>
+                                                    @endif
+
                                                 </div>
                                             </td>
                                         </tr>
